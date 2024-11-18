@@ -1,13 +1,12 @@
-import Anonymous from "./Views/Anonymous/Anonymous";
-
-
-function App() {
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
+const App: React.FC = () => {
   return (
-    <div>
-      <Anonymous />
-    </div>
-  )
-
-}
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
+};
 
 export default App;
