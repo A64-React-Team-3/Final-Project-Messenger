@@ -1,4 +1,4 @@
-import Login from "../Login/Login";
+import Login from "../../../src/views/Login/Login";
 import "./Anonymous.css";
 import { useState } from "react";
 
@@ -13,4 +13,4 @@ export default function Anonymous() {
       </div>
     </div>
   );
-};
+}

@@ -1,4 +1,4 @@
-import Anonymous from "../Views/Anonymous/Anonymous";
+import Anonymous from "../../src/views/Anonymous/Anonymous";
 
 type AppRoute = {
   path: string;
@@ -13,9 +13,7 @@ type AppRoute = {
 export const RoutesList: AppRoute[] = [
   {
     path: "/",
-    element: (
-      <Anonymous />
-    ),
+    element: <Anonymous />,
   },
   {
     path: "/settings",
