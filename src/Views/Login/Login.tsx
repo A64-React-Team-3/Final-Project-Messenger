@@ -33,8 +33,8 @@ export default function Login() {
           <input type="password" className="grow" value="password" />
         </label>
         <div className="card-actions justify-start">
-          <button className="btn btn-primary">Log in</button>
-          <button className="btn btn-primary">Register</button>
+          <button className="btn btn-accent opacity-50">Log in</button>
+          <button className="btn btn-info opacity-50">Register</button>
         </div>
       </div>
     </div>
