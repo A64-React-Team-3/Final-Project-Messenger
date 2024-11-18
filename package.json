@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/dotenv": "^8.2.3",
+    "@types/firebase": "^3.2.3",
     "dotenv": "^16.4.5",
     "firebase": "^11.0.2",
     "react": "^18.3.1",
