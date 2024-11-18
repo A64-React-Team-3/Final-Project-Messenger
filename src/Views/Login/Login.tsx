@@ -3,7 +3,7 @@ import './Login.css';
 export default function Login() {
 
   return (
-    <div className="card bg-base-100 w-96 shadow-xl">
+    <div className="card backdrop-opacity backdrop-invert bg-white/40 shadow-2xl shadow-blue-100/50 w-96">
       <div className="card-body">
         <h2 className="card-title">Login</h2>
         <label className="input input-bordered flex items-center gap-2">
