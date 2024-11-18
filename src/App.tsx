@@ -1,5 +1,13 @@
+import Anonymous from "./Views/Anonymous/Anonymous";
+
+
 function App() {
-  return <></>;
+  return (
+    <div>
+      <Anonymous />
+    </div>
+  )
+
 }
 
 export default App;
