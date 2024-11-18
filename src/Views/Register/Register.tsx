@@ -57,8 +57,8 @@ export default function Register({ handleShowLogin }: { handleShowLogin: () => v
           <input type="password" className="grow" value="" placeholder='confirm password' />
         </label>
         <div className="card-actions justify-end">
-          <button className="btn btn-accent opacity-50" onClick={handleShowLogin}>Back to Login</button>
           <button className="btn btn-info opacity-50">Register</button>
+          <button className="btn btn-accent opacity-50" onClick={handleShowLogin}>Back to Login</button>
         </div>
       </div>
     </div>
