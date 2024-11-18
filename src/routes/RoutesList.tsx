@@ -1,3 +1,5 @@
+import Anonymous from "../Views/Anonymous/Anonymous";
+
 type AppRoute = {
   path: string;
   element: JSX.Element;
@@ -12,25 +14,7 @@ export const RoutesList: AppRoute[] = [
   {
     path: "/",
     element: (
-      <div className="home">
-        <h2>Homepage</h2>
-      </div>
-    ),
-  },
-  {
-    path: "/login",
-    element: (
-      <div className="login">
-        <h2>Login</h2>
-      </div>
-    ),
-  },
-  {
-    path: "/register",
-    element: (
-      <div className="register">
-        <h2>Register</h2>
-      </div>
+      <Anonymous />
     ),
   },
   {
