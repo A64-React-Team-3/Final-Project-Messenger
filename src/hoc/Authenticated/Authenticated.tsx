@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserAppContext } from "../../stores/app-context";
 import { toast } from "react-toastify";
@@ -23,11 +23,13 @@ const Authenticated: React.FC<AuthenticatedProps> = ({
   const { user } = useContext(UserAppContext);
   const navigate = useNavigate();
 
-  if (!user) {
-    toast.error("Please log in to access this page.");
-    navigate("/", { replace: true });
-    return <></>;
-  }
+  useEffect(() => {
+    if (!user) {
+      toast.dark("❗Please log in to access this page.");
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
+
   return <div>{children}</div>;
 };
 

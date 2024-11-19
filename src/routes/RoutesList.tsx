@@ -1,3 +1,4 @@
+import Authenticated from "../hoc/Authenticated/Authenticated";
 import Anonymous from "../Views/Anonymous/Anonymous";
 import SettingsPage from "../Views/Settings/SettingsPage/SettingsPage";
 
@@ -24,7 +25,9 @@ export const RoutesList: AppRoute[] = [
     path: "/home",
     element: (
       <>
-        <h1>homepage</h1>
+        <Authenticated>
+          <h1>homepage</h1>
+        </Authenticated>
       </>
     ),
   },
