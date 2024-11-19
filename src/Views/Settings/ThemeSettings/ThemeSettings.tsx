@@ -8,16 +8,19 @@ import React from "react";
  */
 const ThemeSettings: React.FC = (): JSX.Element => {
   return (
-    <div>
-      <h2 className="text-xl font-bold">Theme Settings</h2>
-      <p>Manage your app's theme preferences.</p>
+    <div className="w-full max-w-5xl bg-dark p-12 rounded-lg shadow-lg space-y-8">
+      <h2 className="text-4xl font-bold">Theme Settings</h2>
+      <p className="text-xl">Manage your app's theme preferences.</p>
 
-      <div className="mt-4">
-        <p className="text-sm">Select a theme for the app:</p>
-        {/* Placeholder for theme selection */}
-        <div className="space-y-2">
-          <button className="btn btn-ghost w-full">Light Mode</button>
-          <button className="btn btn-ghost w-full">Dark Mode</button>
+      <div className="mt-8 space-y-6">
+        <p className="text-lg">Select a theme for the app:</p>
+        <div className="space-y-6">
+          <button className="btn btn-ghost w-full py-4 text-2xl">
+            Light Mode
+          </button>
+          <button className="btn btn-ghost w-full py-4 text-2xl">
+            Dark Mode
+          </button>
         </div>
       </div>
     </div>
