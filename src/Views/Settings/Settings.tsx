@@ -1,5 +1,3 @@
-import "./Settings.css";
-
 import React, { useState } from "react";
 import SettingsMenu, { MenuItem } from "../Settings/SettingsMenu/SettingsMenu";
 
@@ -30,14 +28,15 @@ const Settings: React.FC<SettingsProps> = ({
     settingsItems.find(item => item.key === activeKey)?.component ?? null;
 
   return (
-    <div className="flex flex-col lg:flex-row h-full p-4">
-      <SettingsMenu
-        items={settingsItems}
-        activeKey={activeKey}
-        onSelect={setActiveKey}
-      />
-
-      <div className="flex-1 bg-base-100 p-4 rounded-box shadow ml-0 lg:ml-4">
+    <div className="mockup-window border-4 border-gray-600 w-[75vw] h-[85vh] flex flex-col lg:flex-row shadow-xl">
+      <div className="bg-base-200 w-1/4 p-4 rounded-box">
+        <SettingsMenu
+          items={settingsItems}
+          activeKey={activeKey}
+          onSelect={setActiveKey}
+        />
+      </div>
+      <div className="flex-1 bg-base-100 w-1/4p-4 rounded-box shadow ml-0 lg:ml-4">
         {activeComponent}
       </div>
     </div>

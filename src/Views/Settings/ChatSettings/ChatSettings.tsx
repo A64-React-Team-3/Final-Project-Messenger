@@ -10,7 +10,7 @@ import React from "react";
  */
 const ChatSettings: React.FC = (): JSX.Element => {
   return (
-    <div className="w-full max-w-xl bg-dark p-8 rounded-lg shadow-lg space-y-8">
+    <div className="w-full max-w-xl bg-dark p-8 rounded-lg space-y-8">
       <h2 className="text-3xl font-bold">Chat Settings</h2>
       <p className="text-xl">Customize your chat preferences.</p>
 
@@ -20,7 +20,7 @@ const ChatSettings: React.FC = (): JSX.Element => {
             <label className="block text-lg font-medium">
               Notification Preferences
             </label>
-            <select className="select select-bordered w-full text-lg">
+            <select className="select select-bordered w-2/3 text-lg">
               <option>All notifications</option>
               <option>Only important notifications</option>
               <option>No notifications</option>

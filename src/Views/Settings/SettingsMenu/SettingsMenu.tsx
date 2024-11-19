@@ -26,7 +26,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   onSelect,
 }: SettingsMenuProps): JSX.Element => {
   return (
-    <div className="menu bg-base-200 w-full lg:w-1/4 p-2 rounded-box shadow">
+    <div className="menu bg-base-200 w-full lg:w-full p-2 rounded-box shadow">
       {items.map(item => (
         <MenuButton
           key={item.key}

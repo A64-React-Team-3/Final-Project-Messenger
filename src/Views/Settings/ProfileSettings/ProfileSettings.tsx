@@ -11,7 +11,7 @@ import React from "react";
  */
 const ProfileSettings: React.FC = (): JSX.Element => {
   return (
-    <div className="w-full max-w-xl bg-dark p-8 rounded-lg shadow-lg space-y-8">
+    <div className="w-full max-w-xl bg-dark p-8 rounded-lg space-y-8">
       <h2 className="text-3xl font-bold">Profile Settings</h2>
       <p className="text-xl">Update your personal information here.</p>
 
@@ -22,7 +22,7 @@ const ProfileSettings: React.FC = (): JSX.Element => {
             <input
               type="text"
               placeholder="Enter your display name"
-              className="input input-bordered w-full text-lg"
+              className="input input-bordered w-4/5 text-lg"
             />
           </div>
           <div className="space-y-2">
@@ -30,18 +30,18 @@ const ProfileSettings: React.FC = (): JSX.Element => {
             <input
               type="email"
               placeholder="Enter your email"
-              className="input input-bordered w-full text-lg"
+              className="input input-bordered w-4/5 text-lg"
             />
           </div>
           <div className="space-y-2">
             <label className="block text-lg font-medium">Avatar: </label>
             <input
               type="file"
-              className="file-input file-input-bordered w-full"
+              className="file-input file-input-bordered w-4/5"
             />
           </div>
 
-          <button className="btn btn-primary btn-lg w-full text-xl mt-6">
+          <button className="btn btn-primary btn-lg w-4/5 text-xl mt-6">
             Save Changes
           </button>
         </form>
