@@ -1,4 +1,5 @@
 import Anonymous from "../../src/views/Anonymous/Anonymous";
+import SettingsPage from "../Views/Settings/SettingsPage/SettingsPage";
 
 type AppRoute = {
   path: string;
@@ -17,11 +18,7 @@ export const RoutesList: AppRoute[] = [
   },
   {
     path: "/settings",
-    element: (
-      <div className="settings">
-        <h2>Settings</h2>
-      </div>
-    ),
+    element: <SettingsPage />,
   },
   {
     path: "*",
