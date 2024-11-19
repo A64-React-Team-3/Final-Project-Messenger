@@ -1,6 +1,8 @@
 import './Register.css';
 import { useEffect, useState } from 'react';
 import { validEmailRegex, validUsernameRegex, validPasswordRegex } from '../../common/constants';
+import { getUserByHandle, createUser } from '../../services/user.service';
+import { registerUser } from '../../services/auth.service';
 
 export default function Register({ handleShowLogin }: { handleShowLogin: () => void }) {
   const [isEmailValid, setIsEmailValid] = useState(true);
@@ -16,6 +18,27 @@ export default function Register({ handleShowLogin }: { handleShowLogin: () => v
     username: '',
     password: '',
   });
+
+  const handleRegister = async () => {
+    user.handle = user.username;
+    if (!(isEmailValid && isUsernameValid && isPasswordValid && isPasswordMatch)) {
+      alert('Please enter valid information');
+      return;
+    }
+    try {
+      const dbUser = await getUserByHandle(user.handle);
+      if (dbUser.exists()) {
+        alert('User already exists');
+        return;
+      }
+      const credentials = await registerUser(user.email, user.password);
+      await createUser(user.handle, user.email, user.username, credentials.user.uid);
+      handleShowLogin();
+    }
+    catch (err: any) {
+      alert(err.message);
+    }
+  }
 
   const updateUser = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({
@@ -101,7 +124,7 @@ export default function Register({ handleShowLogin }: { handleShowLogin: () => v
           </svg>
           <input type="password" className="grow" value={user.password} placeholder='Password' onChange={updateUser("password")} />
         </label>
-        {!isPasswordValid && hasStartedTyping && <p className="text-red-500 text-xs">Password must be between 5 and 15 characters</p>}
+        {!isPasswordValid && hasStartedTyping && <p className="text-red-500 text-xs">Password must be between 6 and 15 characters</p>}
         <label className="input input-bordered flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +140,7 @@ export default function Register({ handleShowLogin }: { handleShowLogin: () => v
         </label>
         {!isPasswordMatch && hasStartedTyping && <p className="text-red-500 text-xs">Passwords do not match</p>}
         <div className="card-actions justify-end">
-          <button className="btn btn-info opacity-50">Register</button>
+          <button className="btn btn-info opacity-50" onClick={handleRegister}>Register</button>
           <button className="btn btn-accent opacity-50" onClick={handleShowLogin}>Back to Login</button>
         </div>
       </div>
