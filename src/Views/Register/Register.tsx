@@ -4,7 +4,14 @@ import { validEmailRegex, validUsernameRegex, validPasswordRegex } from '../../c
 import { getUserByHandle, createUser } from '../../services/user.service';
 import { registerUser } from '../../services/auth.service';
 
-export default function Register({ handleShowLogin }: { handleShowLogin: () => void }) {
+/**
+ * Register component for user registration.
+ * 
+ * @param {Object} props - Component props.
+ * @param {Function} props.handleShowLogin - Function to show the login view.
+ * @returns {JSX.Element} The Register component.
+ */
+export default function Register({ handleShowLogin }: { handleShowLogin: () => void }): JSX.Element {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isUsernameValid, setIsUsernameValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
@@ -19,7 +26,15 @@ export default function Register({ handleShowLogin }: { handleShowLogin: () => v
     password: '',
   });
 
-  const handleRegister = async () => {
+
+  /**
+   * Handles the registration process.
+   * 
+   * @async
+   * @function handleRegister
+   * @returns {Promise<void>}
+   */
+  const handleRegister = async (): Promise<void> => {
     user.handle = user.username;
     if (!(isEmailValid && isUsernameValid && isPasswordValid && isPasswordMatch)) {
       alert('Please enter valid information');
@@ -40,7 +55,13 @@ export default function Register({ handleShowLogin }: { handleShowLogin: () => v
     }
   }
 
-  const updateUser = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  /**
+   * Updates the user state based on input field changes.
+   * 
+   * @param {string} field - The field to update.
+   * @returns {Function} The event handler for input change.
+   */
+  const updateUser = (field: string): React.ChangeEventHandler<HTMLInputElement> => (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({
       ...user,
       [field]: e.target.value
