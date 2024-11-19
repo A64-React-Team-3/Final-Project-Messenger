@@ -16,7 +16,7 @@ const SettingsPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-base-300 flex items-center justify-center">
+    <div className="min-h-screen bg-base-300 flex flex-col">
       <Settings settingsItems={settingsItems} />
     </div>
   );
