@@ -41,3 +41,16 @@ export const createUser = async (handle: string, email: string, username: string
   }
   await set(ref(db, `users/${handle}`), user);
 };
+
+/**
+ * Retrieves user data by their unique identifier (uid).
+ * 
+ * @async
+ * @function getUserData
+ * @param {string} uid - The unique identifier of the user.
+ * @returns {Promise<import('firebase/database').DataSnapshot>} A promise that resolves to the user's data snapshot.
+ * @throws {import('firebase/database').DatabaseError} If retrieval fails.
+ */
+export const getUserData = async (uid: string): Promise<import('firebase/database').DataSnapshot> => {
+  return get(query(ref(db, 'users'), orderByChild('uid'), equalTo(uid)));
+};  
