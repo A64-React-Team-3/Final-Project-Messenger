@@ -18,5 +18,5 @@ interface UserAppContextType {
 
 export const UserAppContext = createContext<UserAppContextType>({
   user: null,
-  setUser: () => { },
+  setUser: () => {},
 });

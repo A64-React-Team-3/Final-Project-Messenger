@@ -5,7 +5,7 @@ import RoutesList from "./RoutesList";
  * Renders application routes dynamically based on `RoutesList`.
  * @returns {JSX.Element} The rendered routes.
  */
-export const AppRoutes: React.FC = () => {
+export const AppRoutes: React.FC = (): JSX.Element => {
   return (
     <Routes>
       {RoutesList.map(({ path, element }) => (
