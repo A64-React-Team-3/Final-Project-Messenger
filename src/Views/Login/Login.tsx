@@ -2,10 +2,12 @@ import './Login.css';
 import { useContext, useEffect } from 'react';
 import { UserAppContext } from '../../store/app-context';
 import { useState } from 'react';
-import { loginUser } from '../../services/auth.service';
+import { loginUser, signOutUser } from '../../services/auth.service';
+import { set } from 'firebase/database';
+
 
 export default function Login({ handleShowRegister }: { handleShowRegister: () => void }) {
-  const { user } = useContext(UserAppContext);
+  const { user, setUser } = useContext(UserAppContext);
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -25,6 +27,17 @@ export default function Login({ handleShowRegister }: { handleShowRegister: () =
     catch (err: any) {
       console.log(err);
     }
+  }
+
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      setUser(null);
+    }
+    catch (err: any) {
+      console.log(err);
+    }
+
   }
 
   useEffect(() => {
@@ -66,6 +79,7 @@ export default function Login({ handleShowRegister }: { handleShowRegister: () =
         <div className="card-actions justify-end">
           <button className="btn btn-accent opacity-50" onClick={handleLogin}>Login</button>
           <button className="btn btn-info opacity-50" onClick={handleShowRegister}>To Register</button>
+          {user && <button className="btn btn-success opacity-50" onClick={handleLogout}>Logout</button>}
         </div>
       </div>
     </div>

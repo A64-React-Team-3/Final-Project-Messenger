@@ -37,7 +37,7 @@ export const createUser = async (handle: string, email: string, username: string
     username,
     displayName: username,
     uid,
-    createdOn: Date.now().toString(),
+    createdOn: Date.now(),
   }
   await set(ref(db, `users/${handle}`), user);
 };

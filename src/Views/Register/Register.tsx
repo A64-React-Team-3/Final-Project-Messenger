@@ -75,6 +75,15 @@ export default function Register({ handleShowLogin }: { handleShowLogin: () => v
     setConfirmPassword(e.target.value);
   }
 
+  // const validateField = (field: string): void => {
+  //   if (validEmailRegex.test(field)) {
+  //     setIsEmailValid(true);
+  //   } else {
+  //     setIsEmailValid(false);
+  //   }
+  //   console.log(isEmailValid);
+  // }
+
   useEffect(() => {
     if (validEmailRegex.test(user.email) && hasStartedTyping) {
       setIsEmailValid(true);
