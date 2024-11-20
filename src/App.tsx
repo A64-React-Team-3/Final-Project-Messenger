@@ -6,6 +6,7 @@ import { User } from "./store/app-context";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from "./config/firebase-config";
 import { getUserData } from "./services/user.service";
+
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
 
@@ -30,6 +31,7 @@ const App: React.FC = () => {
         <AppRoutes />
       </BrowserRouter>
     </UserAppContext.Provider >
+
   );
 };
 
