@@ -1,14 +1,26 @@
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import "./Anonymous.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserAppContext } from "../../store/app-context";
-
+import { Navigate, useNavigate } from "react-router-dom";
+// import { useAuthState } from "react-firebase-hooks/auth";
+// import { auth } from "../../config/firebase-config";
 export default function Anonymous() {
   const [showLogin, setShowLogin] = useState(true);
   const [showRegister, setShowRegister] = useState(false);
   const { user } = useContext(UserAppContext);
+  const navigate = useNavigate();
+  // const [authUser] = useAuthState(auth);
 
+  // if (user) {
+  //   return <Navigate to="/home" replace />;
+  // }
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  }, [user]);
   const handleShowLogin = () => {
     setShowLogin(true);
     setShowRegister(false);
@@ -19,11 +31,15 @@ export default function Anonymous() {
     setShowRegister(true);
   };
 
-
   return (
     <div className="main-anonymous-view">
-      {user ? <div className="app-info">Logged in as {user.userData?.displayName}</div> :
-        <div className="app-info">Some info</div>}
+      {user ? (
+        <div className="app-info">
+          Logged in as {user.userData?.displayName}
+        </div>
+      ) : (
+        <div className="app-info">Some info</div>
+      )}
       <div className="login-register-form">
         {showLogin && <Login handleShowRegister={handleShowRegister} />}
         {showRegister && <Register handleShowLogin={handleShowLogin} />}

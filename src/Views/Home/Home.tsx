@@ -1,6 +1,7 @@
-// import React, { useContext } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-// import { UserAppContext } from "../../stores/app-context";
+import { UserAppContext } from "../../store/app-context";
+import { signOutUser } from "../../services/auth.service";
 
 /**
  * Home Component
@@ -13,18 +14,16 @@ import { useNavigate } from "react-router-dom";
  */
 const Home: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
-  //   const { user, userData, setUserAppState } = useContext(UserAppContext);
+  const { user, setUser } = useContext(UserAppContext);
 
-  const handleLogout = () => {
-    // logoutUser()
-    // .then(() => {
-    //   setUserAppState({ user: null, userData: null });
-    // navigate("/", { replace: true });
-    // })
-    // .catch(error => {
-    //   console.error("Logout failed", error);
-    // });
-    navigate("/", { replace: true });
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      setUser(null);
+      navigate("/", { replace: true });
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
   const handleToSettings = () => {
@@ -33,7 +32,9 @@ const Home: React.FC = (): JSX.Element => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-base-200 space-y-6">
-      <h1 className="text-4xl font-bold">Welcome to the Home Page</h1>
+      <h1 className="text-4xl font-bold">
+        Welcome {user?.userData?.username} to the Home Page
+      </h1>
       <div className="space-x-4">
         <button onClick={handleLogout} className="btn btn-primary text-xl">
           Logout
