@@ -6,7 +6,7 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   daisyui: {
-    themes: ["light", "dark", "cupcake", "synthwave", "emerald", "corporate"],
+    themes: ["light", "dark", "cupcake", "synthwave", "emerald", "corporate", "forest"]
   },
   theme: {
     extend: {},
