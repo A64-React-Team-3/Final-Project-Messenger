@@ -1,4 +1,5 @@
 import React from "react";
+import ThemeSelector from "../../../contexts/ThemeSelector"
 /**
  * ThemeSettings Component
  * This component allows users to view the options for customizing the app's theme.
@@ -14,14 +15,9 @@ const ThemeSettings: React.FC = (): JSX.Element => {
 
       <div className="mt-8 space-y-6">
         <p className="text-lg">Select a theme for the app:</p>
-        <div className="space-y-6">
-          <button className="btn btn-ghost w-full py-4 text-xl">
-            Light Mode
-          </button>
-          <button className="btn btn-ghost w-full py-4 text-xl">
-            Dark Mode
-          </button>
-        </div>
+<div>
+  <ThemeSelector />
+</div>
       </div>
     </div>
   );
