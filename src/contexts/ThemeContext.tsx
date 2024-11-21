@@ -6,7 +6,7 @@ import {
     ReactNode,
 } from 'react';
 
-export type Theme = 'light' | 'dark' | 'cupcake' | 'synthwave' | 'emerald' | 'corporate';
+export type Theme = 'light' | 'dark' | 'cupcake' | 'synthwave' | 'emerald' | 'corporate' | 'forest';
 
 interface ThemeContextType {
     theme: Theme;
@@ -23,6 +23,7 @@ const AVAILABLE_THEMES: Theme[] = [
     'synthwave',
     'emerald',
     'corporate',
+    'forest',
 ];
 
 interface ThemeProviderProps {
