@@ -1,6 +1,7 @@
 import { get, set, ref, query, equalTo, orderByChild, update } from 'firebase/database';
 import { db } from '../config/firebase-config';
-import { onValue } from 'firebase/database';
+import { transformUser } from '../helper/helper';
+import { User } from '../models/user';
 
 
 /**
@@ -43,14 +44,16 @@ export const createUser = async (handle: string, email: string, username: string
 };
 
 /**
- * Retrieves user data by their unique identifier (uid).
+ * Retrieves a user by their unique identifier (uid).
  * 
  * @async
- * @function getUserData
+ * @function getUser
  * @param {string} uid - The unique identifier of the user.
- * @returns {Promise<import('firebase/database').DataSnapshot>} A promise that resolves to the user's data snapshot.
+ * @returns {Promise<User | null>} A promise that resolves to the user object or null if not found.
  * @throws {import('firebase/database').DatabaseError} If retrieval fails.
  */
-export const getUserData = async (uid: string): Promise<import('firebase/database').DataSnapshot> => {
-  return get(query(ref(db, 'users'), orderByChild('uid'), equalTo(uid)));
+export const getUser = async (uid: string): Promise<User | null> => {
+  const userSnapshot = await get(query(ref(db, 'users'), orderByChild('uid'), equalTo(uid)));
+  const user = transformUser(userSnapshot);
+  return user;
 };  

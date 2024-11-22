@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import { UserAppContext } from "./store/app-context";
-import { User } from "./store/app-context";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./config/firebase-config";
-import { getUserData } from "./services/user.service";
+import { getUser } from "./services/user.service";
+import { User } from "./models/user";
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -13,13 +13,10 @@ const App: React.FC = () => {
   const [authUser] = useAuthState(auth);
 
   useEffect(() => {
+    console.log(authUser);
     if (authUser) {
-      getUserData(authUser.uid).then(userData => {
-        setUser({
-          email: authUser.email,
-          uid: authUser.uid,
-          userData: userData.val()[Object.keys(userData.val())[0]],
-        });
+      getUser(authUser.uid).then(userData => {
+        setUser(userData);
       });
     }
   }, [authUser]);
