@@ -14,9 +14,11 @@ export interface User {
 interface UserAppContextType {
   user: User | null;
   setUser: Dispatch<SetStateAction<User | null>>;
+  loading: boolean;
 }
 
 export const UserAppContext = createContext<UserAppContextType>({
   user: null,
   setUser: () => {},
+  loading: true,
 });

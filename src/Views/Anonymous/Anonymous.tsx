@@ -3,7 +3,7 @@ import Register from "../Register/Register";
 import "./Anonymous.css";
 import { useContext, useEffect, useState } from "react";
 import { UserAppContext } from "../../store/app-context";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, redirect, useNavigate } from "react-router-dom";
 // import { useAuthState } from "react-firebase-hooks/auth";
 // import { auth } from "../../config/firebase-config";
 export default function Anonymous() {
@@ -20,7 +20,8 @@ export default function Anonymous() {
     if (user) {
       navigate("/home");
     }
-  }, [user]);
+  }, [user, navigate]);
+
   const handleShowLogin = () => {
     setShowLogin(true);
     setShowRegister(false);
