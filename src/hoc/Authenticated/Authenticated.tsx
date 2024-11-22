@@ -1,14 +1,19 @@
 import React, { useContext, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { UserAppContext } from "../../store/app-context";
+import { UserAppContext, User } from "../../store/app-context";
 import { toast } from "react-toastify";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../config/firebase-config";
+import { redirect } from "react-router-dom";
 type AuthenticatedProps = {
   /** React components to render if the user is authenticated */
   children: React.ReactNode;
 };
-
+// // Utility to get the user from localStorage if not available in context
+// const getUserFromLocalStorage = () => {
+//   const storedUser = localStorage.getItem("user");
+//   return storedUser ? JSON.parse(storedUser) : null;
+// };
 /**
  * Authenticated Component
  *
@@ -22,23 +27,67 @@ type AuthenticatedProps = {
 const Authenticated: React.FC<AuthenticatedProps> = ({
   children,
 }: AuthenticatedProps): JSX.Element => {
-  const { user } = useContext(UserAppContext);
+  const { user, loading } = useContext(UserAppContext);
   const navigate = useNavigate();
   const [authUser] = useAuthState(auth);
 
-  useEffect(() => {
-    if (!authUser || !user) {
-      //     toast.dark("❗Please log in to access this page.");
-      navigate("/", { replace: true });
-    }
-  }, [authUser, user]);
+  // if (loading) {
+  //   return <div>Loading...</div>; // Or use a loading spinner
+  // }
   // useEffect(() => {
-  //   console.log("user", user);
-
-  //   if (!user || !authUser) {
+  //   if (!user) {
   //     toast.dark("❗Please log in to access this page.");
   //     navigate("/", { replace: true });
   //   }
+  // }, [user, navigate]); // Run effect only when user changes
+
+  // Render children if the user is authenticated
+  // if (!user) {
+  //   return <></>; // Avoid rendering the children if not authenticated
+  // }
+  // if (loading) {
+  //   return <div>Loading...</div>; // Replace with a spinner component if available
+  // }
+  // if (!authUser || !user) {
+  //   toast.dark("❗Please log in to access this page.");
+  //   navigate("/", { replace: true });
+  //   return <></>;
+  // }
+  // useEffect(() => {
+  //   if (!authUser || !user) {
+  //     //     toast.dark("❗Please log in to access this page.");
+  //     navigate("/", { replace: true });
+  //   }
+  // }, [authUser, user]);
+  // useEffect(() => {
+  //   console.log("user", user);
+
+  // if (!user || !authUser) {
+  //   toast.dark("❗Please log in to access this page.");
+  //   // navigate("/");
+  //   return (
+  //     <>
+  //       <Navigate to="/" />
+  //     </>
+  //   );
+  // } else {
+  //   return <div>{children}</div>;
+  // }
+
+  // useEffect(() => {
+  //   const currentUser = user || getUserFromLocalStorage();
+
+  //   if (!currentUser) {
+  //     toast.dark("❗Please log in to access this page.");
+  //     navigate("/", { replace: true });
+  //   }
+  // }, [user]);
+  if (!user) {
+    // If the user is not authenticated, redirect to the anonymous page
+    redirect("/");
+  }
+  return <div>{children}</div>;
+
   // }, [user, navigate, authUser]);
   // if (!user) {
   //   toast.dark("❗Please log in to access this page.");
@@ -48,8 +97,6 @@ const Authenticated: React.FC<AuthenticatedProps> = ({
   //   navigate("/", { replace: true });
   //   // return <Navigate to="/" replace />;
   // }
-
-  return <div>{children}</div>;
 };
 
 export default Authenticated;
