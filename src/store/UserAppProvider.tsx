@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { UserAppContext, User } from "./app-context";
+import { UserAppContext } from "./app-context";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase-config";
-import { getUserData } from "../services/user.service";
-
+import { getUser } from "../services/user.service";
+import { User } from "../models/user";
 interface UserAppProviderProps {
   children: React.ReactNode;
 }
@@ -18,14 +18,9 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
 
   useEffect(() => {
     if (authUser) {
-      getUserData(authUser.uid)
+      getUser(authUser.uid)
         .then(userData => {
-          const userValue = {
-            email: authUser.email,
-            uid: authUser.uid,
-            userData: userData.val()[Object.keys(userData.val())[0]],
-          };
-          setUser(userValue);
+          setUser(userData);
         })
         .catch(error => {
           console.error("Failed to fetch user data:", error.message);
