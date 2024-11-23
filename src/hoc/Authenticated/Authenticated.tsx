@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserAppContext } from "../../store/app-context";
 import { toast } from "react-toastify";
-import { Navigate, redirect, replace, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type AuthenticatedProps = {
   /** React components to render if the user is authenticated */
@@ -20,15 +20,12 @@ type AuthenticatedProps = {
 const Authenticated: React.FC<AuthenticatedProps> = ({
   children,
 }: AuthenticatedProps): JSX.Element => {
-  const { user, loading } = useContext(UserAppContext);
-  // const { loading, setLoading } = useState(true);
+  const { user, loading, error } = useContext(UserAppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading) {
-      toast.dark("❗Please login first!");
-
-      // redirect("/");
+      toast.error(error);
       if (!user) {
         console.log("test");
         navigate("/");
@@ -42,42 +39,7 @@ const Authenticated: React.FC<AuthenticatedProps> = ({
       </>
     );
   }
-  // if (!user) {
-  //   toast.dark("❗Please login first!");
-  //   navigate("/");
-  //   return <></>;
-  //   // return <Navigate to="/" />;
-  // } else {
-  //   return <div>{children}</div>;
-  // }
   return <div>{children}</div>;
-  // return (
-  //   {user ?  <></> :  <></> }
-
-  // )
-  // return <Navigate to="/" />;
-  // useEffect(() => {
-  //   if (!user) {
-  //     toast.dark("❗Please login first!");
-  //     // redirect("/");
-  //     navigate("/");
-  //   }
-  // }, [user]);
-  // const [isUserAuth, setIsUserAuth] = useState(false);
-  // useEffect(() => {
-  //   if (user) {
-  //     setIsUserAuth(false);
-  //   } else {
-  //     setIsUserAuth(true);
-  //   }
-  // }, [user]);
-  // if (isUserAuth) {
-  //   return <div>{children}</div>;
-  // } else {
-  //   toast.dark("❗Please login first!");
-  //   // redirect("/");
-  //   return <Navigate to="/" />;
-  // }
 };
 
 export default Authenticated;

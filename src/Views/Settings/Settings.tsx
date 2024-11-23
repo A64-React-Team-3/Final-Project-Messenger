@@ -28,7 +28,7 @@ const Settings: React.FC<SettingsProps> = ({
     settingsItems.find(item => item.key === activeKey)?.component ?? null;
 
   return (
-    <div className="mockup-window border-4 border-gray-600 w-[75vw] h-[85vh] flex flex-col lg:flex-row shadow-xl">
+    <div className="mockup-window pr-7 pb-5 pl-0 border-4 border-gray-600 w-[75vw] h-[85vh] gap-4 flex  lg:flex-row shadow-xl">
       <div className="bg-base-200 w-1/4 p-4 rounded-box">
         <SettingsMenu
           items={settingsItems}
@@ -36,7 +36,7 @@ const Settings: React.FC<SettingsProps> = ({
           onSelect={setActiveKey}
         />
       </div>
-      <div className="flex-1 bg-base-100 w-1/4p-4 rounded-box shadow ml-0 lg:ml-4">
+      <div className="flex-1 bg-base-100 w-1/4 p-4 rounded-box shadow">
         {activeComponent}
       </div>
     </div>

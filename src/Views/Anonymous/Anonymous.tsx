@@ -3,20 +3,22 @@ import Register from "../Register/Register";
 import "./Anonymous.css";
 import { useContext, useEffect, useState } from "react";
 import { UserAppContext } from "../../store/app-context";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import { useAuthState } from "react-firebase-hooks/auth";
 // import { auth } from "../../config/firebase-config";
 export default function Anonymous() {
   const [showLogin, setShowLogin] = useState(true);
   const [showRegister, setShowRegister] = useState(false);
-  const { user } = useContext(UserAppContext);
+  const { user, loading } = useContext(UserAppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      navigate("/home");
+    if (!loading) {
+      if (user) {
+        navigate("/home");
+      }
     }
-  }, [user, navigate]);
+  }, [loading, user]);
 
   const handleShowLogin = () => {
     setShowLogin(true);
