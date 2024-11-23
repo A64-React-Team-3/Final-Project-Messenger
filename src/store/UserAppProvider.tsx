@@ -13,6 +13,7 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const [authUser] = useAuthState(auth);
 
   useEffect(() => {
@@ -27,8 +28,9 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
           setUser(userValue);
         })
         .catch(error => {
-          console.error("Failed to fetch user data:", error);
+          console.error("Failed to fetch user data:", error.message);
           setUser(null);
+          setError(error.message);
         })
         .finally(() => {
           setLoading(false);
@@ -40,7 +42,7 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
   }, [authUser]);
 
   return (
-    <UserAppContext.Provider value={{ user, setUser, loading }}>
+    <UserAppContext.Provider value={{ user, setUser, loading, error }}>
       {children}
     </UserAppContext.Provider>
   );

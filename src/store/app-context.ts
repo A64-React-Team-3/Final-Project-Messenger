@@ -15,10 +15,12 @@ interface UserAppContextType {
   user: User | null;
   setUser: Dispatch<SetStateAction<User | null>>;
   loading: boolean;
+  error: string | null;
 }
 
 export const UserAppContext = createContext<UserAppContextType>({
   user: null,
   setUser: () => {},
   loading: true,
+  error: null,
 });
