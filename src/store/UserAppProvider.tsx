@@ -28,7 +28,7 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
         })
         .catch(error => {
           console.error("Failed to fetch user data:", error);
-          setUser(null); // Ensure state consistency in case of failure
+          setUser(null);
         })
         .finally(() => {
           setLoading(false);
@@ -38,19 +38,6 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
       setLoading(false);
     }
   }, [authUser]);
-
-  // Save user to localStorage
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
-
-  if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner component
-  }
 
   return (
     <UserAppContext.Provider value={{ user, setUser, loading }}>

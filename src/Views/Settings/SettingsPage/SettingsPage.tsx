@@ -24,8 +24,9 @@ const SettingsPage: React.FC = () => {
   //   }
   // }, [loading]);
   return (
-    <div className="min-h-screen bg-base-300 flex justify-center items-center">
+    <div className="min-h-screen bg-red-300 flex justify-center items-center">
       <Settings settingsItems={settingsItems} />
+      <h2>hi</h2>
     </div>
   );
 };

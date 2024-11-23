@@ -31,7 +31,7 @@ export default function Anonymous() {
   return (
     <div className="main-anonymous-view">
       {user ? (
-        <div className="app-info">Logged in as {user.displayName}</div>
+        <div className="app-info">Logged in as {user?.userData?.username}</div>
       ) : (
         <div className="app-info">Some info</div>
       )}

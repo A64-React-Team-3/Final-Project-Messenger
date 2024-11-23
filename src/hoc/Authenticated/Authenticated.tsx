@@ -1,19 +1,12 @@
-import React, { useContext, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { UserAppContext, User } from "../../store/app-context";
+import React, { useContext, useEffect, useState } from "react";
+import { UserAppContext } from "../../store/app-context";
 import { toast } from "react-toastify";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../config/firebase-config";
-import { redirect } from "react-router-dom";
+import { Navigate, redirect, replace, useNavigate } from "react-router-dom";
+
 type AuthenticatedProps = {
   /** React components to render if the user is authenticated */
   children: React.ReactNode;
 };
-// // Utility to get the user from localStorage if not available in context
-// const getUserFromLocalStorage = () => {
-//   const storedUser = localStorage.getItem("user");
-//   return storedUser ? JSON.parse(storedUser) : null;
-// };
 /**
  * Authenticated Component
  *
@@ -28,74 +21,62 @@ const Authenticated: React.FC<AuthenticatedProps> = ({
   children,
 }: AuthenticatedProps): JSX.Element => {
   const { user, loading } = useContext(UserAppContext);
+  // const { loading, setLoading } = useState(true);
   const navigate = useNavigate();
-  const [authUser] = useAuthState(auth);
 
-  // if (loading) {
-  //   return <div>Loading...</div>; // Or use a loading spinner
-  // }
-  // useEffect(() => {
-  //   if (!user) {
-  //     toast.dark("❗Please log in to access this page.");
-  //     navigate("/", { replace: true });
-  //   }
-  // }, [user, navigate]); // Run effect only when user changes
+  useEffect(() => {
+    if (!loading) {
+      toast.dark("❗Please login first!");
 
-  // Render children if the user is authenticated
+      // redirect("/");
+      if (!user) {
+        console.log("test");
+        navigate("/");
+      }
+    }
+  }, [user, loading]);
+  if (loading) {
+    return (
+      <>
+        <h2>loading....</h2>
+      </>
+    );
+  }
   // if (!user) {
-  //   return <></>; // Avoid rendering the children if not authenticated
-  // }
-  // if (loading) {
-  //   return <div>Loading...</div>; // Replace with a spinner component if available
-  // }
-  // if (!authUser || !user) {
-  //   toast.dark("❗Please log in to access this page.");
-  //   navigate("/", { replace: true });
+  //   toast.dark("❗Please login first!");
+  //   navigate("/");
   //   return <></>;
-  // }
-  // useEffect(() => {
-  //   if (!authUser || !user) {
-  //     //     toast.dark("❗Please log in to access this page.");
-  //     navigate("/", { replace: true });
-  //   }
-  // }, [authUser, user]);
-  // useEffect(() => {
-  //   console.log("user", user);
-
-  // if (!user || !authUser) {
-  //   toast.dark("❗Please log in to access this page.");
-  //   // navigate("/");
-  //   return (
-  //     <>
-  //       <Navigate to="/" />
-  //     </>
-  //   );
+  //   // return <Navigate to="/" />;
   // } else {
   //   return <div>{children}</div>;
   // }
+  return <div>{children}</div>;
+  // return (
+  //   {user ?  <></> :  <></> }
 
+  // )
+  // return <Navigate to="/" />;
   // useEffect(() => {
-  //   const currentUser = user || getUserFromLocalStorage();
-
-  //   if (!currentUser) {
-  //     toast.dark("❗Please log in to access this page.");
-  //     navigate("/", { replace: true });
+  //   if (!user) {
+  //     toast.dark("❗Please login first!");
+  //     // redirect("/");
+  //     navigate("/");
   //   }
   // }, [user]);
-  if (!user) {
-    // If the user is not authenticated, redirect to the anonymous page
-    redirect("/");
-  }
-  return <div>{children}</div>;
-
-  // }, [user, navigate, authUser]);
-  // if (!user) {
-  //   toast.dark("❗Please log in to access this page.");
-  //   // setTimeout(() => {
-  //   //   navigate("/", { replace: true });
-  //   // }, 1000);
-  //   navigate("/", { replace: true });
-  //   // return <Navigate to="/" replace />;
+  // const [isUserAuth, setIsUserAuth] = useState(false);
+  // useEffect(() => {
+  //   if (user) {
+  //     setIsUserAuth(false);
+  //   } else {
+  //     setIsUserAuth(true);
+  //   }
+  // }, [user]);
+  // if (isUserAuth) {
+  //   return <div>{children}</div>;
+  // } else {
+  //   toast.dark("❗Please login first!");
+  //   // redirect("/");
+  //   return <Navigate to="/" />;
   // }
 };
 
