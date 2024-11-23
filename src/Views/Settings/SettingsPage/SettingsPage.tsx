@@ -3,7 +3,6 @@ import Settings, { SettingsItem } from "../Settings";
 import ChatSettings from "../ChatSettings/ChatSettings";
 import ProfileSettings from "../ProfileSettings/ProfileSettings";
 import ThemeSettings from "../ThemeSettings/ThemeSettings";
-
 const SettingsPage: React.FC = () => {
   const settingsItems: SettingsItem[] = [
     { label: "Profile", key: "profile", component: <ProfileSettings /> },
@@ -14,7 +13,6 @@ const SettingsPage: React.FC = () => {
       component: <ChatSettings />,
     },
   ];
-
   return (
     <div className="min-h-screen bg-base-300 flex justify-center items-center">
       <Settings settingsItems={settingsItems} />
