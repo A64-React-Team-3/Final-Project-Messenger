@@ -1,7 +1,7 @@
 import { get, set, ref, query, equalTo, orderByChild, update } from 'firebase/database';
 import { db } from '../config/firebase-config';
 import { transformUser } from '../helper/helper';
-import { User } from '../models/user';
+import { User } from '../models/User';
 
 
 /**
@@ -33,7 +33,7 @@ export const getUserByHandle = async (handle: string): Promise<import('firebase/
  */
 export const createUser = async (handle: string, email: string, username: string, uid: string): Promise<void> => {
   console.log('createUser', handle, email, username);
-  const user = {
+  const user: User = {
     email,
     username,
     displayName: username,
@@ -54,6 +54,6 @@ export const createUser = async (handle: string, email: string, username: string
  */
 export const getUser = async (uid: string): Promise<User | null> => {
   const userSnapshot = await get(query(ref(db, 'users'), orderByChild('uid'), equalTo(uid)));
-  const user = transformUser(userSnapshot);
-  return user;
+  //const user = transformUser(userSnapshot);
+  return userSnapshot.val();
 };  

@@ -3,5 +3,5 @@ export type User = {
   uid: string | null;
   username: string | null;
   displayName: string | null;
-  createdOn: string | null;
+  createdOn: number | null;
 };

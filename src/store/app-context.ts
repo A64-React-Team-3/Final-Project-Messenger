@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { Dispatch, SetStateAction } from "react";
-import { User } from "../models/user";
-interface UserAppContextType {
+import { User } from "../models/User";
+type UserAppContextType = {
   user: User | null;
   setUser: Dispatch<SetStateAction<User | null>>;
 }
