@@ -43,10 +43,6 @@ export default function Login({
     }
   };
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   return (
     <div className="card backdrop-opacity backdrop-invert bg-white/40 shadow-2xl shadow-blue-100/50 w-96">
       <div className="card-body">

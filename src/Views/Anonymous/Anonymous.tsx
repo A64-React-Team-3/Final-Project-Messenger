@@ -16,11 +16,11 @@ export default function Anonymous() {
   // if (user) {
   //   return <Navigate to="/home" replace />;
   // }
-  useEffect(() => {
-    if (user) {
-      navigate("/home");
-    }
-  }, [user, navigate]);
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate("/home");
+  //   }
+  // }, [user]);
 
   const handleShowLogin = () => {
     setShowLogin(true);
