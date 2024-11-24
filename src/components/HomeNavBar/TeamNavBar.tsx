@@ -6,10 +6,10 @@ type TeamNavBarProps = {
 const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings }): JSX.Element => {
 
   return (
-    <div className="navbar py-0 px-0 bg-zinc-900 h-28" >
-      <div className="flex-none bg-red-500">
-        <div className="dropdown dropdown-begin">
-          <div tabIndex={0} role="button" className="btn w-full h-full rounded-none ">
+    <div className="navbar py-0 px-0 bg-zinc-900 h-14" >
+      <div className="flex-none h-full">
+        <div className="dropdown dropdown-end h-full w-56">
+          <div tabIndex={0} role="button" className="btn btn-neutral w-full h-full bg-slate-600 rounded-none ">
             team name
           </div>
           <ul tabIndex={0}
