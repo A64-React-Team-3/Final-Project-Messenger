@@ -1,14 +1,27 @@
-type HomeNavBarProps = {
+type TeamNavBarProps = {
   handleLogout: () => Promise<void>;
   handleToSettings: () => void;
 };
 
-const HomeNavBar: React.FC<HomeNavBarProps> = ({ handleLogout, handleToSettings }): JSX.Element => {
+const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings }): JSX.Element => {
 
   return (
-    <div className="navbar  bg-black" >
-      <div className="flex-1">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+    <div className="navbar py-0 px-0 bg-zinc-900 h-28" >
+      <div className="flex-none bg-red-500">
+        <div className="dropdown dropdown-begin">
+          <div tabIndex={0} role="button" className="btn w-full h-full rounded-none ">
+            team name
+          </div>
+          <ul tabIndex={0}
+            className="menu menu-sm dropdown-content bg-gray-800 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+            <li><a>Team Settings</a></li>
+            <li><a>Create Channel</a></li>
+            <li><a>Notification Settings</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="flex-1 bg-black tea">
+        team name
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">
@@ -40,4 +53,4 @@ const HomeNavBar: React.FC<HomeNavBarProps> = ({ handleLogout, handleToSettings 
   )
 }
 
-export default HomeNavBar;
+export default TeamNavBar;
