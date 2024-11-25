@@ -3,6 +3,37 @@
 
 export default function HomeSideBar() {
   return (
-    <div className="border-base-300 flex justify-center px-4 py-16 bg-black text-slate-50">team list</div>
+    <div className="border-base-300 flex-row justify-center px-4 bg-black text-slate-50 w-20">
+      <div className="personal-team flex-row space-y-2 pt-2 mb-4 border-b-2 h-16">
+        <div className="avatar placeholder">
+          <div className="bg-neutral text-neutral-content w-12 rounded-full">
+            <span>P</span>
+          </div>
+        </div>
+      </div>
+      <div className="list-of-teams flex-row space-y-2 pt-2">
+        <div className="avatar placeholder">
+          <div className="bg-neutral text-neutral-content w-12 rounded-full">
+            <span>D</span>
+          </div>
+        </div>
+        <div className="avatar placeholder">
+          <div className="bg-neutral text-neutral-content w-12 rounded-full">
+            <span>AI</span>
+          </div>
+        </div>
+        <div className="avatar placeholder">
+          <div className="bg-neutral text-neutral-content w-12 rounded-full">
+            <span>SY</span>
+          </div>
+        </div>
+        <div className="avatar placeholder">
+          <div className="bg-neutral text-neutral-content w-12 rounded-full">
+            <span>UI</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
   )
 }

@@ -8,7 +8,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings 
   return (
     <div className="navbar py-0 px-0 bg-zinc-900 h-14" >
       <div className="flex-none h-full">
-        <div className="dropdown dropdown-end h-full w-56">
+        <div className="dropdown dropdown-end h-full w-60">
           <div tabIndex={0} role="button" className="btn btn-neutral w-full h-full bg-slate-600 rounded-none ">
             team name
           </div>
@@ -20,8 +20,8 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings 
           </ul>
         </div>
       </div>
-      <div className="flex-1 bg-black tea">
-        team name
+      <div className="flex-1 pl-3">
+        Channel name
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">

@@ -2,7 +2,8 @@ import { signOutUser } from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserAppContext } from "../../store/app-context";
-import TeamNavBar from "../../components/HomeNavBar/TeamNavBar";
+import TeamNavBar from "../../components/TeamNavBar/TeamNavBar";
+import TeamSideBar from "../../components/TeamSideBar/TeamSideBar";
 
 export default function Team() {
   const navigate = useNavigate();
@@ -24,8 +25,14 @@ export default function Team() {
 
 
   return (
-    <div className="border-base-300 flex-row justify-center w-full bg-slate-500 text-white">
+    <div className="border-base-300 flex-col justify-center w-full bg-slate-500 text-white">
       <TeamNavBar handleLogout={handleLogout} handleToSettings={handleToSettings} />
+      <div className="flex w-full h-[calc(100vh-4rem)]">
+        <TeamSideBar />
+        <div className="justify-center">
+          chat
+        </div>
+      </div>
     </div>
   )
 } 
