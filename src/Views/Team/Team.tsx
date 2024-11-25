@@ -5,7 +5,7 @@ import { UserAppContext } from "../../store/app-context";
 import TeamNavBar from "../../components/TeamNavBar/TeamNavBar";
 import TeamSideBar from "../../components/TeamSideBar/TeamSideBar";
 
-export default function Team() {
+const Team: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserAppContext);
 
@@ -36,3 +36,5 @@ export default function Team() {
     </div>
   )
 } 
+
+export default Team;
