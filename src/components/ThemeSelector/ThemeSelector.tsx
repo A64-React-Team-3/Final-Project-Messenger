@@ -1,4 +1,4 @@
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '../../store/ThemeContext';
 
 const ThemeSelector: React.FC = () => {
     const { theme, setTheme, availableThemes } = useTheme();
