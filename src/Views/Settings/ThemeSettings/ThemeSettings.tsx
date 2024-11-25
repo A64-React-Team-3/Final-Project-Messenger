@@ -1,5 +1,5 @@
 import React from "react";
-import ThemeSelector from "../../../contexts/ThemeSelector"
+import ThemeSelector from "../../../components/ThemeSelector/ThemeSelector";
 /**
  * ThemeSettings Component
  * This component allows users to view the options for customizing the app's theme.
