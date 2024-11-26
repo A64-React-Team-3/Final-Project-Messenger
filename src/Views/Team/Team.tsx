@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { UserAppContext } from "../../store/app-context";
 import TeamNavBar from "../../components/TeamNavBar/TeamNavBar";
 import TeamSideBar from "../../components/TeamSideBar/TeamSideBar";
+import Channel from "../Channel/Channel";
 
 const Team: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -29,12 +30,10 @@ const Team: React.FC = (): JSX.Element => {
       <TeamNavBar handleLogout={handleLogout} handleToSettings={handleToSettings} />
       <div className="flex w-full h-[calc(100vh-4rem)]">
         <TeamSideBar />
-        <div className="justify-center">
-          chat
-        </div>
+        <Channel />
       </div>
     </div>
   )
-} 
+}
 
 export default Team;
