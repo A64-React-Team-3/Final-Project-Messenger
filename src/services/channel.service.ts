@@ -1,4 +1,4 @@
-import { get, set, ref, query, equalTo, orderByChild, push, update, DataSnapshot } from "firebase/database";
+import { get, set, ref, query, equalTo, orderByChild, push, update } from "firebase/database";
 import { db } from "../config/firebase-config";
 
 export const createChannel = async (): Promise<void> => {
