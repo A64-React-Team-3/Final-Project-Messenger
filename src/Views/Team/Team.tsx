@@ -6,7 +6,8 @@ import TeamNavBar from "../../components/TeamNavBar/TeamNavBar";
 import TeamSideBar from "../../components/TeamSideBar/TeamSideBar";
 import Channel from "../Channel/Channel";
 import { useState } from "react";
-import { getChannels } from "../../services/channel.service";
+import { onValue, ref } from "firebase/database";
+import { db } from "../../config/firebase-config";
 
 const Team: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -29,11 +30,19 @@ const Team: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    getChannels().then((channels) => {
+    const channelsRef = ref(db, "channels/");
+    if (channelsRef) {
+      const unsubscribe = onValue(channelsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const channels = Object.values(data);
+          console.log("Channels", channels);
+          setChannels(channels);
+        }
+      });
 
-      setChannels([...channels]);
-      console.log(channels);
-    });
+      return () => unsubscribe();
+    }
   }, []);
 
 

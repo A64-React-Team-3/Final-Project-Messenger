@@ -2,6 +2,7 @@ import Modal from "../../hoc/Modal/Modal";
 import { createChannel } from "../../services/channel.service";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
+import CreateChannel from "../../Views/ModalViews/CreateChannel/CreateChannel";
 
 type TeamNavBarProps = {
   handleLogout: () => Promise<void>;
@@ -64,7 +65,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings,
         </div>
 
       </div>
-      <Modal modalRef={createChannelRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}><h1>hi</h1></Modal>
+      <Modal modalRef={createChannelRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}><CreateChannel /></Modal>
     </div>
   )
 }
