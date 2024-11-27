@@ -1,9 +1,17 @@
+import Modal from "../../hoc/Modal/Modal";
+import { createChannel } from "../../services/channel.service";
+import { useEffect, useRef } from "react";
+import { useState } from "react";
+
 type TeamNavBarProps = {
   handleLogout: () => Promise<void>;
   handleToSettings: () => void;
+  channelName: string;
 };
 
-const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings }): JSX.Element => {
+const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings, channelName }): JSX.Element => {
+  const createChannelRef = useRef<HTMLDialogElement | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="navbar py-0 px-0 bg-zinc-900 h-14" >
@@ -13,15 +21,21 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings 
             team name
           </div>
           <ul tabIndex={0}
-            className="menu menu-sm dropdown-content bg-gray-800 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+            className="menu menu-sm dropdown-content bg-gray-800 rounded-box z-[100] mt-3 w-52 p-2 shadow">
             <li><a>Team Settings</a></li>
-            <li><a>Create Channel</a></li>
+            <li>
+              <a onClick={() => {
+                setIsModalOpen((prevValue) => !prevValue)
+                console.log("Hi");
+              }}>Create Channel</a>
+
+            </li>
             <li><a>Notification Settings</a></li>
           </ul>
         </div>
       </div>
       <div className="flex-1 pl-3">
-        Channel name
+        {channelName}
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">
@@ -37,7 +51,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings 
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-gray-800 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+            className="menu menu-sm dropdown-content bg-gray-800 rounded-box mt-3 w-52 p-2 shadow">
             <li>
               <a className="justify-between">
                 Profile
@@ -48,7 +62,9 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings 
             <li><a onClick={handleLogout}>Logout</a></li>
           </ul>
         </div>
+
       </div>
+      <Modal modalRef={createChannelRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}><h1>hi</h1></Modal>
     </div>
   )
 }
