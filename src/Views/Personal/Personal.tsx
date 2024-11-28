@@ -43,11 +43,10 @@ const Personal: React.FC = (): JSX.Element => {
             <div className="collapse-title z-0 text-xl font-medium">Chats</div>
             <div className="collapse-content">
               <div className="max-h-96 overflow-y-auto">
-                {channels.map((channel, idx) => (
-                  <div className="mb-3">
+                {channels.map(channel => (
+                  <div className="mb-3" key={channel.id}>
                     <button
                       onClick={() => setChannel(channel)}
-                      key={idx}
                       className="btn btn-sm btn-outline btn-secondary  text-sm hover:bg-gray-700"
                     >
                       <span className="mr-2 text-lg">💬</span> {channel.name}
