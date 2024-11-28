@@ -1,11 +1,11 @@
-import { Message } from './Message';
+import { MessageModel } from './MessageModel';
 
 
-export type Channel = {
+export type ChannelModel = {
   name: string;
   id: string;
   members: string[];
-  messages: Message[] | null;
+  messages?: MessageModel[] | null;
   creator: string;
   createdOn: number;
   teamId: string;

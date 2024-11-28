@@ -1,7 +1,7 @@
 import { get, set, ref, query, equalTo, orderByChild } from "firebase/database";
 import { db } from "../config/firebase-config";
 import { transformUser } from "../helper/helper";
-import { User } from "../models/user";
+import { UserModel } from "../models/UserModel";
 
 /**
  * Retrieves a user by their handle.
@@ -38,7 +38,7 @@ export const createUser = async (
   uid: string
 ): Promise<void> => {
   console.log("createUser", handle, email, username);
-  const user: User = {
+  const user: UserModel = {
     email,
     username,
     displayName: username,
@@ -57,7 +57,7 @@ export const createUser = async (
  * @returns {Promise<User | null>} A promise that resolves to the user object or null if not found.
  * @throws {import('firebase/database').DatabaseError} If retrieval fails.
  */
-export const getUser = async (uid: string): Promise<User | null> => {
+export const getUser = async (uid: string): Promise<UserModel | null> => {
   const userSnapshot = await get(
     query(ref(db, "users"), orderByChild("uid"), equalTo(uid))
   );

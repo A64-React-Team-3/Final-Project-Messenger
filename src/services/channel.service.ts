@@ -1,8 +1,8 @@
 import { get, set, ref, query, equalTo, orderByChild, push, update } from "firebase/database";
 import { db } from "../config/firebase-config";
-import { User } from "../models/user";
+import { UserModel } from "../models/UserModel";
 
-export const createChannel = async (user: User | null, channelName: string, isPrivate: boolean, teamId: string): Promise<void> => {
+export const createChannel = async (user: UserModel | null, channelName: string, isPrivate: boolean, teamId: string): Promise<void> => {
   if (!user) {
     console.error("User is not authenticated");
     return;
@@ -44,9 +44,11 @@ export const getChannels = async (): Promise<any> => {
   }
 };
 
-export const sendMessage = async (channelId: string, message: string): Promise<void> => {
+export const sendMessage = async (channelId: string, userId: string | null | undefined, message: string, imageUrl?: string): Promise<void> => {
   const messageObj = {
     message,
+    sender: userId,
+    imageUrl: imageUrl || null,
     timestamp: Date.now(),
   };
   try {

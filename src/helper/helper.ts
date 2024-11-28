@@ -1,5 +1,6 @@
-import { Channel } from "../models/Channel";
-import { User } from "../models/User";
+import { ChannelModel } from "../models/ChannelModel";
+import { MessageModel } from "../models/MessageModel";
+import { UserModel } from "../models/UserModel";
 
 
 /**
@@ -9,26 +10,40 @@ import { User } from "../models/User";
  * @param {import('firebase/database').DataSnapshot} user - The Firebase DataSnapshot containing user data.
  * @returns {Promise<User | null>} A promise that resolves to the User object or null if not found.
  */
-export const transformUser = (user: import('firebase/database').DataSnapshot): Promise<User | null> => {
+export const transformUser = (user: import('firebase/database').DataSnapshot): Promise<UserModel | null> => {
   const userData = user.val()[Object.keys(user.val())[0]];
   return userData;
 };
 
-export const transformChannels = (channels: import('firebase/database').DataSnapshot): Channel[] => {
+export const transformChannels = (channels: import('firebase/database').DataSnapshot): ChannelModel[] => {
 
-  const tChannels = Object.values(channels.val()).map((channel: any): Channel => {
+  const tChannels = Object.values(channels.val()).map((channel: any): ChannelModel => {
     return {
       id: channel.id,
       name: channel.name,
       members: Object.keys(channel.members || {}),
-      messages: Object.values(channel.messages),
+      messages: channel.messages ? Object.values(channel.messages) : null,
       creator: channel.creator,
       teamId: channel.teamId,
       private: channel.private,
       createdOn: channel.createdOn,
-    };
+    } as ChannelModel;
   });
 
   return tChannels;
+};
+
+export const transformMessages = (messages: import('firebase/database').DataSnapshot): MessageModel[] => {
+
+  const tMessages = Object.values(messages.val()).map((message: any): MessageModel => {
+    return {
+      message: message.message,
+      sender: message.sender,
+      timestamp: message.timestamp,
+      imageUrl: message.imageUrl || null,
+    } as MessageModel;
+  });
+
+  return tMessages;
 };
 

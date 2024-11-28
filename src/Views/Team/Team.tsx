@@ -4,17 +4,18 @@ import { useContext, useEffect } from "react";
 import { UserAppContext } from "../../store/app-context";
 import TeamNavBar from "../../components/TeamNavBar/TeamNavBar";
 import TeamSideBar from "../../components/TeamSideBar/TeamSideBar";
-import Channel from "../Channel/Channel";
 import { useState } from "react";
-import { onValue, ref } from "firebase/database";
+import { get, onValue, ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
 import { transformChannels } from "../../helper/helper";
+import Channel from "../Channel/Channel";
+import { ChannelModel } from "../../models/ChannelModel";
 
 const Team: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserAppContext);
-  const [channels, setChannels] = useState<any[]>([]);
-  const [channel, setChannel] = useState<any>(null);
+  const [channels, setChannels] = useState<ChannelModel[]>([]);
+  const [channel, setChannel] = useState<ChannelModel | null>(null);
 
   const handleLogout = async () => {
     try {
@@ -32,17 +33,20 @@ const Team: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const channelsRef = ref(db, "channels/");
-    if (channelsRef) {
-      const unsubscribe = onValue(channelsRef, (snapshot) => {
-        const transformedData = transformChannels(snapshot);
-        if (transformedData) {
-          const channels = Object.values(transformedData);
-          setChannels(channels);
-        }
-      });
+    get(channelsRef).then((channelsSnapshot) => {
+      if (channelsSnapshot.exists()) {
+        const unsubscribe = onValue(channelsRef, (snapshot) => {
+          const transformedData = transformChannels(snapshot);
+          if (transformedData) {
+            setChannels(transformedData);
+          }
+        });
 
-      return () => unsubscribe();
-    }
+        return () => unsubscribe();
+      }
+    }).catch((error) => {
+      console.error("Error getting channels", error);
+    });
   }, []);
 
 
