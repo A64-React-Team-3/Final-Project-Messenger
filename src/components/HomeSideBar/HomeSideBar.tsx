@@ -1,7 +1,6 @@
 import TeamAvatarButton from "../TeamAvatarButton/TeamAvatarButton";
 
-
-const HomeSideBar: React.FC = (): JSX.Element  => {
+const HomeSideBar: React.FC = (): JSX.Element => {
   return (
     <div className="border-base-300 flex-row justify-center px-4 bg-black text-slate-50 w-20">
       <div className="personal-team flex-row pt-2 mb-4 border-b-2 h-16">
@@ -17,9 +16,8 @@ const HomeSideBar: React.FC = (): JSX.Element  => {
         <TeamAvatarButton />
         <TeamAvatarButton />
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default HomeSideBar
+export default HomeSideBar;
