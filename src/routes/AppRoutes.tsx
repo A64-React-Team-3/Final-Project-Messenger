@@ -4,6 +4,7 @@ import Authenticated from "../hoc/Authenticated/Authenticated";
 import Anonymous from "../Views/Anonymous/Anonymous";
 import Home from "../Views/Home/Home";
 import SettingsPage from "../Views/Settings/SettingsPage/SettingsPage";
+import Personal from "../Views/Personal/Personal";
 
 /**
  * Renders application routes.
@@ -26,6 +27,14 @@ export const AppRoutes: React.FC = (): JSX.Element => {
         element={
           <Authenticated>
             <SettingsPage />
+          </Authenticated>
+        }
+      />
+      <Route
+        path="/dms"
+        element={
+          <Authenticated>
+            <Personal />
           </Authenticated>
         }
       />

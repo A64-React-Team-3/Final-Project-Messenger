@@ -6,8 +6,7 @@ import Team from "../Team/Team";
 /**
  * Home Component
  *
- * This component serves as the home page for the application. So far it only includes
- * buttons for logging out and accessing settings.
+ * This component serves as the home page for the application.
  *
  * @component
  * @returns {JSX.Element} The rendered `Home` component.
