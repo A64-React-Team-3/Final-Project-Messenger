@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { UserAppContext } from "./app-context";
+import { UserAppContext } from "./user.context";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase-config";
 import { getUser } from "../services/user.service";
@@ -15,6 +15,7 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [authUser] = useAuthState(auth);
+  // const [authUser,loading,error] = useAuthState(auth);
 
   useEffect(() => {
     if (authUser) {
