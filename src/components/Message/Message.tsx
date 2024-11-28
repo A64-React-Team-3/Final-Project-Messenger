@@ -1,5 +1,5 @@
 type MessageProps = {
-  message: string;
+  message: any;
 };
 
 
@@ -13,7 +13,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
             src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
         </div>
       </div>
-      <div className="chat-bubble break-words max-w-2xl">{message}</div>
+      <div className="chat-bubble break-words max-w-2xl">{message.message}</div>
     </div>
   );
 };

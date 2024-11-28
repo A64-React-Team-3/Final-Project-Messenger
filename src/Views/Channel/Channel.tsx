@@ -1,28 +1,30 @@
 import ChannelSideBar from "../../components/ChannelSideBar/ChannelSideBar";
 import { useEffect, useRef, useState } from "react";
 import Message from "../../components/Message/Message";
+import { onValue, ref } from "firebase/database";
+import { db } from "../../config/firebase-config";
+import { sendMessage } from "../../services/channel.service";
 
+type ChannelProps = {
+  channel: any;
+}
 
-
-const Channel: React.FC = (): JSX.Element => {
+const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState<string>('');
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [textareaHeight, setTextareaHeight] = useState(0);
 
-  const sendMessage = () => {
-    if (message.trim() === '') return;
-    setMessages([...messages, message]);
-    setMessage('');
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+  const handleSendMessage = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter') {
       e.preventDefault();
-      sendMessage();
+      if (message.trim() !== '') {
+        sendMessage(channel.id, message);
+        setMessage('');
+      }
     }
-  };
+  }
 
   const handleInput = () => {
     if (textareaRef.current) {
@@ -33,9 +35,26 @@ const Channel: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    console.log('Message:', message);
-    console.log('Messages:', messages);
-  }, [message, messages]);
+    if (channel) {
+      const channelRef = ref(db, `channels/${channel.id}/messages`);
+      if (channelRef) {
+        const unsubscribe = onValue(channelRef, (snapshot) => {
+          const data = snapshot.val();
+          console.log("Data", data);
+          if (data) {
+            const messages = Object.values(data);
+            setMessages(messages);
+            console.log("Messages", messages);
+          }
+        });
+
+        return () => unsubscribe();
+
+      }
+
+    }
+  }, [channel]);
+
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -65,7 +84,7 @@ const Channel: React.FC = (): JSX.Element => {
           onInput={handleInput}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onKeyDown={handleSendMessage}
           style={{ height: `${textareaHeight}px`, minHeight: '5rem' }}
         ></textarea>
       </div>
