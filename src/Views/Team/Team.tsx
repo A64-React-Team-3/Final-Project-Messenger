@@ -8,6 +8,7 @@ import Channel from "../Channel/Channel";
 import { useState } from "react";
 import { onValue, ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
+import { transformChannels } from "../../helper/helper";
 
 const Team: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -33,10 +34,9 @@ const Team: React.FC = (): JSX.Element => {
     const channelsRef = ref(db, "channels/");
     if (channelsRef) {
       const unsubscribe = onValue(channelsRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const channels = Object.values(data);
-          console.log("Channels", channels);
+        const transformedData = transformChannels(snapshot);
+        if (transformedData) {
+          const channels = Object.values(transformedData);
           setChannels(channels);
         }
       });

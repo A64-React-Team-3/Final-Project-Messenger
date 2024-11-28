@@ -4,10 +4,10 @@ import { Message } from './Message';
 export type Channel = {
   name: string;
   id: string;
-  members: string[] | null;
+  members: string[];
   messages: Message[] | null;
-  creator: string | null;
+  creator: string;
   createdOn: number;
-  teamId: string | null;
+  teamId: string;
   private: boolean | null;
 };

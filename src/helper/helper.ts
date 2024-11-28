@@ -1,3 +1,4 @@
+import { Channel } from "../models/Channel";
 import { User } from "../models/User";
 
 
@@ -12,3 +13,22 @@ export const transformUser = (user: import('firebase/database').DataSnapshot): P
   const userData = user.val()[Object.keys(user.val())[0]];
   return userData;
 };
+
+export const transformChannels = (channels: import('firebase/database').DataSnapshot): Channel[] => {
+
+  const tChannels = Object.values(channels.val()).map((channel: any): Channel => {
+    return {
+      id: channel.id,
+      name: channel.name,
+      members: Object.keys(channel.members || {}),
+      messages: Object.values(channel.messages),
+      creator: channel.creator,
+      teamId: channel.teamId,
+      private: channel.private,
+      createdOn: channel.createdOn,
+    };
+  });
+
+  return tChannels;
+};
+

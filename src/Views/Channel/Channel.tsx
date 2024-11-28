@@ -40,6 +40,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
       if (channelRef) {
         const unsubscribe = onValue(channelRef, (snapshot) => {
           const data = snapshot.val();
+          console.log("Data", data);
           if (data) {
             const messages = Object.values(data);
             setMessages(messages);
