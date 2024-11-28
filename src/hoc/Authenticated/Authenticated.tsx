@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { UserAppContext } from "../../store/user.context";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../config/firebase-config";
 
 type AuthenticatedProps = {
   /** React components to render if the user is authenticated */
@@ -20,18 +22,19 @@ type AuthenticatedProps = {
 const Authenticated: React.FC<AuthenticatedProps> = ({
   children,
 }: AuthenticatedProps): JSX.Element => {
-  const { user, loading, error } = useContext(UserAppContext);
+  const { user } = useContext(UserAppContext);
   const navigate = useNavigate();
+  const [authUser, loading] = useAuthState(auth);
 
   useEffect(() => {
     if (!loading) {
-      toast.error(error);
-      if (!user) {
+      toast.error("Error");
+      if (!authUser) {
         console.log("test");
         navigate("/");
       }
     }
-  }, [user, loading]);
+  }, [authUser, loading]);
   if (loading) {
     return (
       <>

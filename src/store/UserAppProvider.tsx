@@ -26,19 +26,19 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
         .catch(error => {
           console.error("Failed to fetch user data:", error.message);
           setUser(null);
-          setError(error.message);
-        })
-        .finally(() => {
-          setLoading(false);
+          // setError(error.message);
         });
+      // .finally(() => {
+      //   setLoading(false);
+      // });
     } else {
       setUser(null);
-      setLoading(false);
+      // setLoading(false);
     }
   }, [authUser]);
 
   return (
-    <UserAppContext.Provider value={{ user, setUser, loading, error }}>
+    <UserAppContext.Provider value={{ user, setUser, loading }}>
       {children}
     </UserAppContext.Provider>
   );
