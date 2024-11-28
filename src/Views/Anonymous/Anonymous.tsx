@@ -2,7 +2,7 @@ import Login from "../Login/Login";
 import Register from "../Register/Register";
 import "./Anonymous.css";
 import { useContext, useEffect, useState } from "react";
-import { UserAppContext } from "../../store/app-context";
+import { UserAppContext } from "../../store/user.context";
 import { useNavigate } from "react-router-dom";
 
 export default function Anonymous() {

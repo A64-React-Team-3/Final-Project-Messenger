@@ -6,18 +6,13 @@ import Team from "../Team/Team";
 /**
  * Home Component
  *
- * This component serves as the home page for the application. So far it only includes
- * buttons for logging out and accessing settings.
+ * This component serves as the home page for the application.
  *
  * @component
  * @returns {JSX.Element} The rendered `Home` component.
  */
 const Home: React.FC = (): JSX.Element => {
-
-
-
   return (
-
     <div className="window border-base-300 flex h-screen bg-black">
       <HomeSideBar />
       <Team />
