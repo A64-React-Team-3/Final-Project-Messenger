@@ -4,9 +4,9 @@ import ProfileButton from "../../components/ProfileButton/ProfileButton";
 const Personal: React.FC = (): JSX.Element => {
   return (
     <>
-      <div className="flex w-full h-[calc(100vh-4rem)]">
+      <div className="flex w-full h-screen">
         <HomeSideBar />
-        <div className="border-base-300 flex-col justify-center px-4 bg-slate-600 text-slate-50 h-full w-60">
+        <div className="border-base-300 flex-col justify-center bg-slate-600 text-slate-50 h-full w-80 p-1">
           <div className="collapse">
             <input type="checkbox" />
             <div className="collapse-title text-xl font-medium">
@@ -40,8 +40,14 @@ const Personal: React.FC = (): JSX.Element => {
             </div>
           </div>
         </div>
-        <div className="navbar py-0 px-0 bg-zinc-900 h-14"></div>
-        <ProfileButton />
+        <div className="navbar py-0 px-0 bg-zinc-900 h-14 w-full flex items-center justify-between">
+          <div className="left-content">
+            <h2 className="p-2">Personal View</h2>
+          </div>
+          <div className="p-2">
+            <ProfileButton />
+          </div>
+        </div>
       </div>
     </>
   );
