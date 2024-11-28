@@ -29,6 +29,7 @@ export const AppRoutes: React.FC = (): JSX.Element => {
           </Authenticated>
         }
       />
+      {/* <Route path="*" element={<></>} /> */}
     </Routes>
   );
 };

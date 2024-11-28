@@ -13,11 +13,7 @@ import Team from "../Team/Team";
  * @returns {JSX.Element} The rendered `Home` component.
  */
 const Home: React.FC = (): JSX.Element => {
-
-
-
   return (
-
     <div className="window border-base-300 flex h-screen bg-black">
       <HomeSideBar />
       <Team />
