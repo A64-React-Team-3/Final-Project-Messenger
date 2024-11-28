@@ -33,28 +33,28 @@ const Personal: React.FC = (): JSX.Element => {
   }, []);
   return (
     <>
-      <div className="flex w-full h-screen">
+      <div className="flex w-full h-screen overflow-hidden">
         <HomeSideBar />
         <div className="border-base-300 flex-col justify-center bg-slate-600 text-slate-50 h-full w-96 p-1">
           <FriendRequests />
           <FriendList />
           <div className="collapse collapse-arrow">
             <input type="checkbox" />
-            <div className="collapse-title z-0 text-xl font-medium">
-              Text Channels
-            </div>
+            <div className="collapse-title z-0 text-xl font-medium">Chats</div>
             <div className="collapse-content">
-              {channels.map((channel, idx) => (
-                <div>
-                  <a
-                    onClick={() => setChannel(channel)}
-                    key={idx}
-                    className="text-sm"
-                  >
-                    {channel.name}
-                  </a>
-                </div>
-              ))}
+              <div className="max-h-96 overflow-y-auto">
+                {channels.map((channel, idx) => (
+                  <div className="mb-3">
+                    <button
+                      onClick={() => setChannel(channel)}
+                      key={idx}
+                      className="btn btn-sm btn-outline btn-secondary  text-sm hover:bg-gray-700"
+                    >
+                      <span className="mr-2 text-lg">💬</span> {channel.name}
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
