@@ -3,7 +3,7 @@ import { UserAppContext } from "./app-context";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase-config";
 import { getUser } from "../services/user.service";
-import { User } from "../models/user";
+import { UserModel } from "../models/UserModel";
 interface UserAppProviderProps {
   children: React.ReactNode;
 }
@@ -11,7 +11,7 @@ interface UserAppProviderProps {
 export const UserAppProvider: React.FC<UserAppProviderProps> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserModel | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [authUser] = useAuthState(auth);

@@ -1,4 +1,4 @@
-export type User = {
+export type UserModel = {
   email: string | null;
   uid: string | null;
   username: string | null;

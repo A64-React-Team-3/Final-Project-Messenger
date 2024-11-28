@@ -7,7 +7,7 @@ import CreateChannel from "../../Views/ModalViews/CreateChannel/CreateChannel";
 type TeamNavBarProps = {
   handleLogout: () => Promise<void>;
   handleToSettings: () => void;
-  channelName: string;
+  channelName: string | undefined;
 };
 
 const TeamNavBar: React.FC<TeamNavBarProps> = ({ handleLogout, handleToSettings, channelName }): JSX.Element => {
