@@ -11,7 +11,7 @@ const Personal: React.FC = (): JSX.Element => {
         <div className="border-base-300 flex-col justify-center bg-slate-600 text-slate-50 h-full w-96 p-1">
           <FriendRequests />
           <FriendList />
-          <div className="collapse">
+          <div className="collapse collapse-arrow">
             <input type="checkbox" />
             <div className="collapse-title z-0 text-xl font-medium">
               Text Channels

@@ -46,6 +46,13 @@ const friends: Friend[] = [
 
 const FriendList: React.FC = (): JSX.Element => {
   const [friendSettings, setFriendSettings] = useState<number | null>(null);
+  const [unfriendConfirm, setUnfriendConfirm] = useState<number | null>(null);
+
+  const handleUnfriend = (friendId: number) => {
+    console.log("unfriend: ", friendId);
+    setUnfriendConfirm(null);
+    setFriendSettings(null);
+  };
 
   const toggleFriendSettings = (id: number) => {
     setFriendSettings(prev => (prev === id ? null : id));
@@ -90,9 +97,37 @@ const FriendList: React.FC = (): JSX.Element => {
                     <a>Invite to Team</a>
                   </li>
                   <li>
-                    <a>Unfriend</a>
+                    <button
+                      className="text-red-500 hover:text-white"
+                      onClick={() => setUnfriendConfirm(friend.id)}
+                    >
+                      Unfriend
+                    </button>
                   </li>
                 </ul>
+              )}
+              {unfriendConfirm === friend.id && (
+                <div className="modal modal-open">
+                  <div className="modal-box bg-gray-800 text-white shadow-xl rounded-lg transition-transform transform duration-300 scale-100 hover:scale-105">
+                    <h3 className="font-bold text-xl text-red-500 mb-6 text-center">
+                      Are you sure you want to unfriend {friend.name}?
+                    </h3>
+                    <div className="modal-action justify-center space-x-4">
+                      <button
+                        className="btn btn-error text-lg font-semibold rounded-full shadow-md  hover:scale-105 transition-all"
+                        onClick={() => handleUnfriend(friend.id)}
+                      >
+                        Yes, Unfriend
+                      </button>
+                      <button
+                        className="btn btn-secondary   text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-all"
+                        onClick={() => setUnfriendConfirm(null)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
           ))}
