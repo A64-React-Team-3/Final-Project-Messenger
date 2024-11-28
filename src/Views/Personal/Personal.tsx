@@ -7,7 +7,7 @@ const Personal: React.FC = (): JSX.Element => {
     <>
       <div className="flex w-full h-screen">
         <HomeSideBar />
-        <div className="border-base-300 flex-col justify-center bg-slate-600 text-slate-50 h-full w-80 p-1">
+        <div className="border-base-300 flex-col justify-center bg-slate-600 text-slate-50 h-full w-96 p-1">
           <div className="collapse">
             <input type="checkbox" />
             <div className="collapse-title text-xl font-medium">

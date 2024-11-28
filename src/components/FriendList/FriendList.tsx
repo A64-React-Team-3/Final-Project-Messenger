@@ -1,38 +1,105 @@
+import { useState } from "react";
+type Friend = {
+  id: number;
+  name: string;
+  avatarUrl: string;
+};
+
+const friends: Friend[] = [
+  {
+    id: 1,
+    name: "User 1",
+    avatarUrl:
+      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
+  },
+  {
+    id: 2,
+    name: "User 2",
+    avatarUrl:
+      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
+  },
+  {
+    id: 3,
+    name: "User 3",
+    avatarUrl:
+      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
+  },
+  {
+    id: 4,
+    name: "User 4",
+    avatarUrl:
+      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
+  },
+  {
+    id: 5,
+    name: "User 5",
+    avatarUrl:
+      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
+  },
+  {
+    id: 6,
+    name: "User 6",
+    avatarUrl:
+      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
+  },
+];
+
 const FriendList: React.FC = (): JSX.Element => {
+  const [friendSettings, setFriendSettings] = useState<number | null>(null);
+
+  const toggleFriendSettings = (id: number) => {
+    setFriendSettings(prev => (prev === id ? null : id));
+  };
+
   return (
-    <div className="collapse">
+    <div className="collapse collapse-arrow bg-base-400 rounded-box w-full">
       <input type="checkbox" />
       <div className="collapse-title text-xl font-medium">Friends</div>
       <div className="collapse-content">
-        <div className="avatar w-full flex justify-evenly align-middle mb-2">
-          <div className="w-10 rounded-full avatar">
-            <img
-              alt="Tailwind CSS Navbar component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            />
-          </div>
-          <p className="text-center">User 1</p>
-        </div>
-        <div className="avatar w-full flex justify-evenly align-middle mb-2">
-          <div className="w-10 rounded-full avatar">
-            <img
-              alt="Tailwind CSS Navbar component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            />
-          </div>
-          <p className="text-center">User 2</p>
-        </div>
-        <div className="avatar w-full flex justify-evenly align-middle mb-2">
-          <div className="w-10 rounded-full avatar">
-            <img
-              alt="Tailwind CSS Navbar component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            />
-          </div>
-          <p className="text-center">User 3</p>
+        <div className="max-h-48 overflow-y-auto">
+          {friends.map(friend => (
+            <div key={friend.id} className="mb-2">
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => toggleFriendSettings(friend.id)}
+                onKeyDown={e =>
+                  e.key === "Enter" && toggleFriendSettings(friend.id)
+                }
+                className="flex items-center gap-3 p-1  rounded-lg hover:bg-gray-700 cursor-pointer"
+              >
+                <div className="avatar">
+                  <div className="w-12 rounded-full">
+                    <img
+                      alt={`${friend.name}'s avatar`}
+                      src={friend.avatarUrl}
+                    />
+                  </div>
+                </div>
+                <p className="font-semibold">{friend.name}</p>
+              </div>
+              {friendSettings === friend.id && (
+                <ul className="menu menu-sm bg-gray-700 rounded-box mt-2 w-52 p-2 shadow">
+                  <li>
+                    <a className="justify-between">
+                      Profile
+                      <span className="badge">New</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a>Invite to Team</a>
+                  </li>
+                  <li>
+                    <a>Unfriend</a>
+                  </li>
+                </ul>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 };
+
 export default FriendList;
