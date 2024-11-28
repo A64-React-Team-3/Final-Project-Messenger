@@ -12,10 +12,9 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
   children,
 }) => {
   const [user, setUser] = useState<UserModel | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [authUser] = useAuthState(auth);
-  // const [authUser,loading,error] = useAuthState(auth);
+  // const [loading, setLoading] = useState<boolean>(true);
+  // const [error, setError] = useState<string | null>(null);
+  const [authUser, loading] = useAuthState(auth);
 
   useEffect(() => {
     if (authUser) {
