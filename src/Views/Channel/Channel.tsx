@@ -78,7 +78,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
   }, [messages]);
 
   return (
-    <div className="channel-view flex bg-slate-500 w-[calc(100vw-20rem)]">
+    <div className="channel-view flex h-full bg-slate-500 w-[calc(100vw-20rem)]">
       <div className="bg-red-400 flex flex-col w-[calc(100vw-35rem)] h-full">
         <div
           ref={chatRef}
