@@ -9,6 +9,7 @@ import { UserAppContext } from "../../store/user.context";
 import { transformMessages } from "../../helper/helper";
 import type { ChannelModel } from "../../models/ChannelModel";
 import { MessageModel } from "../../models/MessageModel";
+import EmojiPicker from "emoji-picker-react";
 
 type ChannelProps = {
   channel: ChannelModel | null;
@@ -21,6 +22,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
   const [messageToSend, setMessageToSend] = useState<string>("");
   const [messages, setMessages] = useState<MessageModel[]>([]);
   const [textareaHeight, setTextareaHeight] = useState(0);
+  const [showPicker, setShowPicker] = useState<boolean>(false)
 
   const handleSendMessage = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -31,6 +33,11 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
       }
     }
   };
+
+  const handleEmojiClick = (emojiObject: any, event: any) => {
+    setMessageToSend((prevInput) => prevInput + emojiObject.emoji);
+    setShowPicker(false);
+  }
 
   const handleInput = () => {
     if (textareaRef.current) {
@@ -103,11 +110,13 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             onKeyDown={handleSendMessage}
             style={{ height: `${textareaHeight}px`, minHeight: "5rem" }}
           ></textarea>
-          <div className="join join-vertical lg:join-horizontal">
-            <button className="btn join-item">Button</button>
-            <button className="btn join-item">Button</button>
-            <button className="btn join-item">Button</button>
+          <div className="dropdown dropdown-top dropdown-end">
+            <div tabIndex={0} role="button" className="btn m-1">Emojis</div>
+            <div tabIndex={0} className="dropdown-content bg-base-100 rounded-box z-[100] p-2 shadow">
+              <EmojiPicker onEmojiClick={handleEmojiClick} />
+            </div>
           </div>
+
         </div>
 
       </div>
