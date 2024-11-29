@@ -8,7 +8,7 @@ type MessageProps = {
 
 const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
   return (
-    <div className="chat chat-start">
+    <div className="chat chat-start hover:bg-slate-400">
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
           <img
@@ -20,7 +20,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
         {message.senderName}
         <time className="text-xs opacity-50"> {transformDate(message.timestamp)}</time>
       </div>
-      <div className="chat-bubble break-words max-w-2xl">{message.message}</div>
+      <div className="chat-bubble break-words max-w-full">{message.message}</div>
     </div>
   );
 };

@@ -82,7 +82,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
       <div className="bg-red-400 flex flex-col w-[calc(100vw-35rem)] h-full">
         <div
           ref={chatRef}
-          className="display-chat bg-slate-900 w-[calc(100vw-35rem)] flex-grow overflow-auto p-2"
+          className="display-chat bg-slate-900 w-[calc(100vw-35rem)] flex-grow overflow-auto p-3"
         >
           {messages.length !== 0 ? (
             messages.map((msg, idx) => (
@@ -92,16 +92,24 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             <p>No Messages in {channel?.name}</p>
           )}
         </div>
-        <textarea
-          ref={textareaRef}
-          className="w-full p-2 text-black resize-none overflow-hidden"
-          placeholder="Type your message here... and press Enter to send"
-          onInput={handleInput}
-          value={messageToSend}
-          onChange={e => setMessageToSend(e.target.value)}
-          onKeyDown={handleSendMessage}
-          style={{ height: `${textareaHeight}px`, minHeight: "5rem" }}
-        ></textarea>
+        <div className="p-3 flex gap-1">
+          <textarea
+            ref={textareaRef}
+            className="textarea w-[70rem] p-2 text-black resize-none overflow-hidden"
+            placeholder="Type your message here... and press Enter to send"
+            onInput={handleInput}
+            value={messageToSend}
+            onChange={e => setMessageToSend(e.target.value)}
+            onKeyDown={handleSendMessage}
+            style={{ height: `${textareaHeight}px`, minHeight: "5rem" }}
+          ></textarea>
+          <div className="join join-vertical lg:join-horizontal">
+            <button className="btn join-item">Button</button>
+            <button className="btn join-item">Button</button>
+            <button className="btn join-item">Button</button>
+          </div>
+        </div>
+
       </div>
       <ChannelSideBar />
     </div>
