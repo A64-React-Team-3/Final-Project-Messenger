@@ -9,6 +9,7 @@ import { UserAppContext } from "../../store/user.context";
 import { transformMessages } from "../../helper/helper";
 import type { ChannelModel } from "../../models/ChannelModel";
 import { MessageModel } from "../../models/MessageModel";
+import EmojiPicker from "emoji-picker-react";
 
 type ChannelProps = {
   channel: ChannelModel | null;
@@ -21,6 +22,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
   const [messageToSend, setMessageToSend] = useState<string>("");
   const [messages, setMessages] = useState<MessageModel[]>([]);
   const [textareaHeight, setTextareaHeight] = useState(0);
+  const [showPicker, setShowPicker] = useState<boolean>(false)
 
   const handleSendMessage = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -31,6 +33,11 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
       }
     }
   };
+
+  const handleEmojiClick = (emojiObject: any, event: any) => {
+    setMessageToSend((prevInput) => prevInput + emojiObject.emoji);
+    setShowPicker(false);
+  }
 
   const handleInput = () => {
     if (textareaRef.current) {
@@ -82,7 +89,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
       <div className="bg-red-400 flex flex-col w-[calc(100vw-35rem)] h-full">
         <div
           ref={chatRef}
-          className="display-chat bg-slate-900 w-[calc(100vw-35rem)] flex-grow overflow-auto p-2"
+          className="display-chat bg-slate-900 w-[calc(100vw-35rem)] flex-grow overflow-auto p-3"
         >
           {messages.length !== 0 ? (
             messages.map((msg, idx) => (
@@ -92,16 +99,26 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             <p>No Messages in {channel?.name}</p>
           )}
         </div>
-        <textarea
-          ref={textareaRef}
-          className="w-full p-2 text-black resize-none overflow-hidden"
-          placeholder="Type your message here... and press Enter to send"
-          onInput={handleInput}
-          value={messageToSend}
-          onChange={e => setMessageToSend(e.target.value)}
-          onKeyDown={handleSendMessage}
-          style={{ height: `${textareaHeight}px`, minHeight: "5rem" }}
-        ></textarea>
+        <div className="p-3 flex gap-1">
+          <textarea
+            ref={textareaRef}
+            className="textarea w-[70rem] p-2 text-black resize-none overflow-hidden"
+            placeholder="Type your message here... and press Enter to send"
+            onInput={handleInput}
+            value={messageToSend}
+            onChange={e => setMessageToSend(e.target.value)}
+            onKeyDown={handleSendMessage}
+            style={{ height: `${textareaHeight}px`, minHeight: "5rem" }}
+          ></textarea>
+          <div className="dropdown dropdown-top dropdown-end">
+            <div tabIndex={0} role="button" className="btn m-1">Emojis</div>
+            <div tabIndex={0} className="dropdown-content bg-base-100 rounded-box z-[100] p-2 shadow">
+              <EmojiPicker onEmojiClick={handleEmojiClick} />
+            </div>
+          </div>
+
+        </div>
+
       </div>
       <ChannelSideBar />
     </div>

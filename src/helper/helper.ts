@@ -56,5 +56,8 @@ export const transformDate = (timestamp: number): string => {
   const day = daysAgo === 0 ? "Today" : daysAgo === 1 ? "Yesterday" : date.toLocaleDateString();
 
 
-  return `${day} ${date.toLocaleTimeString()}`;
+  return `${day} ${date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+  })}` as string;
 }
