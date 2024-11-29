@@ -5,7 +5,7 @@ import { storage } from "../config/firebase-config";
  * @param file The image file to upload
  * @returns A promise that resolves to the public URL of the uploaded image
  */
-const uploadImage = async (file: File): Promise<string> => {
+export const uploadImage = async (file: File): Promise<string> => {
   try {
     const storageRef = ref(storage, `avatars/${file.name}`);
     await uploadBytes(storageRef, file);
