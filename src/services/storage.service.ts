@@ -1,5 +1,5 @@
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../config/firebase-config";
 /**
  * Uploads an image to Firebase Storage and returns the public URL of the uploaded image.
  * @param file The image file to upload
@@ -7,7 +7,6 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
  */
 const uploadImage = async (file: File): Promise<string> => {
   try {
-    const storage = getStorage();
     const storageRef = ref(storage, `avatars/${file.name}`);
     await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(storageRef);
