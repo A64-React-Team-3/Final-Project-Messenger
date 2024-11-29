@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { uploadImage } from "../../../services/storage.service";
 // import { UserAppContext } from "../../../store/user.context.ts";
 type CreateTeamProps = {
   closeModal: () => void;
@@ -7,6 +8,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ closeModal }): JSX.Element => {
   const [isTeamPrivate, setIsTeamPrivate] = useState(false);
   const [teamName, setTeamName] = useState<string>("");
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   //   const [teamId, setTeamId] = useState<number | null>(null);
   //   const { user } = useContext(UserAppContext);
 
@@ -23,9 +25,25 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ closeModal }): JSX.Element => {
       const reader = new FileReader();
       reader.onloadend = () => setAvatarPreview(reader.result as string);
       reader.readAsDataURL(file);
+      setAvatarFile(file);
     }
   };
-  const handleCreateTeam = async () => {};
+  const handleCreateTeam = async () => {
+    if (avatarFile) {
+      try {
+        const imageUrl = await uploadImage(avatarFile);
+        const privacy = isTeamPrivate ? "private" : "public";
+        const teamData = {
+          name: teamName,
+          privacy: privacy,
+          avatarUrl: imageUrl,
+        };
+        console.log("teamData", teamData);
+      } catch (error) {
+        console.error("Error uploading image", error);
+      }
+    }
+  };
 
   return (
     <div className="modal modal-open">
