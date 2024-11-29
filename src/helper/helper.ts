@@ -38,7 +38,9 @@ export const transformMessages = (messages: import('firebase/database').DataSnap
   const tMessages = Object.values(messages.val()).map((message: any): MessageModel => {
     return {
       message: message.message,
-      sender: message.sender,
+      senderName: message.senderName,
+      senderId: message.senderId,
+      channelId: message.channelId,
       timestamp: message.timestamp,
       imageUrl: message.imageUrl || null,
     } as MessageModel;
@@ -47,3 +49,12 @@ export const transformMessages = (messages: import('firebase/database').DataSnap
   return tMessages;
 };
 
+export const transformDate = (timestamp: number): string => {
+  const today = new Date();
+  const date = new Date(timestamp);
+  const daysAgo = today.getDate() - date.getDate();
+  const day = daysAgo === 0 ? "Today" : daysAgo === 1 ? "Yesterday" : date.toLocaleDateString();
+
+
+  return `${day} ${date.toLocaleTimeString()}`;
+}

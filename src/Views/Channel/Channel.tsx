@@ -26,7 +26,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
     if (e.key === "Enter") {
       e.preventDefault();
       if (messageToSend.trim() !== "" && channel) {
-        sendMessage(channel.id, user?.uid, messageToSend);
+        sendMessage(channel.id, user?.uid, user?.displayName, messageToSend);
         setMessageToSend("");
       }
     }
