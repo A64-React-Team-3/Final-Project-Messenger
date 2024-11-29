@@ -11,7 +11,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({ channels, setChannel }): JSX.
         <div className="collapse-title z-0 text-xl font-medium">Text Channels</div>
         <div className="collapse-content">
           {channels.map((channel, idx) => (
-            <div>
+            <div key={channel.id}>
               <a onClick={() => setChannel(channel)} key={idx} className="text-sm">{channel.name}</a>
             </div>
           ))}
