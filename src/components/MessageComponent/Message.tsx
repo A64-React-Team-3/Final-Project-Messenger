@@ -15,7 +15,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
   const [isPickerVisible, setIsPickerVisible] = useState<boolean>(false);
 
   return (
-    <div className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"} my-4 p-0 relative`} onMouseEnter={() => setIsPickerVisible(true)} onMouseLeave={() => setIsPickerVisible(false)}>
+    <div className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"} my-5 p-0 relative`} onMouseEnter={() => setIsPickerVisible(true)} onMouseLeave={() => setIsPickerVisible(false)}>
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
           <img
@@ -33,7 +33,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
         </p>
         {/* {isPickerVisible && <div className={`absolute bottom-[-2] ${message.sender === user!.uid ? "right-0" : "left-0"}`}><EmojiPicker reactionsDefaultOpen={true} /></div>} */}
       </div>
-      {isPickerVisible && <div className="absolute z-10 right-0 bottom-0 m-0 p-0" style={{ transform: 'scale(0.6)' }}>
+      {isPickerVisible && <div className={`absolute z-10 top-[-1rem] ${message.sender === user!.uid ? "left-[50rem]" : "right-[50rem]"}`} style={{ transform: 'scale(0.6)' }}>
         <EmojiPicker
           reactionsDefaultOpen={true}
           lazyLoadEmojis={true}
