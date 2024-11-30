@@ -36,7 +36,10 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
 
   const handleEmojiClick = (emojiObject: any, event: any) => {
     setMessageToSend((prevInput) => prevInput + emojiObject.emoji);
-    setShowPicker(false);
+  }
+
+  const handleShowPicker = () => {
+    setShowPicker(prevValue => !prevValue)
   }
 
   const handleInput = () => {
@@ -76,7 +79,10 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
     if (textareaRef.current) {
       setTextareaHeight(textareaRef.current.scrollHeight);
     }
-  }, []);
+    if (messageToSend === "") {
+      setTextareaHeight(0);
+    }
+  }, [messageToSend]);
 
   useEffect(() => {
     if (chatRef.current) {
@@ -85,11 +91,11 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
   }, [messages]);
 
   return (
-    <div className="channel-view flex h-full bg-slate-500 w-[calc(100vw-20rem)]">
-      <div className="bg-red-400 flex flex-col w-[calc(100vw-35rem)] h-full">
+    <div className="channel-view flex h-full w-[calc(100vw-20rem)]">
+      <div className="flex flex-col w-[calc(100vw-35rem)] h-full">
         <div
           ref={chatRef}
-          className="display-chat bg-slate-900 w-[calc(100vw-35rem)] flex-grow overflow-auto p-3"
+          className="display-chat w-[calc(100vw-35rem)] flex-grow overflow-auto p-3"
         >
           {messages.length !== 0 ? (
             messages.map((msg, idx) => (
@@ -99,7 +105,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             <p>No Messages in {channel?.name}</p>
           )}
         </div>
-        <div className="p-3 flex gap-1">
+        <div className="p-3 border-t border-base-200 flex gap-1 items-center">
           <textarea
             ref={textareaRef}
             className="textarea w-[70rem] p-2 text-black resize-none overflow-hidden"
@@ -108,13 +114,16 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             value={messageToSend}
             onChange={e => setMessageToSend(e.target.value)}
             onKeyDown={handleSendMessage}
-            style={{ height: `${textareaHeight}px`, minHeight: "5rem" }}
+            style={{ height: `${textareaHeight}px` }}
           ></textarea>
-          <div className="dropdown dropdown-top dropdown-end">
-            <div tabIndex={0} role="button" className="btn m-1">Emojis</div>
-            <div tabIndex={0} className="dropdown-content bg-base-100 rounded-box z-[100] p-2 shadow">
-              <EmojiPicker onEmojiClick={handleEmojiClick} />
-            </div>
+          <div className="relative ">
+            <button tabIndex={0} onClick={handleShowPicker} className="btn btn-ghost m-1">Emojis</button>
+            {showPicker &&
+              <div tabIndex={0} className="absolute bottom-20 right-0 bg-base-100 rounded-box z-[1] p-2 shadow">
+                <div className="h-96">
+                  <EmojiPicker height='100%' onEmojiClick={handleEmojiClick} />
+                </div>
+              </div>}
           </div>
 
         </div>

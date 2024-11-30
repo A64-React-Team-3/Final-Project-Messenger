@@ -1,7 +1,7 @@
 export type MessageModel = {
   message: string;
   senderName: string;
-  senderId: string;
+  sender: string;
   channelId: string;
   timestamp: number;
   imageUrl?: string;
@@ -11,7 +11,7 @@ export type MessageModel = {
 // export type MessageModel = {
 //   message: string;
 //   senderName: string;
-//   senderId: string;
+//   sender: string;
 //   channelId: string;
 //   timestamp: number;
 //   imageUrl?: string;

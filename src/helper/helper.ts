@@ -39,7 +39,7 @@ export const transformMessages = (messages: import('firebase/database').DataSnap
     return {
       message: message.message,
       senderName: message.senderName,
-      senderId: message.senderId,
+      sender: message.sender,
       channelId: message.channelId,
       timestamp: message.timestamp,
       imageUrl: message.imageUrl || null,
