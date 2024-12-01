@@ -54,8 +54,49 @@ export const sendMessage = async (channelId: string, userId: string | null | und
     timestamp: Date.now(),
   };
   try {
-    await push(ref(db, `channels/${channelId}/messages`), messageObj);
+    const result = await push(ref(db, `channels/${channelId}/messages`), messageObj);
+    const id = result.key;
+    await update(ref(db), { [`channels/${channelId}/messages/${id}/id`]: id });
   } catch (error) {
     console.error("Error sending message", error);
+  }
+}
+
+
+export const sendReaction = async (channelId: string, messageId: string, emoji: string, userId: string): Promise<void> => {
+  const reaction = {
+    [emoji]: {
+      name: emoji,
+      count: 1,
+      reactors: { [userId]: true },
+    },
+  };
+  try {
+    const reactionRef = ref(db, `channels/${channelId}/messages/${messageId}/reactions`);
+    const reactionSnapshot = await get(reactionRef);
+    if (reactionSnapshot.exists()) {
+      const reactionData = reactionSnapshot.val();
+      if (reactionData[emoji]) {
+        if (reactionData[emoji].reactors[userId]) {
+          delete reactionData[emoji].reactors[userId];
+          reactionData[emoji].count -= 1;
+        } else {
+          reactionData[emoji].reactors[userId] = true;
+          reactionData[emoji].count += 1;
+        }
+
+        if (reactionData[emoji].count === 0) {
+          delete reactionData[emoji];
+        }
+        await set(ref(db, `channels/${channelId}/messages/${messageId}/reactions/`), reactionData);
+      } else {
+        await set(ref(db, `channels/${channelId}/messages/${messageId}/reactions/${emoji}`), reaction[emoji]);
+      }
+
+    } else {
+      await set(ref(db, `channels/${channelId}/messages/${messageId}/reactions/`), reaction);
+    }
+  } catch (error) {
+    console.error("Error sending reaction", error);
   }
 }

@@ -1,9 +1,10 @@
 import { transformDate } from "../../helper/helper";
 import { MessageModel } from "../../models/MessageModel";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserAppContext } from "../../store/user.context";
 import EmojiPicker from "emoji-picker-react";
 import { useState } from "react";
+import { sendReaction } from "../../services/channel.service";
 
 type MessageProps = {
   message: MessageModel;
@@ -13,6 +14,12 @@ type MessageProps = {
 const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
   const { user } = useContext(UserAppContext);
   const [isPickerVisible, setIsPickerVisible] = useState<boolean>(false);
+
+  const handleEmojiReactionClick = (emojiObject: any, even: any) => {
+    if (user && user.uid) {
+      sendReaction(message.channelId, message.id, emojiObject.emoji, user.uid);
+    }
+  }
 
   return (
     <div className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"} my-5 p-0 relative`} onMouseEnter={() => setIsPickerVisible(true)} onMouseLeave={() => setIsPickerVisible(false)}>
@@ -31,10 +38,10 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
         <p className="break-words">
           {message.message}
         </p>
-        {/* {isPickerVisible && <div className={`absolute bottom-[-2] ${message.sender === user!.uid ? "right-0" : "left-0"}`}><EmojiPicker reactionsDefaultOpen={true} /></div>} */}
       </div>
       {isPickerVisible && <div className={`absolute z-10 top-[-1rem] ${message.sender === user!.uid ? "left-[50rem]" : "right-[50rem]"}`} style={{ transform: 'scale(0.6)' }}>
         <EmojiPicker
+          onReactionClick={handleEmojiReactionClick}
           reactionsDefaultOpen={true}
           lazyLoadEmojis={true}
           searchDisabled={true}
