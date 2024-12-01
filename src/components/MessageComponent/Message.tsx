@@ -21,6 +21,10 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
     }
   }
 
+  useEffect(() => {
+    console.log("Message", message);
+  }, [message])
+
   return (
     <div className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"} my-5 p-0 relative`} onMouseEnter={() => setIsPickerVisible(true)} onMouseLeave={() => setIsPickerVisible(false)}>
       <div className="chat-image avatar">

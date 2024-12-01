@@ -44,6 +44,7 @@ export const transformMessages = (messages: import('firebase/database').DataSnap
       channelId: message.channelId,
       timestamp: message.timestamp,
       imageUrl: message.imageUrl || null,
+      reactions: Object.values(message.reactions || [])
     } as MessageModel;
   });
 
