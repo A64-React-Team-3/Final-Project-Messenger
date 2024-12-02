@@ -7,6 +7,7 @@ import { get, onValue, ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
 import { TeamAppContext } from "../../store/team.context";
 import { getTeamById } from "../../services/team.service";
+import { transformTeams } from "../../helper/helper";
 // import { TeamModel } from "../../helper/helper";
 const HomeSideBar: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -37,9 +38,8 @@ const HomeSideBar: React.FC = (): JSX.Element => {
       .then(snapshot => {
         if (snapshot.exists()) {
           const unsubscribe = onValue(teamsRef, snapshot => {
-            console.log(snapshot.val());
-            const teamsData = Object.values(snapshot.val());
-            console.log(teamsData);
+            const teamsData = transformTeams(snapshot);
+            console.log("teamsData", teamsData);
             setTeams(teamsData);
           });
 
@@ -66,7 +66,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
               return (
                 <span
                   key={teamData.id}
-                  onClick={() => handleToTeam(teamData.id)}
+                  onClick={() => handleToTeam(teamData.teamId)}
                 >
                   <TeamAvatarButton teamData={teamData} />
                 </span>
