@@ -1,31 +1,33 @@
-import { MessageModel } from "../../../models/MessageModel";
-import { useContext } from "react";
-import { UserAppContext } from "../../../store/user.context";
-import { transformDate } from "../../../helper/helper";
-import { deleteMessage } from "../../../services/channel.service";
+import { MessageModel } from '../../../models/MessageModel';
+import { useContext } from 'react';
+import { UserAppContext } from '../../../store/user.context';
+import { transformDate } from '../../../helper/helper';
+import { useState } from 'react';
+import { editMessage } from '../../../services/channel.service';
 
-type deleteMessageProps = {
+type EditMessageProps = {
   message: MessageModel;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const DeleteMessage: React.FC<deleteMessageProps> = ({ message, setIsModalOpen }): JSX.Element => {
-  const { user } = useContext(UserAppContext);
 
-  const handleDeleteMessage = () => {
+const EditMessage: React.FC<EditMessageProps> = ({ message, setIsModalOpen }): JSX.Element => {
+  const { user } = useContext(UserAppContext);
+  const [editedMessage, setEditedMessage] = useState<string>(message.message);
+
+  const handleEditMessage = () => {
     if (user?.uid === message.sender) {
-      deleteMessage(message.channelId, message.id);
+      editMessage(message.channelId, message.id, editedMessage);
       setIsModalOpen(false);
     } else {
-      alert("You cannot delete this message");
+      alert("You cannot edit this message");
     }
   }
 
-
   return (
     <div className="flex flex-col">
-      <p className="text-2xl font-bold">Delete Message</p>
-      <p>Are you sure you want to delete this message?</p>
+      <p className="text-2xl font-bold">Edit Message</p>
+      <p>Are you sure you want to edit this message?</p>
       <div className="message chat chat-start py-2">
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
@@ -51,12 +53,21 @@ const DeleteMessage: React.FC<deleteMessageProps> = ({ message, setIsModalOpen }
           <p className="break-words">{message.message}</p>
         </div>
       </div>
-      <div className="flex gap-2">
-        <button className="btn btn-sm btn-secondary" onClick={handleDeleteMessage}>Yes</button>
+      <div className="flex flex-col">
+        <label className="label">Edit Message</label>
+        <textarea
+          onChange={(e) => setEditedMessage(e.target.value)}
+          value={editedMessage}
+          className="textarea textarea-bordered resize-none break-words max-w-xs"
+          placeholder="Type here">
+        </textarea>
+      </div>
+      <div className="flex gap-2 pt-2">
+        <button className="btn btn-sm btn-secondary" onClick={handleEditMessage}>Edit</button>
         <button className="btn btn-sm btn-ghost" onClick={() => setIsModalOpen(false)}>Cancel</button>
       </div>
     </div>
   );
 }
 
-export default DeleteMessage;
+export default EditMessage;
