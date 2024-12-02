@@ -16,8 +16,12 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ closeModal }): JSX.Element => {
     setTeamName(event.target.value);
   };
 
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsTeamPrivate(event.target.value === "private");
+  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // setIsTeamPrivate(event.target.value === "private");
+    // if(event.target.value === true){
+
+    // }
+    setIsTeamPrivate(!isTeamPrivate);
   };
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -47,40 +51,29 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ closeModal }): JSX.Element => {
 
   return (
     <div className="modal modal-open">
-      <div className="modal-box bg-gray-800 text-white shadow-xl rounded-lg">
+      <div className="modal-box shadow-xl rounded-lg">
         <h3 className="font-bold text-xl mb-4 text-center">
           Create a new Team:
         </h3>
-        <div className="space-y-4">
+        <div className="space-y-4 flex flex-col items-center">
           <input
             type="text"
             value={teamName}
             onChange={updateTeamName}
             placeholder="Enter team name"
-            className="input input-bordered input-primary w-full"
+            className="input  input-bordered input-primary w-3/4 input-sm"
           />
           <div className="flex justify-evenly items-center">
             <label className="label cursor-pointer">
-              <span className="label-text text-white">Public</span>
-              <input
-                type="radio"
-                name="teamPrivacy"
-                value="public"
-                checked={!isTeamPrivate}
-                onChange={handleRadioChange}
-                className="radio radio-primary ml-2"
-              />
-            </label>
-            <label className="label cursor-pointer">
               <span className="label-text text-white">Private</span>
               <input
-                type="radio"
+                type="checkbox"
                 name="teamPrivacy"
-                value="private"
                 checked={isTeamPrivate}
-                onChange={handleRadioChange}
-                className="radio radio-primary ml-2"
+                onChange={handleSwitchChange}
+                className="toggle mx-2 border-primary bg-primary hover:border-secondary  hover:bg-secondary"
               />
+              <span className="label-text  text-white">Public</span>
             </label>
           </div>
           <div className="flex flex-col items-center">
