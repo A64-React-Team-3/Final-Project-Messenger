@@ -100,3 +100,11 @@ export const sendReaction = async (channelId: string, messageId: string, emoji: 
     console.error("Error sending reaction", error);
   }
 }
+
+export const deleteMessage = async (channelId: string, messageId: string): Promise<void> => {
+  try {
+    await set(ref(db, `channels/${channelId}/messages/${messageId}`), null);
+  } catch (error) {
+    console.error("Error deleting message", error);
+  }
+}
