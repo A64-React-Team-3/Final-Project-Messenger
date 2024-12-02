@@ -41,7 +41,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
   }, []);
   return (
     <>
-      <div className="border-base-300 flex-row justify-center  bg-black text-slate-50 w-20 ml-4">
+      <div className="border-base-300 flex-row justify-center  bg-black text-slate-50 w-20 ml-2">
         <div className="personal-team flex-row pt-2 mb-4 border-b-2 h-16">
           <div className="avatar placeholder" onClick={handleToPersonal}>
             <div className="bg-neutral btn btn-success text-neutral-content w-12 rounded-full border-none">
