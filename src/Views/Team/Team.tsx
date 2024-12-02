@@ -12,7 +12,7 @@ import { TeamAppContext } from "../../store/team.context";
 const Team: React.FC = (): JSX.Element => {
   const [channels, setChannels] = useState<ChannelModel[]>([]);
   const [channel, setChannel] = useState<ChannelModel | null>(null);
-  // const { team, setTeam } = useContext(TeamAppContext);
+  const { team, setTeam } = useContext(TeamAppContext);
   useEffect(() => {
     const channelsRef = ref(db, "channels/");
     get(channelsRef)
@@ -37,7 +37,11 @@ const Team: React.FC = (): JSX.Element => {
     <div className="border-base-200 bg-base-300 flex-col justify-center w-full ">
       <TeamNavBar channelName={channel?.name} />
       <div className="flex w-full h-[calc(100vh-4rem)]">
-        <TeamSideBar channels={channels} setChannel={setChannel} />
+        {team?.channels ? (
+          <TeamSideBar channels={team?.channels} setChannel={setChannel} />
+        ) : (
+          <TeamSideBar channels={channels} setChannel={setChannel} />
+        )}
         <Channel channel={channel} />
       </div>
     </div>
