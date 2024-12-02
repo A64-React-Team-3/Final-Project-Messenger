@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { uploadImage } from "../../../services/storage.service";
 import { createTeam } from "../../../services/team.service";
 import { UserAppContext } from "../../../store/user.context.ts";
+import { toast } from "react-toastify";
 type CreateTeamProps = {
   closeModal: () => void;
 };
@@ -29,25 +30,30 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ closeModal }): JSX.Element => {
     }
   };
   const handleCreateTeam = async () => {
+    if (!teamName.trim()) {
+      alert("Please enter a team name");
+      return;
+    }
+    const privacy = isTeamPrivate ? "private" : "public";
+    let imageUrl = null;
     if (avatarFile) {
       try {
-        const imageUrl = await uploadImage(avatarFile);
-        const privacy = isTeamPrivate ? "private" : "public";
+        imageUrl = await uploadImage(avatarFile);
         const teamData = {
           name: teamName,
           privacy: privacy,
           avatarUrl: imageUrl || null,
         };
         console.log("teamData", teamData);
-        try {
-          await createTeam(user!, teamName, privacy, imageUrl);
-          closeModal();
-        } catch (error) {
-          console.error("Error with creating team: ", error);
-        }
       } catch (error) {
         console.error("Error uploading image", error);
       }
+    }
+    try {
+      await createTeam(user!, teamName, privacy, imageUrl);
+      closeModal();
+    } catch (error) {
+      console.error("Error with creating team: ", error);
     }
   };
 
