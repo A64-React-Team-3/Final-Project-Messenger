@@ -1,13 +1,7 @@
-import { push, ref, update } from "firebase/database";
+import { get, push, ref, update } from "firebase/database";
 import { UserModel } from "../models/UserModel";
 import { db } from "../config/firebase-config";
 
-type CreateTeamProps = {
-  user: UserModel;
-  teamName: string;
-  privacy: "public" | "private";
-  avatarUrl: string | null;
-};
 export const createTeam = async (
   user: UserModel,
   teamName: string,
@@ -28,7 +22,7 @@ export const createTeam = async (
     privacy: privacy,
     avatarUrl: avatarUrl || null,
     creator: { id: user.uid, username: user.username },
-    members: [{ [user.username]: user.uid, role: "owner" }],
+    members: { [user.username]: "owner" },
     createdOn: Date.now(),
   };
   console.log("team", team);
@@ -38,5 +32,22 @@ export const createTeam = async (
     await update(ref(db), { [`teams/${id}/id`]: id });
   } catch (error) {
     console.error("Error creating team (service fn): ", error);
+  }
+};
+
+export const getChannels = async (): Promise<any> => {
+  const channelsRef = ref(db, "teams/");
+  try {
+    const teams = await get(channelsRef);
+    if (teams.exists()) {
+      console.log("Data:", teams.val());
+      const data = teams.val();
+      return Object.values(data);
+    } else {
+      console.log("No data available");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting teams: ", error);
   }
 };
