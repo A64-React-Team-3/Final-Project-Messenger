@@ -37,12 +37,14 @@ export const transformMessages = (messages: import('firebase/database').DataSnap
 
   const tMessages = Object.values(messages.val()).map((message: any): MessageModel => {
     return {
+      id: message.id,
       message: message.message,
       senderName: message.senderName,
       sender: message.sender,
       channelId: message.channelId,
       timestamp: message.timestamp,
       imageUrl: message.imageUrl || null,
+      reactions: Object.values(message.reactions || [])
     } as MessageModel;
   });
 
