@@ -8,6 +8,9 @@ import { useState } from "react";
 import { sendReaction } from "../../services/channel.service";
 import { MdEdit } from "react-icons/md";
 import { reactionEmoji } from "../../common/constants";
+import Modal from "../../hoc/Modal/Modal";
+import { useRef } from "react";
+import DeleteMessage from "../../Views/ModalViews/DeleteMessage/DeleteMessage";
 
 type MessageProps = {
   message: MessageModel;
@@ -17,6 +20,8 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
   const { user } = useContext(UserAppContext);
   const [showPicker, setShowPicker] = useState<boolean>(false);
   const [showMessageOptions, setShowMessageOptions] = useState<boolean>(false);
+  const deleteMessageRef = useRef<HTMLDialogElement | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleShowPicker = () => {
     setShowPicker(prevValue => !prevValue);
   };
@@ -38,7 +43,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
     <>
       <div
         className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"
-          } mt-5 mb-2 relative rounded-2xl`}
+          } mt-5 mb-2 relative rounded-2xl hover:bg-base-200`}
         onMouseEnter={() => setShowMessageOptions(true)}
         onMouseLeave={() => setShowMessageOptions(false)}
       >
@@ -46,14 +51,12 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
           <div className="w-10 rounded-full">
             <img
               alt="Tailwind CSS chat bubble component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            />
+              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
           </div>
         </div>
         <div
           className={`chat-header flex gap-1 items-center ${message.sender === user!.uid ? "flex-row-reverse" : ""
-            }`}
-        >
+            }`}>
           <span>{message.senderName}</span>
           <time className="text-xs opacity-50">
             {" "}
@@ -62,8 +65,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
         </div>
         <div
           className={`chat-bubble ${message.sender === user!.uid ? "chat-bubble-primary" : ""
-            } break-words max-w-full`}
-        >
+            } break-words max-w-full`}>
           <p className="break-words">{message.message}</p>
         </div>
         {showMessageOptions && (
@@ -88,11 +90,15 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
                 </div>
               )}
             </div>
-            <div className="mx-1">|</div>
-            <div className={`message-buttons flex gap-2 px-1 ${message.sender === user!.uid ? "flex-row-reverse" : ""}`}>
-              <button className="flex items-center rounded-full scale-[1.35] hover:scale-150"><MdEdit /></button>
-              <button className="flex items-center rounded-full scale-[1.35] hover:scale-150"><MdDelete /></button>
-            </div>
+            {message.sender === user?.uid && (
+              <>
+                <div className="mx-1">|</div>
+                <div className={`message-buttons flex gap-2 px-1 ${message.sender === user!.uid ? "flex-row-reverse" : ""}`}>
+                  <button className="flex items-center rounded-full scale-[1.35] hover:scale-150"><MdEdit /></button>
+                  <button className="flex items-center rounded-full scale-[1.35] hover:scale-150" onClick={() => setIsDeleteModalOpen(true)}><MdDelete /></button>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -107,6 +113,9 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
           </span>
         ))}
       </div>
+      <Modal modalRef={deleteMessageRef} isModalOpen={isDeleteModalOpen} setIsModalOpen={setIsDeleteModalOpen}>
+        <DeleteMessage message={message} setIsModalOpen={setIsDeleteModalOpen} />
+      </Modal>
     </>
   );
 };
