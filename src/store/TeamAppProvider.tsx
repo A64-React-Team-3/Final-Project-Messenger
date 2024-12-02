@@ -10,7 +10,6 @@ export const TeamAppProvider: React.FC<TeamAppProviderProps> = ({
   children,
 }) => {
   const [team, setTeam] = useState<TeamModel | null>(null);
-
   return (
     <TeamAppContext.Provider value={{ team, setTeam }}>
       {children}

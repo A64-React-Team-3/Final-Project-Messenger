@@ -15,10 +15,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
 }): JSX.Element => {
   const createChannelRef = useRef<HTMLDialogElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { team, setTeam } = useContext(TeamAppContext);
-  useEffect(() => {
-    console.log("team", team);
-  }, [team]);
+  const { team } = useContext(TeamAppContext);
   return (
     <div className="navbar py-0 px-0 bg-zinc-900 h-14">
       <div className="flex-none h-full">
@@ -28,7 +25,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
             role="button"
             className="btn btn-neutral w-full h-full bg-slate-600 rounded-none "
           >
-            <h2>{team && team.name}</h2>
+            <h2>{team?.name}</h2>
           </div>
           <ul
             tabIndex={0}
