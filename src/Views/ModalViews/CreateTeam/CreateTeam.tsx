@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { uploadImage } from "../../../services/storage.service";
-// import { UserAppContext } from "../../../store/user.context.ts";
+import { createTeam } from "../../../services/team.service";
+import { UserAppContext } from "../../../store/user.context.ts";
 type CreateTeamProps = {
   closeModal: () => void;
 };
@@ -9,18 +10,13 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ closeModal }): JSX.Element => {
   const [teamName, setTeamName] = useState<string>("");
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  //   const [teamId, setTeamId] = useState<number | null>(null);
-  //   const { user } = useContext(UserAppContext);
+  const { user } = useContext(UserAppContext);
 
   const updateTeamName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTeamName(event.target.value);
   };
 
-  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // setIsTeamPrivate(event.target.value === "private");
-    // if(event.target.value === true){
-
-    // }
+  const handleSwitchChange = () => {
     setIsTeamPrivate(!isTeamPrivate);
   };
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,9 +36,15 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ closeModal }): JSX.Element => {
         const teamData = {
           name: teamName,
           privacy: privacy,
-          avatarUrl: imageUrl,
+          avatarUrl: imageUrl || null,
         };
         console.log("teamData", teamData);
+        try {
+          await createTeam(user!, teamName, privacy, imageUrl);
+          closeModal();
+        } catch (error) {
+          console.error("Error with creating team: ", error);
+        }
       } catch (error) {
         console.error("Error uploading image", error);
       }
