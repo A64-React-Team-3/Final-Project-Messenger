@@ -22,7 +22,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
   const [messageToSend, setMessageToSend] = useState<string>("");
   const [messages, setMessages] = useState<MessageModel[]>([]);
   const [textareaHeight, setTextareaHeight] = useState(0);
-  const [showPicker, setShowPicker] = useState<boolean>(false)
+  const [showPicker, setShowPicker] = useState<boolean>(false);
 
   const handleSendMessage = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -35,12 +35,12 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
   };
 
   const handleEmojiClick = (emojiObject: any, event: any) => {
-    setMessageToSend((prevInput) => prevInput + emojiObject.emoji);
-  }
+    setMessageToSend(prevInput => prevInput + emojiObject.emoji);
+  };
 
   const handleShowPicker = () => {
-    setShowPicker(prevValue => !prevValue)
-  }
+    setShowPicker(prevValue => !prevValue);
+  };
 
   const handleInput = () => {
     if (textareaRef.current) {
@@ -108,7 +108,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
         <div className="p-3 border-t border-base-200 flex gap-1 items-center">
           <textarea
             ref={textareaRef}
-            className="textarea w-[70rem] p-2 text-black resize-none overflow-hidden"
+            className="textarea w-[70rem] p-2 resize-none overflow-hidden"
             placeholder="Type your message here... and press Enter to send"
             onInput={handleInput}
             value={messageToSend}
@@ -117,17 +117,25 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             style={{ height: `${textareaHeight}px` }}
           ></textarea>
           <div className="relative ">
-            <button tabIndex={0} onClick={handleShowPicker} className="btn btn-ghost m-1">Emojis</button>
-            {showPicker &&
-              <div tabIndex={0} className="absolute bottom-20 right-0 bg-base-100 rounded-box z-[1] p-2 shadow">
+            <button
+              tabIndex={0}
+              onClick={handleShowPicker}
+              className="btn btn-ghost m-1"
+            >
+              Emojis
+            </button>
+            {showPicker && (
+              <div
+                tabIndex={0}
+                className="absolute bottom-20 right-0 bg-base-100 rounded-box z-[1] p-2 shadow"
+              >
                 <div className="h-96">
-                  <EmojiPicker height='100%' onEmojiClick={handleEmojiClick} />
+                  <EmojiPicker height="100%" onEmojiClick={handleEmojiClick} />
                 </div>
-              </div>}
+              </div>
+            )}
           </div>
-
         </div>
-
       </div>
       <ChannelSideBar />
     </div>
