@@ -58,7 +58,7 @@ export const getTeamById = async (teamId: string): Promise<any> => {
     if (teams.exists()) {
       console.log("Data:", teams.val());
       const data = teams.val();
-      return Object.values(data);
+      return data;
     } else {
       console.log("No data available");
       return null;
