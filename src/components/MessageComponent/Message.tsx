@@ -11,6 +11,7 @@ import { reactionEmoji } from "../../common/constants";
 import Modal from "../../hoc/Modal/Modal";
 import { useRef } from "react";
 import DeleteMessage from "../../Views/ModalViews/DeleteMessage/DeleteMessage";
+import EditMessage from "../../Views/ModalViews/EditMessage/EditMessage";
 
 type MessageProps = {
   message: MessageModel;
@@ -21,7 +22,10 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
   const [showPicker, setShowPicker] = useState<boolean>(false);
   const [showMessageOptions, setShowMessageOptions] = useState<boolean>(false);
   const deleteMessageRef = useRef<HTMLDialogElement | null>(null);
+  const editMessageRef = useRef<HTMLDialogElement | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const handleShowPicker = () => {
     setShowPicker(prevValue => !prevValue);
   };
@@ -43,7 +47,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
     <>
       <div
         className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"
-          } mt-5 mb-2 relative rounded-2xl hover:bg-base-200`}
+          } mt-5 relative rounded-2xl hover:bg-base-200`}
         onMouseEnter={() => setShowMessageOptions(true)}
         onMouseLeave={() => setShowMessageOptions(false)}
       >
@@ -94,7 +98,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
               <>
                 <div className="mx-1">|</div>
                 <div className={`message-buttons flex gap-2 px-1 ${message.sender === user!.uid ? "flex-row-reverse" : ""}`}>
-                  <button className="flex items-center rounded-full scale-[1.35] hover:scale-150"><MdEdit /></button>
+                  <button className="flex items-center rounded-full scale-[1.35] hover:scale-150" onClick={() => setIsEditModalOpen(true)}><MdEdit /></button>
                   <button className="flex items-center rounded-full scale-[1.35] hover:scale-150" onClick={() => setIsDeleteModalOpen(true)}><MdDelete /></button>
                 </div>
               </>
@@ -102,19 +106,24 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
           </div>
         )}
       </div>
-      <div className={`flex gap-2 z-10 bottom-[-1rem] w-50 flex-wrap ${message.sender === user!.uid
+      <div className={`flex gap-2 z-10 flex-wrap ${message.sender === user!.uid
         ? "left-[70rem] flex-row-reverse"
         : "right-[70rem]"
         }`}
       >
-        {message.reactions?.map((reaction, index) => (
-          <span key={index} className="text-xs">
-            {reaction.name} {reaction.count}
-          </span>
-        ))}
+        <div className="mx-12">
+          {message.reactions?.map((reaction, index) => (
+            <span key={index} className="text-sm">
+              {reaction.name} {reaction.count}
+            </span>
+          ))}
+        </div>
       </div>
       <Modal modalRef={deleteMessageRef} isModalOpen={isDeleteModalOpen} setIsModalOpen={setIsDeleteModalOpen}>
         <DeleteMessage message={message} setIsModalOpen={setIsDeleteModalOpen} />
+      </Modal>
+      <Modal modalRef={editMessageRef} isModalOpen={isEditModalOpen} setIsModalOpen={setIsEditModalOpen}>
+        <EditMessage message={message} setIsModalOpen={setIsEditModalOpen} />
       </Modal>
     </>
   );

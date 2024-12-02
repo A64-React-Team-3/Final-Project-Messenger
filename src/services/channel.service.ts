@@ -108,3 +108,11 @@ export const deleteMessage = async (channelId: string, messageId: string): Promi
     console.error("Error deleting message", error);
   }
 }
+
+export const editMessage = async (channelId: string, messageId: string, message: string): Promise<void> => {
+  try {
+    await update(ref(db), { [`channels/${channelId}/messages/${messageId}/message`]: message });
+  } catch (error) {
+    console.error("Error editing message", error);
+  }
+}
