@@ -1,7 +1,7 @@
 export type UserModel = {
-  email: string | null;
-  uid: string | null;
-  username: string | null;
-  displayName: string | null;
-  createdOn: number | null;
+  email: string;
+  uid: string;
+  username: string;
+  displayName: string;
+  createdOn: number;
 };
