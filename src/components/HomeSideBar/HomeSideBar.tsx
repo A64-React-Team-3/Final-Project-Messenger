@@ -49,7 +49,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
             </div>
           </div>
         </div>
-        <div className="list-of-teams flex-row space-y-2 pt-2 overflow-y-auto max-h-[calc(100vh-120px)]">
+        <div className="list-of-teams flex-row space-y-2 pt-2 overflow-y-auto max-h-[calc(100vh-118px)]">
           {teams &&
             teams.map(teamData => {
               return (
