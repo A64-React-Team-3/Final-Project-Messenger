@@ -1,9 +1,10 @@
 import Modal from "../../hoc/Modal/Modal";
 import { createChannel } from "../../services/channel.service";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useState } from "react";
 import CreateChannel from "../../Views/ModalViews/CreateChannel/CreateChannel";
 import ProfileButton from "../ProfileButton/ProfileButton";
+import { TeamAppContext } from "../../store/team.context";
 
 type TeamNavBarProps = {
   channelName: string | undefined;
@@ -14,7 +15,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
 }): JSX.Element => {
   const createChannelRef = useRef<HTMLDialogElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const { team } = useContext(TeamAppContext);
   return (
     <div className="navbar py-0 px-0 bg-zinc-900 h-14">
       <div className="flex-none h-full">
@@ -22,9 +23,16 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-neutral w-full h-full bg-slate-600 rounded-none "
+            className="btn btn-neutral w-full h-full bg-slate-600 rounded-none flex items-center gap-2"
           >
-            team name
+            <h2 className="text-lg font-semibold">{team?.name}</h2>
+            {team?.avatarUrl && (
+              <img
+                src={team?.avatarUrl}
+                alt="team image"
+                className="w-12 h-12"
+              />
+            )}
           </div>
           <ul
             tabIndex={0}
