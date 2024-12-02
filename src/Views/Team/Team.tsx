@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import TeamNavBar from "../../components/TeamNavBar/TeamNavBar";
 import TeamSideBar from "../../components/TeamSideBar/TeamSideBar";
 import { useState } from "react";
@@ -7,10 +7,12 @@ import { db } from "../../config/firebase-config";
 import { transformChannels } from "../../helper/helper";
 import Channel from "../Channel/Channel";
 import { ChannelModel } from "../../models/ChannelModel";
+import { TeamAppContext } from "../../store/team.context";
 
 const Team: React.FC = (): JSX.Element => {
   const [channels, setChannels] = useState<ChannelModel[]>([]);
   const [channel, setChannel] = useState<ChannelModel | null>(null);
+  // const { team, setTeam } = useContext(TeamAppContext);
   useEffect(() => {
     const channelsRef = ref(db, "channels/");
     get(channelsRef)

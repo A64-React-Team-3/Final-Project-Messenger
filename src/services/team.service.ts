@@ -35,10 +35,10 @@ export const createTeam = async (
   }
 };
 
-export const getChannels = async (): Promise<any> => {
-  const channelsRef = ref(db, "teams/");
+export const getTeams = async (): Promise<any> => {
+  const teamsRef = ref(db, "teams/");
   try {
-    const teams = await get(channelsRef);
+    const teams = await get(teamsRef);
     if (teams.exists()) {
       console.log("Data:", teams.val());
       const data = teams.val();
@@ -49,5 +49,21 @@ export const getChannels = async (): Promise<any> => {
     }
   } catch (error) {
     console.error("Error getting teams: ", error);
+  }
+};
+export const getTeamById = async (teamId: string): Promise<any> => {
+  const teamsRef = ref(db, `teams/${teamId}`);
+  try {
+    const teams = await get(teamsRef);
+    if (teams.exists()) {
+      console.log("Data:", teams.val());
+      const data = teams.val();
+      return Object.values(data);
+    } else {
+      console.log("No data available");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting team: ", error);
   }
 };

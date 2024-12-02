@@ -1,21 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import TeamAvatarButton from "../TeamAvatarButton/TeamAvatarButton";
 import CreateTeamButton from "../CreateTeamButton/CreateTeamButton";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CreateTeam from "../../Views/ModalViews/CreateTeam/CreateTeam";
 import { get, onValue, ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
+import { TeamAppContext } from "../../store/team.context";
+import { getTeamById } from "../../services/team.service";
 // import { TeamModel } from "../../helper/helper";
 const HomeSideBar: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [teams, setTeams] = useState<any[] | null>(null);
+  const { team, setTeam } = useContext(TeamAppContext);
 
   const handleToPersonal = () => {
     navigate("/dms");
   };
-  const handleToTeam = () => {
+  const handleToTeam = async (teamId: string) => {
     navigate("/home");
+    console.log(teamId);
+
+    try {
+      const team = await getTeamById(teamId);
+      setTeam(team);
+    } catch (error) {
+      console.log("Error navigating to team view: ", error);
+    }
   };
   const handleCreateTeam = () => {
     setOpenModal(prevValue => !prevValue);
@@ -53,7 +64,10 @@ const HomeSideBar: React.FC = (): JSX.Element => {
           {teams &&
             teams.map(teamData => {
               return (
-                <span key={teamData.id} onClick={handleToTeam}>
+                <span
+                  key={teamData.id}
+                  onClick={() => handleToTeam(teamData.id)}
+                >
                   <TeamAvatarButton teamData={teamData} />
                 </span>
               );
