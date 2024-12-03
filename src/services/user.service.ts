@@ -70,3 +70,9 @@ export const getUser = async (uid: string): Promise<UserModel | null> => {
   const user = transformUser(userSnapshot);
   return user;
 };
+
+export const getAllUsers = async (): Promise<UserModel[]> => {
+  const snapshot = await get(query(ref(db, "users")));
+  const users = snapshot.val();
+  return users;
+};
