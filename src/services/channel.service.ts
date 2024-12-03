@@ -100,3 +100,19 @@ export const sendReaction = async (channelId: string, messageId: string, emoji: 
     console.error("Error sending reaction", error);
   }
 }
+
+export const deleteMessage = async (channelId: string, messageId: string): Promise<void> => {
+  try {
+    await set(ref(db, `channels/${channelId}/messages/${messageId}`), null);
+  } catch (error) {
+    console.error("Error deleting message", error);
+  }
+}
+
+export const editMessage = async (channelId: string, messageId: string, message: string): Promise<void> => {
+  try {
+    await update(ref(db), { [`channels/${channelId}/messages/${messageId}/message`]: message });
+  } catch (error) {
+    console.error("Error editing message", error);
+  }
+}
