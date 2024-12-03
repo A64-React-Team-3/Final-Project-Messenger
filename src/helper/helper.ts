@@ -67,14 +67,14 @@ export const transformMessages = (
   const tMessages = Object.values(messages.val()).map(
     (message: any): MessageModel => {
       return {
+        id: message.id,
+        channelId: message.channelId,
         message: message.message,
         sender: message.sender,
         senderName: message.senderName,
-        channelId: message.channelId,
-        id: message.id,
-        reactions: Object.values(message.reactions || []),
         timestamp: message.timestamp,
         imageUrl: message.imageUrl || null,
+        reactions: Object.values(message.reactions || []),
       } as MessageModel;
     }
   );
