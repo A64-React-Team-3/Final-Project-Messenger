@@ -69,6 +69,10 @@ export const transformMessages = (
       return {
         message: message.message,
         sender: message.sender,
+        senderName: message.senderName,
+        channelId: message.channelId,
+        id: message.id,
+        reactions: Object.values(message.reactions || []),
         timestamp: message.timestamp,
         imageUrl: message.imageUrl || null,
       } as MessageModel;
@@ -85,8 +89,8 @@ export const transformDate = (timestamp: number): string => {
     daysAgo === 0
       ? "Today"
       : daysAgo === 1
-      ? "Yesterday"
-      : date.toLocaleDateString();
+        ? "Yesterday"
+        : date.toLocaleDateString();
 
   return `${day} ${date.toLocaleTimeString("en-US", {
     hour: "2-digit",

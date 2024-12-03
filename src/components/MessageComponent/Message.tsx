@@ -1,6 +1,6 @@
 import { transformDate } from "../../helper/helper";
 import { MessageModel } from "../../models/MessageModel";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserAppContext } from "../../store/user.context";
 import EmojiPicker from "emoji-picker-react";
 import { useState } from "react";
@@ -23,9 +23,8 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
   return (
     <>
       <div
-        className={`chat ${
-          message.sender === user!.uid ? "chat-end" : "chat-start"
-        } mt-5 mb-2 p-0 relative`}
+        className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"
+          } mt-5 mb-2 p-0 relative`}
         onMouseEnter={() => setIsPickerVisible(true)}
         onMouseLeave={() => setIsPickerVisible(false)}
       >
@@ -38,9 +37,8 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
           </div>
         </div>
         <div
-          className={`chat-header flex gap-1 items-center ${
-            message.sender === user!.uid ? "flex-row-reverse" : ""
-          }`}
+          className={`chat-header flex gap-1 items-center ${message.sender === user!.uid ? "flex-row-reverse" : ""
+            }`}
         >
           <span>{message.senderName}</span>
           <time className="text-xs opacity-50">
@@ -49,17 +47,15 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
           </time>
         </div>
         <div
-          className={`chat-bubble ${
-            message.sender === user!.uid ? "chat-bubble-primary" : ""
-          } break-words max-w-full`}
+          className={`chat-bubble ${message.sender === user!.uid ? "chat-bubble-primary" : ""
+            } break-words max-w-full`}
         >
           <p className="break-words">{message.message}</p>
         </div>
         {isPickerVisible && (
           <div
-            className={`absolute z-10 top-[-2rem] ${
-              message.sender === user!.uid ? "left-[50rem]" : "right-[50rem]"
-            }`}
+            className={`absolute z-10 top-[-2rem] ${message.sender === user!.uid ? "left-[50rem]" : "right-[50rem]"
+              }`}
           >
             <EmojiPicker
               onReactionClick={handleEmojiReactionClick}
@@ -73,11 +69,10 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
         )}
       </div>
       <div
-        className={`flex gap-2 z-10 bottom-[-1rem] w-50 flex-wrap ${
-          message.sender === user!.uid
-            ? "left-[70rem] flex-row-reverse"
-            : "right-[70rem]"
-        }`}
+        className={`flex gap-2 z-10 bottom-[-1rem] w-50 flex-wrap ${message.sender === user!.uid
+          ? "left-[70rem] flex-row-reverse"
+          : "right-[70rem]"
+          }`}
       >
         {message.reactions?.map((reaction, index) => (
           <span key={index} className="text-xs">
