@@ -10,6 +10,7 @@ import { transformMessages } from "../../helper/helper";
 import type { ChannelModel } from "../../models/ChannelModel";
 import { MessageModel } from "../../models/MessageModel";
 import EmojiPicker from "emoji-picker-react";
+import { MdAddReaction } from "react-icons/md";
 
 type ChannelProps = {
   channel: ChannelModel | null;
@@ -88,7 +89,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages.length]);
 
   return (
     <div className="channel-view flex h-full w-[calc(100vw-20rem)]">
@@ -108,7 +109,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
         <div className="p-3 border-t border-base-200 flex gap-1 items-center">
           <textarea
             ref={textareaRef}
-            className="textarea w-[70rem] p-2 resize-none overflow-hidden"
+            className="textarea p-2 resize-none overflow-hidden w-full"
             placeholder="Type your message here... and press Enter to send"
             onInput={handleInput}
             value={messageToSend}
@@ -122,12 +123,12 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
               onClick={handleShowPicker}
               className="btn btn-ghost m-1"
             >
-              Emojis
+              <MdAddReaction size={30} />
             </button>
             {showPicker && (
               <div
                 tabIndex={0}
-                className="absolute bottom-20 right-0 bg-base-100 rounded-box z-[1] p-2 shadow"
+                className="absolute bottom-20 right-0 bg-base-100 rounded-box z-10 p-2 shadow"
               >
                 <div className="h-96">
                   <EmojiPicker height="100%" onEmojiClick={handleEmojiClick} />
