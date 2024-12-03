@@ -1,7 +1,11 @@
 import { transformDate } from "../../helper/helper";
 import { MessageModel } from "../../models/MessageModel";
+<<<<<<< HEAD
+import { useContext, useEffect } from "react";
+=======
 import { useContext } from "react";
 import { MdAddReaction, MdDelete } from "react-icons/md";
+>>>>>>> 013e7e2e5b8923f231021f89340ed49e779fac5c
 import { UserAppContext } from "../../store/user.context";
 import EmojiPicker from "emoji-picker-react";
 import { useState } from "react";
@@ -47,9 +51,15 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
     <>
       <div
         className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"
+<<<<<<< HEAD
+          } mt-5 mb-2 p-0 relative`}
+        onMouseEnter={() => setIsPickerVisible(true)}
+        onMouseLeave={() => setIsPickerVisible(false)}
+=======
           } mt-5 p-2 relative rounded-2xl hover:bg-base-200`}
         onMouseEnter={() => setShowMessageOptions(true)}
         onMouseLeave={() => setShowMessageOptions(false)}
+>>>>>>> 013e7e2e5b8923f231021f89340ed49e779fac5c
       >
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
@@ -60,7 +70,12 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
         </div>
         <div
           className={`chat-header flex gap-1 items-center ${message.sender === user!.uid ? "flex-row-reverse" : ""
+<<<<<<< HEAD
+            }`}
+        >
+=======
             }`}>
+>>>>>>> 013e7e2e5b8923f231021f89340ed49e779fac5c
           <span>{message.senderName}</span>
           <time className="text-xs opacity-50">
             {" "}
@@ -69,6 +84,33 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
         </div>
         <div
           className={`chat-bubble ${message.sender === user!.uid ? "chat-bubble-primary" : ""
+<<<<<<< HEAD
+            } break-words max-w-full`}
+        >
+          <p className="break-words">{message.message}</p>
+        </div>
+        {isPickerVisible && (
+          <div
+            className={`absolute z-10 top-[-2rem] ${message.sender === user!.uid ? "left-[50rem]" : "right-[50rem]"
+              }`}
+          >
+            <EmojiPicker
+              onReactionClick={handleEmojiReactionClick}
+              onEmojiClick={handleEmojiReactionClick}
+              reactionsDefaultOpen={true}
+              lazyLoadEmojis={true}
+              searchDisabled={true}
+              skinTonesDisabled={true}
+            />
+          </div>
+        )}
+      </div>
+      <div
+        className={`flex gap-2 z-10 bottom-[-1rem] w-50 flex-wrap ${message.sender === user!.uid
+          ? "left-[70rem] flex-row-reverse"
+          : "right-[70rem]"
+          }`}
+=======
             } break-words max-w-full`}>
           <p className="break-words">{message.message}</p>
         </div>
@@ -110,6 +152,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
         ? "left-[70rem] flex-row-reverse"
         : "right-[70rem]"
         }`}
+>>>>>>> 013e7e2e5b8923f231021f89340ed49e779fac5c
       >
         <div className="mx-12">
           {message.reactions?.map((reaction, index) => (
