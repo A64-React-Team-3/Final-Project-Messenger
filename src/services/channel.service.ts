@@ -44,19 +44,24 @@ export const getChannels = async (): Promise<any> => {
   }
 };
 
-export const sendMessage = async (channelId: string, userId: string | null | undefined, userDisplayName: string | null | undefined, message: string, imageUrl?: string): Promise<void> => {
+export const sendMessage = async (channelId: string, userId: string | null | undefined, userDisplayName: string | null | undefined, message: string, imageUrl?: object | null): Promise<void> => {
   const messageObj = {
     message,
     sender: userId,
     senderName: userDisplayName,
     channelId: channelId,
-    imageUrl: imageUrl || null,
     timestamp: Date.now(),
+    imageUrl: imageUrl || null,
   };
+  console.log("messageObj", messageObj);
   try {
     const result = await push(ref(db, `channels/${channelId}/messages`), messageObj);
     const id = result.key;
     await update(ref(db), { [`channels/${channelId}/messages/${id}/id`]: id });
+    // if (imageUrl) {
+    //   console.log("imageUrl", imageUrl);
+    //   await update(ref(db), { [`channels/${channelId}/messages/${id}/imageUrl`]: imageUrl });
+    // }
   } catch (error) {
     console.error("Error sending message", error);
   }

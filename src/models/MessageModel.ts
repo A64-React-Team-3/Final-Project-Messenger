@@ -5,7 +5,7 @@ export type MessageModel = {
   sender: string;
   channelId: string;
   timestamp: number;
-  imageUrl?: string;
+  imageUrl?: string[];
   reactions?: [
     {
       name: string;

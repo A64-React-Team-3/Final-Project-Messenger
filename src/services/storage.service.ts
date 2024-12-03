@@ -16,3 +16,28 @@ export const uploadImage = async (file: File): Promise<string> => {
     throw new Error("Failed to upload image");
   }
 };
+
+export const uploadMessageImage = async (files: File[]): Promise<object> => {
+  try {
+    const imageURLs: { [key: string]: string } = {};
+
+    await Promise.all(files.map(async (file, idx) => {
+      const storageRef = ref(storage, `message-images/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      imageURLs[idx] = downloadURL;
+    }));
+
+    // files.map(async (file) => {
+    //   const storageRef = ref(storage, `message-images/${file.name}`);
+    //   await uploadBytes(storageRef, file);
+    //   const downloadURL = await getDownloadURL(storageRef);
+    //   imageURLs[file.name] = downloadURL;
+    // }
+    // );
+    return imageURLs;
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    throw new Error("Failed to upload image");
+  }
+};

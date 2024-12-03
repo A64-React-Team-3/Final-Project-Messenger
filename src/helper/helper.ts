@@ -73,7 +73,7 @@ export const transformMessages = (
         sender: message.sender,
         senderName: message.senderName,
         timestamp: message.timestamp,
-        imageUrl: message.imageUrl || null,
+        imageUrl: message.imageUrl ? Object.values(message.imageUrl) : null,
         reactions: Object.values(message.reactions || []),
       } as MessageModel;
     }
