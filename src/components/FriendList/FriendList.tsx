@@ -4,11 +4,6 @@ import { get, onValue, ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
 import { getAllUsers } from "../../services/user.service";
 import { UserModel } from "../../models/UserModel";
-type Friend = {
-  id: number;
-  name: string;
-  avatarUrl: string;
-};
 
 const FriendList: React.FC = (): JSX.Element => {
   const [friendSettings, setFriendSettings] = useState<string | null>(null);
