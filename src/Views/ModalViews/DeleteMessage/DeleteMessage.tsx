@@ -52,7 +52,7 @@ const DeleteMessage: React.FC<deleteMessageProps> = ({ message, setIsModalOpen }
         </div>
       </div>
       <div className="flex gap-2">
-        <button className="btn btn-sm btn-secondary" onClick={handleDeleteMessage}>Yes</button>
+        <button className="btn btn-sm btn-error text-error-content" onClick={handleDeleteMessage}>Delete</button>
         <button className="btn btn-sm btn-ghost" onClick={() => setIsModalOpen(false)}>Cancel</button>
       </div>
     </div>

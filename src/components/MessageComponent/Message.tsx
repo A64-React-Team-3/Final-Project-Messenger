@@ -47,7 +47,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
     <>
       <div
         className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"
-          } mt-5 relative rounded-2xl hover:bg-base-200`}
+          } mt-5 p-2 relative rounded-2xl hover:bg-base-200`}
         onMouseEnter={() => setShowMessageOptions(true)}
         onMouseLeave={() => setShowMessageOptions(false)}
       >
@@ -82,7 +82,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
               <button className="flex items-center rounded-full scale-[1.35] hover:scale-150" onClick={handleShowPicker}><MdAddReaction /></button>
               {showPicker && (
                 <div
-                  className={`absolute z-10 ${message.sender === user!.uid ? "left-[6rem]" : "right-[6rem]"
+                  className={`absolute z-10 h-96 ${message.sender === user!.uid ? "left-[6rem]" : "right-[6rem]"
                     }`}
                 >
                   <EmojiPicker
