@@ -12,7 +12,7 @@ import { TeamAppContext } from "../../store/team.context";
 const Team: React.FC = (): JSX.Element => {
   const [channels, setChannels] = useState<ChannelModel[]>([]);
   const [channel, setChannel] = useState<ChannelModel | null>(null);
-  const { team, setTeam } = useContext(TeamAppContext);
+  const { team } = useContext(TeamAppContext);
   useEffect(() => {
     const channelsRef = ref(db, "channels/");
     get(channelsRef)
