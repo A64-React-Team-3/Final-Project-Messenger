@@ -8,11 +8,15 @@ import { TeamAppContext } from "../../store/team.context";
 import { getTeams } from "../../services/team.service";
 import { TeamModel } from "../../models/Team/TeamModel";
 import { defaultTeamImgUrl } from "../../common/constants";
+import { transformTeams } from "../../helper/helper";
+import { toast } from "react-toastify";
 
 const FriendList: React.FC = (): JSX.Element => {
   const [friendSettings, setFriendSettings] = useState<string | null>(null);
   const [unfriendConfirm, setUnfriendConfirm] = useState<string | null>(null);
   const [pickTeam, setPickTeam] = useState<string | null>(null);
+  const [pickedTeamName, setPickedTeamName] = useState<string | null>(null);
+  const [pickFriend, setPickFriend] = useState<string | null>(null);
   const [friends, setFriends] = useState<UserModel[] | null>(null);
   const [teams, setTeams] = useState<TeamModel[] | null>([]);
   const { user } = useContext(UserAppContext);
@@ -63,25 +67,26 @@ const FriendList: React.FC = (): JSX.Element => {
     }
   }, [user]);
   useEffect(() => {
-    console.log("friends", friends);
-    console.log("teams", teams);
-  }, [friends, teams]);
-  useEffect(() => {
-    console.log("pickTeam", pickTeam);
-    try {
-      getTeams().then(snapshot => {
-        if (snapshot) {
-          const result = snapshot;
-          console.log("result", result);
-          setTeams(result);
-        } else {
-          console.log("Error fetching teams");
-        }
-      });
-    } catch (error) {
-      console.log("Error getting teams", error);
+    if (pickFriend) {
+      const teamsRef = ref(db, "teams/");
+      try {
+        getTeams().then(snapshot => {
+          if (snapshot) {
+            const unsubscribe = onValue(teamsRef, snapshot => {
+              const teamsData = transformTeams(snapshot);
+              console.log("teamsData", teamsData);
+              setTeams(teamsData);
+            });
+            return () => unsubscribe();
+          } else {
+            console.log("Error fetching teams");
+          }
+        });
+      } catch (error) {
+        console.log("Error getting teams", error);
+      }
     }
-  }, [pickTeam]);
+  }, [pickFriend]);
   const handleUnfriend = (friendId: string) => {
     console.log("unfriend: ", friendId);
     setUnfriendConfirm(null);
@@ -91,11 +96,20 @@ const FriendList: React.FC = (): JSX.Element => {
   const toggleFriendSettings = (id: string) => {
     setFriendSettings(prev => (prev === id ? null : id));
   };
-  const handleInviteToTeam = (username: string) => {
-    console.log("Invite ", username, "to team ", pickTeam);
+  const handleInviteToTeam = () => {
+    if (!pickTeam) {
+      toast.info("Please select a team first!");
+      return;
+    }
+    console.log("Invite ", pickFriend, "to team ", pickTeam);
+    setPickFriend(null);
+    setPickTeam(null);
+    setPickedTeamName(null);
   };
-  const selectTeamOption = (teamId: string) => {
+  const selectTeamOption = (teamId: string, name: string) => {
     setPickTeam(teamId);
+    setPickedTeamName(name);
+    // console.log(teamId);
   };
   return (
     <div className="collapse collapse-arrow bg-base-400 rounded-box w-full">
@@ -138,7 +152,7 @@ const FriendList: React.FC = (): JSX.Element => {
                     <li>
                       <button
                         className="text-primary hover:text-secondary"
-                        onClick={() => setPickTeam(friend.username)}
+                        onClick={() => setPickFriend(friend.displayName)}
                       >
                         Invite to Team
                       </button>
@@ -153,63 +167,6 @@ const FriendList: React.FC = (): JSX.Element => {
                     </li>
                   </ul>
                 )}
-                {pickTeam === friend.username && (
-                  <div className="modal modal-open">
-                    <div className="modal-box flex flex-col items-center bg-base-200 transition-transform transform duration-300 hover:scale-105">
-                      <h3 className="font-bold text-xl text-primary mb-6 text-center">
-                        Invite {friend.displayName} to team:
-                      </h3>
-
-                      <div className="form-control space-y-4 w-3/4 flex items-center">
-                        <div className="dropdown flex items-center w-3/4 z-50">
-                          <button
-                            tabIndex={0}
-                            className="btn btn-primary w-2/4"
-                          >
-                            Select a Team
-                          </button>
-                          <ul
-                            tabIndex={0}
-                            className="dropdown-content top-11 menu p-2 shadow bg-base-100 rounded-box  w-3/4 mt-2 absolute"
-                          >
-                            {teams &&
-                              teams.map(team => (
-                                <li
-                                  // onSelect={() => selectTeamOption(team.teamId)}
-                                  key={team.teamId}
-                                >
-                                  <a className="flex items-center space-x-2">
-                                    <img
-                                      src={team.avatarUrl || defaultTeamImgUrl}
-                                      alt={`${team.name} avatar`}
-                                      className="w-8 h-8 rounded-full"
-                                    />
-                                    <span>{team.name}</span>
-                                  </a>
-                                </li>
-                              ))}
-                          </ul>
-                        </div>
-                      </div>
-
-                      <div className="modal-action justify-center space-x-4">
-                        <button
-                          className="btn btn-primary text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-all"
-                          onClick={() => handleInviteToTeam(friend.username)}
-                        >
-                          Invite
-                        </button>
-                        <button
-                          className="btn btn-secondary text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-all"
-                          onClick={() => setPickTeam(null)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
                 {unfriendConfirm === friend.uid && (
                   <div className="modal modal-open">
                     <div className="modal-box bg-gray-800 text-white shadow-xl rounded-lg transition-transform transform duration-300 scale-100 hover:scale-105">
@@ -224,7 +181,7 @@ const FriendList: React.FC = (): JSX.Element => {
                           Yes, Unfriend
                         </button>
                         <button
-                          className="btn btn-secondary   text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-all"
+                          className="btn btn-secondary text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-all"
                           onClick={() => setUnfriendConfirm(null)}
                         >
                           Cancel
@@ -235,6 +192,65 @@ const FriendList: React.FC = (): JSX.Element => {
                 )}
               </div>
             ))}
+          {pickFriend && (
+            <div className="modal modal-open" style={{ zIndex: 49 }}>
+              <div className="modal-box flex flex-col items-center bg-base-200 h-72 w-80 overflow-hidden">
+                <h3 className="font-bold text-xl text-primary text-center mb-3">
+                  Invite {pickFriend} to team:
+                </h3>
+
+                <div className="form-control w-3/4 flex items-center bg-base-300">
+                  <div className="flex flex-col items-center w-3/4 z-50 justify-center ">
+                    <ul className="menu p-2 shadow bg-base-100 rounded-box w-64 max-h-[20vh] overflow-auto flex flex-row ">
+                      {teams &&
+                        teams.map(team => (
+                          <li
+                            onClick={() =>
+                              selectTeamOption(team.teamId, team.name)
+                            }
+                            key={team.teamId}
+                          >
+                            <a className="flex items-center space-x-2">
+                              <img
+                                src={team.avatarUrl || defaultTeamImgUrl}
+                                alt={`${team.name} avatar`}
+                                className="w-8 h-8 rounded-full"
+                              />
+                              <span className="break-words truncate w-32">
+                                {team.name}
+                              </span>
+                            </a>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="modal-action justify-between space-x-4 w-full ">
+                  <button
+                    className="btn btn-outline btn-primary text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-all"
+                    onClick={handleInviteToTeam}
+                  >
+                    Invite
+                  </button>
+                  <span className="break-words truncate max-w-20 text-center mt-2">
+                    {pickedTeamName}
+                  </span>
+                  <button
+                    className="btn btn-outline btn-secondary text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-all"
+                    onClick={() => {
+                      setPickFriend(null);
+                      setPickTeam(null);
+                      setPickedTeamName(null);
+                      return;
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
