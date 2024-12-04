@@ -82,17 +82,20 @@ const FriendList: React.FC = (): JSX.Element => {
       console.log("Error getting teams", error);
     }
   }, [pickTeam]);
-  const handleUnfriend = (friendId: string | null) => {
+  const handleUnfriend = (friendId: string) => {
     console.log("unfriend: ", friendId);
     setUnfriendConfirm(null);
     setFriendSettings(null);
   };
 
-  const toggleFriendSettings = (id: string | null) => {
+  const toggleFriendSettings = (id: string) => {
     setFriendSettings(prev => (prev === id ? null : id));
   };
   const handleInviteToTeam = (username: string) => {
-    console.log("username", username);
+    console.log("Invite ", username, "to team ", pickTeam);
+  };
+  const selectTeamOption = (teamId: string) => {
+    setPickTeam(teamId);
   };
   return (
     <div className="collapse collapse-arrow bg-base-400 rounded-box w-full">
@@ -151,14 +154,14 @@ const FriendList: React.FC = (): JSX.Element => {
                   </ul>
                 )}
                 {pickTeam === friend.username && (
-                  <div className="modal modal-open ">
+                  <div className="modal modal-open">
                     <div className="modal-box flex flex-col items-center bg-base-200 transition-transform transform duration-300 hover:scale-105">
                       <h3 className="font-bold text-xl text-primary mb-6 text-center">
                         Invite {friend.displayName} to team:
                       </h3>
 
-                      <div className="form-control space-y-4 w-3/4 flex items-center relative">
-                        <div className="dropdown flex items-center w-3/4">
+                      <div className="form-control space-y-4 w-3/4 flex items-center">
+                        <div className="dropdown flex items-center w-3/4 z-50">
                           <button
                             tabIndex={0}
                             className="btn btn-primary w-2/4"
@@ -167,12 +170,14 @@ const FriendList: React.FC = (): JSX.Element => {
                           </button>
                           <ul
                             tabIndex={0}
-                            className="dropdown-content  menu p-2 shadow bg-base-100 rounded-box  w-3/4 mt-2 absolute z-50"
-                            style={{ top: "100%" }}
+                            className="dropdown-content top-11 menu p-2 shadow bg-base-100 rounded-box  w-3/4 mt-2 absolute"
                           >
                             {teams &&
                               teams.map(team => (
-                                <li key={team.teamId}>
+                                <li
+                                  // onSelect={() => selectTeamOption(team.teamId)}
+                                  key={team.teamId}
+                                >
                                   <a className="flex items-center space-x-2">
                                     <img
                                       src={team.avatarUrl || defaultTeamImgUrl}
