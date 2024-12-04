@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SettingsMenu, { MenuItem } from "../Settings/SettingsMenu/SettingsMenu";
-
+import { MdExitToApp } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 export type SettingsItem = MenuItem & {
   /** React component to render for this menu item */
   component: JSX.Element;
@@ -22,6 +23,7 @@ export type SettingsProps = {
 const Settings: React.FC<SettingsProps> = ({
   settingsItems,
 }: SettingsProps): JSX.Element => {
+  const navigate = useNavigate();
   const [activeKey, setActiveKey] = useState(settingsItems[0]?.key);
 
   const activeComponent =
@@ -39,6 +41,14 @@ const Settings: React.FC<SettingsProps> = ({
       <div className="flex-1 bg-base-100 w-1/4 p-4 rounded-box shadow">
         {activeComponent}
       </div>
+      <button
+        onClick={() => {
+          navigate(-1);
+        }}
+        className="btn btn-square hover:btn-accent btn-error absolute right-7 top-5"
+      >
+        <MdExitToApp size={25} />
+      </button>
     </div>
   );
 };
