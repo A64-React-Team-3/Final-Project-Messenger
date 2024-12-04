@@ -1,7 +1,7 @@
 import ChannelSideBar from "../../components/ChannelSideBar/ChannelSideBar";
 import { useEffect, useRef, useState } from "react";
 import MessageComponent from "../../components/MessageComponent/Message";
-import { get, onValue, ref } from "firebase/database";
+import { get, onValue, ref, set } from "firebase/database";
 import { db } from "../../config/firebase-config";
 import { sendMessage } from "../../services/channel.service";
 import { useContext } from "react";
@@ -52,10 +52,6 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
         sendMessage(channel.id, user?.uid, user?.displayName, messageToSend);
         setMessageToSend("");
       }
-      // if (messageToSend.trim() !== "" && channel) {
-      //   sendMessage(channel.id, user?.uid, user?.displayName, messageToSend);
-      //   setMessageToSend("");
-      // }
     };
   };
 
@@ -70,8 +66,9 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
     }
   };
 
-  const removeImageFiles = (imageURL: string) => {
-    setImagePreviewFilesURL((prevValue) => prevValue.filter((image) => image !== imageURL));
+  const removeImageFiles = (idx: number) => {
+    setImagePreviewFilesURL((prevValue) => prevValue.filter((_, index) => index !== idx));
+    setImageFiles((prevValue) => prevValue.filter((_, index) => index !== idx));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -153,7 +150,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             {imagePreviewFilesURL.length > 0 && (
               <div className="flex flex-row gap-2 mb-1">
                 {imagePreviewFilesURL.map((imageURL, idx) => (
-                  <PreviewImage key={idx} imageURL={imageURL} removeImageFiles={removeImageFiles} />
+                  <PreviewImage key={idx} idx={idx} imageURL={imageURL} removeImageFiles={removeImageFiles} />
                 ))}
               </div>
             )}

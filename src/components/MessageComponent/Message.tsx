@@ -71,11 +71,13 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
           className={`chat-bubble ${message.sender === user!.uid ? "chat-bubble-primary" : ""
             } break-words max-w-full`}>
           {message.imageUrl && (
-            message.imageUrl.map((url, index) => (
-              <div key={index} className="avatar w-40 rounded">
-                <img src={url} alt="" className="rounded" />
-              </div>
-            ))
+            <div className="flex flex-row gap-2">
+              {message.imageUrl.map((url, index) => (
+                <div key={index} className="w-40">
+                  <img src={url} alt="" className="rounded-md" />
+                </div>
+              ))}
+            </div>
           )}
           <p className="break-words">{message.message}</p>
         </div>

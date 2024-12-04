@@ -53,15 +53,10 @@ export const sendMessage = async (channelId: string, userId: string | null | und
     timestamp: Date.now(),
     imageUrl: imageUrl || null,
   };
-  console.log("messageObj", messageObj);
   try {
     const result = await push(ref(db, `channels/${channelId}/messages`), messageObj);
     const id = result.key;
     await update(ref(db), { [`channels/${channelId}/messages/${id}/id`]: id });
-    // if (imageUrl) {
-    //   console.log("imageUrl", imageUrl);
-    //   await update(ref(db), { [`channels/${channelId}/messages/${id}/imageUrl`]: imageUrl });
-    // }
   } catch (error) {
     console.error("Error sending message", error);
   }
