@@ -6,7 +6,8 @@ import { get, ref, onValue, DataSnapshot, set } from "firebase/database";
 import { db } from "../../config/firebase-config";
 import { getChannelsByIds } from "../../services/channel.service";
 import { transformChannelFromSnapshotVal } from "../../helper/helper";
-
+import { FaRocketchat } from "react-icons/fa6";
+import { MdOutlineVoiceChat } from "react-icons/md";
 
 type TeamSideBarProps = {
   team: TeamModel | null;
@@ -22,11 +23,11 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
   useEffect(() => {
     const teamChannelsRef = ref(db, `teams/${team?.teamId}/channels`);
     get(teamChannelsRef)
-      .then((snapshot) => {
+      .then(snapshot => {
         if (snapshot.exists()) {
-          const unsubscribe = onValue(teamChannelsRef, (snapshot) => {
+          const unsubscribe = onValue(teamChannelsRef, snapshot => {
             const channelsData = Object.keys(snapshot.val());
-            getChannelsByIds(channelsData).then((channels) => {
+            getChannelsByIds(channelsData).then(channels => {
               setChannels(transformChannelFromSnapshotVal(channels));
             });
           });
@@ -36,15 +37,14 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
           setChannels([]);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error getting channels", error);
       });
-
   }, [team]);
 
   return (
     <div className="border-base-300 flex-col justify-center px-4 bg-slate-600 text-slate-50 h-full w-60 ">
-      <div className="collapse">
+      <div className="collapse collapse-arrow">
         <input type="checkbox" />
         <div className="collapse-title z-0 text-xl font-medium">
           Text Channels
@@ -52,25 +52,30 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
         <div className="collapse-content">
           {channels.map((channel, idx) => (
             <div key={channel?.id}>
-              <a
+              <button
                 onClick={() => setChannel(channel ? channel : null)}
                 key={idx}
-                className="text-sm"
+                className="btn btn-sm btn-outline btn-primary  text-sm hover:bg-gray-700 mb-3"
               >
+                <span className="mr-2 text-lg">
+                  <FaRocketchat className="text-secondary" />
+                </span>
                 {channel?.name}
-              </a>
+              </button>
             </div>
           ))}
         </div>
       </div>
-      <div className="collapse">
+      <div className="collapse collapse-arrow">
         <input type="checkbox" />
-        <div className="collapse-title text-xl font-medium">Voice Channels</div>
-        <div className="collapse-content">
-          <p>Channel 1</p>
-          <p>Channel 2</p>
-          <p>Channel 3</p>
-          <p>Channel 4</p>
+        <div className="collapse-title text-xl font-medium">Voice Channel</div>
+        <div className="collapse-content flex flex-row">
+          <button className="btn btn-sm btn-outline btn-primary  text-sm hover:bg-gray-700 mb-3">
+            <span className="mr-2 text-lg">
+              <MdOutlineVoiceChat className="text-secondary" />
+            </span>
+            Audio/Video Call
+          </button>
         </div>
       </div>
     </div>
