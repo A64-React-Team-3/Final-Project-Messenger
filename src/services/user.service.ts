@@ -45,11 +45,6 @@ export const createUser = async (
     displayName: username,
     uid,
     status: "online",
-    teams: null,
-    channels: null,
-    friends: null,
-    blocked: null,
-    avatarUrl: null,
     createdOn: Date.now(),
   };
   await set(ref(db, `users/${handle}`), user);

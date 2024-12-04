@@ -1,6 +1,7 @@
 import { get, push, ref, update } from "firebase/database";
 import { UserModel } from "../models/UserModel";
 import { db } from "../config/firebase-config";
+import { TeamModel } from "../models/Team/TeamModel";
 
 export const createTeam = async (
   user: UserModel,
@@ -35,35 +36,34 @@ export const createTeam = async (
   }
 };
 
-export const getTeams = async (): Promise<any> => {
+export const getTeams = async (): Promise<TeamModel[] | void> => {
   const teamsRef = ref(db, "teams/");
   try {
     const teams = await get(teamsRef);
     if (teams.exists()) {
-      console.log("Data:", teams.val());
       const data = teams.val();
       return Object.values(data);
     } else {
-      console.log("No data available");
-      return null;
+      throw new Error("No data available");
     }
   } catch (error) {
     console.error("Error getting teams: ", error);
   }
 };
-export const getTeamById = async (teamId: string): Promise<any> => {
+export const getTeamById = async (
+  teamId: string
+): Promise<TeamModel | null> => {
   const teamsRef = ref(db, `teams/${teamId}`);
   try {
     const teams = await get(teamsRef);
     if (teams.exists()) {
-      console.log("Data:", teams.val());
       const data = teams.val();
       return data;
     } else {
-      console.log("No data available");
-      return null;
+      throw new Error("No data available");
     }
   } catch (error) {
     console.error("Error getting team: ", error);
+    return null;
   }
 };

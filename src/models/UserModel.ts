@@ -8,10 +8,10 @@ export type UserModel = {
   username: string;
   displayName: string;
   createdOn: number;
-  teams: UserTeam[] | null;
-  channels: UserChannel[] | null;
-  friends: FriendModel[] | null;
-  blocked: FriendModel[] | null;
-  avatarUrl: string | null;
+  teams?: UserTeam[];
+  channels?: UserChannel[];
+  friends?: FriendModel[];
+  blocked?: FriendModel[];
+  avatarUrl?: string;
   status: "online" | "idle" | "offline";
 };
