@@ -2,26 +2,28 @@ import { useContext, useEffect } from "react";
 import TeamNavBar from "../../components/TeamNavBar/TeamNavBar";
 import TeamSideBar from "../../components/TeamSideBar/TeamSideBar";
 import { useState } from "react";
-import { get, onValue, ref } from "firebase/database";
+import { DataSnapshot, get, onValue, ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
-import { transformChannels } from "../../helper/helper";
+import { transformChannelsFromSnapshot } from "../../helper/helper";
 import Channel from "../Channel/Channel";
 import { ChannelModel } from "../../models/ChannelModel";
 import { TeamAppContext } from "../../store/team.context";
+import { getChannelsByIds } from "../../services/channel.service";
 
 const Team: React.FC = (): JSX.Element => {
-  const [channels, setChannels] = useState<ChannelModel[]>([]);
-  const [channel, setChannel] = useState<ChannelModel | null>(null);
+  const [allChannels, setAllChannels] = useState<ChannelModel[]>([]);
+  const [teamChannels, setTeamChannels] = useState<(ChannelModel | undefined)[]>([]);
+  const [currentChannel, setCurrentChannel] = useState<ChannelModel | null>(null);
   const { team } = useContext(TeamAppContext);
   useEffect(() => {
-    const channelsRef = ref(db, "channels/");
+    const channelsRef = ref(db, `channels/`);
     get(channelsRef)
       .then(channelsSnapshot => {
         if (channelsSnapshot.exists()) {
           const unsubscribe = onValue(channelsRef, snapshot => {
-            const transformedData = transformChannels(snapshot);
+            const transformedData = transformChannelsFromSnapshot(snapshot);
             if (transformedData) {
-              setChannels(transformedData);
+              setAllChannels(transformedData);
             }
           });
 
@@ -33,16 +35,24 @@ const Team: React.FC = (): JSX.Element => {
       });
   }, []);
 
+  // useEffect(() => {
+  //   if (team?.channels) {
+  //     const filteredChannels = team?.channels.map((channelId) => {
+  //       return allChannels.find((channel: ChannelModel) => channel.id === channelId);
+  //     });
+  //     if (filteredChannels) {
+  //       setTeamChannels(filteredChannels);
+  //     }
+  //   }
+  // }, [team?.channels]);
+
+
   return (
     <div className="border-base-200 bg-base-300 flex-col justify-center w-full ">
-      <TeamNavBar channelName={channel?.name} />
+      <TeamNavBar channelName={currentChannel?.name} />
       <div className="flex w-full h-[calc(100vh-4rem)]">
-        {team?.channels ? (
-          <TeamSideBar channels={team?.channels} setChannel={setChannel} />
-        ) : (
-          <TeamSideBar channels={channels} setChannel={setChannel} />
-        )}
-        <Channel channel={channel} />
+        <TeamSideBar setChannel={setCurrentChannel} team={team} />
+        <Channel channel={currentChannel} />
       </div>
     </div>
   );

@@ -24,8 +24,6 @@ const HomeSideBar: React.FC = (): JSX.Element => {
   };
   const handleToTeam = async (team: TeamModel) => {
     navigate("/home");
-    console.log(team);
-
     try {
       setTeam(team);
     } catch (error) {
@@ -47,7 +45,6 @@ const HomeSideBar: React.FC = (): JSX.Element => {
               console.log("teamsData", teamsData);
               setTeams(teamsData);
             });
-
             return () => unsubscribe();
           }
         })

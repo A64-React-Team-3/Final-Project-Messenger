@@ -17,7 +17,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { team } = useContext(TeamAppContext);
   return (
-    <div className="navbar py-0 px-0 bg-zinc-900 h-14">
+    <div className="navbar py-0 px-0 bg-base-100 h-14">
       <div className=" h-full">
         <div className="dropdown dropdown-end h-full w-60">
           <div
@@ -38,7 +38,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-gray-800 rounded-box z-[100] mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[100] mt-3 w-52 p-2 shadow"
           >
             <li>
               <a>Team Settings</a>
@@ -75,7 +75,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       >
-        <CreateChannel />
+        <CreateChannel team={team} setIsModalOpen={setIsModalOpen} />
       </Modal>
     </div>
   );

@@ -106,7 +106,6 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             return () => unsubscribe();
           } else {
             setMessages([]);
-            return null;
           }
         })
         .catch(error => {

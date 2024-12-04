@@ -17,7 +17,7 @@ export const transformUser = (
   return userData;
 };
 
-export const transformChannels = (
+export const transformChannelsFromSnapshot = (
   channels: import("firebase/database").DataSnapshot
 ): ChannelModel[] => {
   const tChannels = Object.values(channels.val()).map(
@@ -37,6 +37,27 @@ export const transformChannels = (
 
   return tChannels;
 };
+
+export const transformChannelFromSnapshotVal = (channels: any[]): ChannelModel[] => {
+  const tChannels = channels.map(
+    (channel: any): ChannelModel => {
+      return {
+        id: channel.id,
+        name: channel.name,
+        members: Object.keys(channel.members || {}),
+        messages: channel.messages ? Object.values(channel.messages) : null,
+        creator: channel.creator,
+        teamId: channel.teamId,
+        private: channel.private,
+        createdOn: channel.createdOn,
+      } as ChannelModel;
+    }
+  );
+
+  return tChannels;
+}
+
+
 export const transformTeams = (
   teams: import("firebase/database").DataSnapshot
 ): TeamModel[] => {
@@ -54,7 +75,7 @@ export const transformTeams = (
         joinRequests: team.joinRequests
           ? Object.values(team.joinRequests)
           : null,
-        channels: team.channels ? Object.values(team.channels) : null,
+        channels: team.channels ? Object.keys(team.channels) : null,
       } as TeamModel;
     }
   );

@@ -1,18 +1,47 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
-import { TeamChannelModel } from "../../models/Team/TeamChannelModel";
+import { useState } from "react";
+import { TeamModel } from "../../models/Team/TeamModel";
+import { get, ref, onValue, DataSnapshot, set } from "firebase/database";
+import { db } from "../../config/firebase-config";
+import { getChannelsByIds } from "../../services/channel.service";
+import { transformChannelFromSnapshotVal } from "../../helper/helper";
+
 
 type TeamSideBarProps = {
-  // channels: ChannelModel[] | TeamChannelModel[];
-  channels: any[];
-  // setChannel: Dispatch<SetStateAction<ChannelModel | TeamChannelModel | null>>;
-  setChannel: any;
+  team: TeamModel | null;
+  setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
 };
 
 const TeamSideBar: React.FC<TeamSideBarProps> = ({
-  channels,
+  team,
   setChannel,
 }): JSX.Element => {
+  const [channels, setChannels] = useState<ChannelModel[]>([]);
+
+  useEffect(() => {
+    const teamChannelsRef = ref(db, `teams/${team?.teamId}/channels`);
+    get(teamChannelsRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const unsubscribe = onValue(teamChannelsRef, (snapshot) => {
+            const channelsData = Object.keys(snapshot.val());
+            getChannelsByIds(channelsData).then((channels) => {
+              setChannels(transformChannelFromSnapshotVal(channels));
+            });
+          });
+
+          return () => unsubscribe();
+        } else {
+          setChannels([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting channels", error);
+      });
+
+  }, [team]);
+
   return (
     <div className="border-base-300 flex-col justify-center px-4 bg-slate-600 text-slate-50 h-full w-60 ">
       <div className="collapse">
@@ -22,13 +51,13 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
         </div>
         <div className="collapse-content">
           {channels.map((channel, idx) => (
-            <div key={channel.id}>
+            <div key={channel?.id}>
               <a
-                onClick={() => setChannel(channel)}
+                onClick={() => setChannel(channel ? channel : null)}
                 key={idx}
                 className="text-sm"
               >
-                {channel.name}
+                {channel?.name}
               </a>
             </div>
           ))}
