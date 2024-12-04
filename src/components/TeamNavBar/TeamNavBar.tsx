@@ -18,19 +18,21 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
   const { team } = useContext(TeamAppContext);
   return (
     <div className="navbar py-0 px-0 bg-zinc-900 h-14">
-      <div className="flex-none h-full">
+      <div className=" h-full">
         <div className="dropdown dropdown-end h-full w-60">
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-neutral w-full h-full bg-slate-600 rounded-none flex items-center gap-2"
+            className="btn btn-neutral w-full h-full rounded-none flex flex-col  justify-center items-center gap-2 p-4"
           >
-            <h2 className="text-lg font-semibold">{team?.name}</h2>
+            <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 overflow-hidden">
+              {team?.name}
+            </h2>
             {team?.avatarUrl && (
               <img
                 src={team?.avatarUrl}
                 alt="team image"
-                className="w-12 h-12"
+                className="w-12 h-12 rounded-full"
               />
             )}
           </div>
