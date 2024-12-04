@@ -14,6 +14,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [loadingCreateTeam, setLoadingCreateTeam] = useState<boolean>(false);
+  const [loadingTeamsData, setLoadingTeamsData] = useState<boolean>(false);
   const [teams, setTeams] = useState<TeamModel[] | null>(null);
   const { team, setTeam } = useContext(TeamAppContext);
 
@@ -35,22 +36,26 @@ const HomeSideBar: React.FC = (): JSX.Element => {
     setOpenModal(prevValue => !prevValue);
   };
   useEffect(() => {
-    const teamsRef = ref(db, "teams/");
-    getTeams()
-      .then(snapshot => {
-        if (snapshot) {
-          const unsubscribe = onValue(teamsRef, snapshot => {
-            const teamsData = transformTeams(snapshot);
-            console.log("teamsData", teamsData);
-            setTeams(teamsData);
-          });
+    if (!teams) {
+      const teamsRef = ref(db, "teams/");
+      setLoadingTeamsData(true);
+      getTeams()
+        .then(snapshot => {
+          if (snapshot) {
+            const unsubscribe = onValue(teamsRef, snapshot => {
+              const teamsData = transformTeams(snapshot);
+              console.log("teamsData", teamsData);
+              setTeams(teamsData);
+            });
 
-          return () => unsubscribe();
-        }
-      })
-      .catch(error => {
-        console.error("Error getting channels", error);
-      });
+            return () => unsubscribe();
+          }
+        })
+        .catch(error => {
+          console.error("Error getting channels", error);
+        })
+        .finally(() => setLoadingTeamsData(false));
+    }
   }, []);
   return (
     <>
@@ -69,6 +74,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
           </span>
         </div>
         <div className="list-of-teams flex flex-col space-y-2 pt-2 overflow-y-auto max-h-[calc(100vh-118px)] scrollbar-hide ">
+          {loadingTeamsData && <LoadingSpinner />}
           {teams &&
             teams.map((teamData: TeamModel, index: number) => {
               return (

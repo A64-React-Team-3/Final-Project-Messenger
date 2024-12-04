@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { UserAppContext } from "../../store/user.context";
 import { get, onValue, ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
@@ -10,6 +10,7 @@ import { TeamModel } from "../../models/Team/TeamModel";
 import { defaultTeamImgUrl } from "../../common/constants";
 import { transformTeams } from "../../helper/helper";
 import { toast } from "react-toastify";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const FriendList: React.FC = (): JSX.Element => {
   const [friendSettings, setFriendSettings] = useState<string | null>(null);
@@ -20,9 +21,11 @@ const FriendList: React.FC = (): JSX.Element => {
   const [friends, setFriends] = useState<UserModel[] | null>(null);
   const [teams, setTeams] = useState<TeamModel[] | null>([]);
   const { user } = useContext(UserAppContext);
-
+  const [loadingFriends, setLoadingFriends] = useState<boolean>(false);
+  const friendSettingsRef = useRef<HTMLLIElement>(null);
   useEffect(() => {
-    if (user) {
+    if (user && !friends) {
+      setLoadingFriends(true);
       // const friendsRef = ref(db, `users/${user?.username}/friends`);
       const friendsRef = ref(db, `users`);
       // get(friendsRef)
@@ -63,7 +66,8 @@ const FriendList: React.FC = (): JSX.Element => {
         })
         .catch(error => {
           console.error("Error getting friends", error);
-        });
+        })
+        .finally(() => setLoadingFriends(false));
     }
   }, [user]);
   useEffect(() => {
@@ -95,6 +99,12 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const toggleFriendSettings = (id: string) => {
     setFriendSettings(prev => (prev === id ? null : id));
+    if (friendSettingsRef.current && friendSettings === id) {
+      friendSettingsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   };
   const handleInviteToTeam = () => {
     if (!pickTeam) {
@@ -117,6 +127,7 @@ const FriendList: React.FC = (): JSX.Element => {
       <div className="collapse-title text-xl font-medium">Friends</div>
       <div className="collapse-content">
         <div className="max-h-48 overflow-y-auto">
+          {loadingFriends && <LoadingSpinner />}
           {friends &&
             friends.map(friend => (
               <div key={friend.uid} className="mb-2">
@@ -142,7 +153,7 @@ const FriendList: React.FC = (): JSX.Element => {
                   <p className="font-semibold">{friend.displayName}</p>
                 </div>
                 {friendSettings === friend.uid && (
-                  <ul className="menu menu-sm bg-gray-700 rounded-box mt-2 w-52 p-2 shadow">
+                  <ul className="menu menu-sm bg-gray-700 rounded-box mt-2 w-48 p-2 shadow">
                     <li>
                       <a className="justify-between">
                         Profile
@@ -157,7 +168,7 @@ const FriendList: React.FC = (): JSX.Element => {
                         Invite to Team
                       </button>
                     </li>
-                    <li>
+                    <li ref={friendSettingsRef}>
                       <button
                         className="text-red-500 hover:text-red-700 hover:font-bold"
                         onClick={() => setUnfriendConfirm(friend.uid)}

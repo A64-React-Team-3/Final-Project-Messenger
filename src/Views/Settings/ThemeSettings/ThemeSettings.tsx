@@ -8,7 +8,7 @@ import React from "react";
  */
 const ThemeSettings: React.FC = (): JSX.Element => {
   return (
-    <div className="w-full max-w-xl bg-dark p-8 rounded-lg space-y-8">
+    <div className="w-full max-w-xl bg-dark p-2 rounded-lg space-y-8">
       <h2 className="text-4xl font-bold">Theme Settings</h2>
       <p className="text-xl">Manage your app's theme preferences.</p>
 

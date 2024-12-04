@@ -8,7 +8,7 @@ import { get, onValue, ref } from "firebase/database";
 import { transformChannels } from "../../helper/helper";
 import { db } from "../../config/firebase-config";
 import Channel from "../Channel/Channel";
-
+import { FaRocketchat } from "react-icons/fa6";
 const Personal: React.FC = (): JSX.Element => {
   const [channels, setChannels] = useState<ChannelModel[]>([]);
   const [channel, setChannel] = useState<ChannelModel | null>(null);
@@ -47,9 +47,12 @@ const Personal: React.FC = (): JSX.Element => {
                   <div className="mb-3" key={channel.id}>
                     <button
                       onClick={() => setChannel(channel)}
-                      className="btn btn-sm btn-outline btn-secondary  text-sm hover:bg-gray-700"
+                      className="btn btn-sm btn-outline btn-primary  text-sm hover:bg-gray-700"
                     >
-                      <span className="mr-2 text-lg">💬</span> {channel.name}
+                      <span className="mr-2 text-lg ">
+                        <FaRocketchat className="text-secondary" />
+                      </span>
+                      {channel.name}
                     </button>
                   </div>
                 ))}
@@ -57,7 +60,7 @@ const Personal: React.FC = (): JSX.Element => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col h-screen overflow-x-hidden">
+        <div className="flex flex-col h-screen">
           <div className="navbar py-0 px-0 bg-zinc-900 h-14 w-full flex items-center justify-between">
             <div className="left-content">
               <h2 className="p-2">
@@ -68,7 +71,7 @@ const Personal: React.FC = (): JSX.Element => {
               <ProfileButton />
             </div>
           </div>
-          <div className="flex-grow text-slate-50 ">
+          <div className="flex-grow text-slate-50 overflow-auto">
             <Channel channel={channel} />
           </div>
         </div>
