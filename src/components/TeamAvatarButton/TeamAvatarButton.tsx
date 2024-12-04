@@ -1,8 +1,9 @@
 import { defaultTeamImgUrl } from "../../common/constants";
-type TeamAvatarButton = {
-  teamData: any;
+import { TeamModel } from "../../models/Team/TeamModel";
+type TeamAvatarButtonProps = {
+  teamData: TeamModel;
 };
-const TeamAvatarButton: React.FC<TeamAvatarButton> = ({
+const TeamAvatarButton: React.FC<TeamAvatarButtonProps> = ({
   teamData,
 }): JSX.Element => {
   return (
