@@ -3,6 +3,7 @@ import { db } from "../config/firebase-config";
 import { transformUser } from "../helper/helper";
 import { UserModel } from "../models/UserModel";
 import { FriendModel } from "../models/User/FriendModel";
+import { Status } from "../common/constants";
 
 /**
  * Retrieves a user by their handle.
@@ -44,7 +45,7 @@ export const createUser = async (
     username,
     displayName: username,
     uid,
-    status: "online",
+    status: Status.ONLINE,
     createdOn: Date.now(),
   };
   await set(ref(db, `users/${handle}`), user);
