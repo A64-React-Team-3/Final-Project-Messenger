@@ -50,6 +50,13 @@ const EditMessage: React.FC<EditMessageProps> = ({ message, setIsModalOpen }): J
           className={`chat-bubble ${message.sender === user!.uid ? "chat-bubble-primary" : ""
             } break-words max-w-full`}
         >
+          {message.imageUrl && (
+            message.imageUrl.map((url, index) => (
+              <div key={index} className="avatar w-40 rounded">
+                <img src={url} alt="" className="rounded" />
+              </div>
+            ))
+          )}
           <p className="break-words">{message.message}</p>
         </div>
       </div>
