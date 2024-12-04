@@ -60,7 +60,7 @@ const FriendRequests: React.FC = (): JSX.Element => {
       <input type="checkbox" />
       <div className="collapse-title text-xl font-medium">Friend Requests</div>
       <div className="collapse-content">
-        <div className="max-h-36 overflow-y-auto">
+        <div className="max-h-36 overflow-y-auto scrollbar-hide">
           {friendRequests.map(friend => (
             <div
               key={friend.id}

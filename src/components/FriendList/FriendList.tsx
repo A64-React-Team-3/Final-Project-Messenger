@@ -126,7 +126,7 @@ const FriendList: React.FC = (): JSX.Element => {
       <input type="checkbox" />
       <div className="collapse-title text-xl font-medium">Friends</div>
       <div className="collapse-content">
-        <div className="max-h-48 overflow-y-auto">
+        <div className="max-h-48 overflow-y-auto scrollbar-hide">
           {loadingFriends && <LoadingSpinner />}
           {friends &&
             friends.map(friend => (
