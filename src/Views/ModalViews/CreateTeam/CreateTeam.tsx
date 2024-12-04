@@ -3,6 +3,7 @@ import { uploadImage } from "../../../services/storage.service";
 import { createTeam } from "../../../services/team.service";
 import { UserAppContext } from "../../../store/user.context.ts";
 import { toast } from "react-toastify";
+import { defaultTeamImgUrl } from "../../../common/constants.ts";
 type CreateTeamProps = {
   closeModal: () => void;
 };
@@ -35,14 +36,14 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ closeModal }): JSX.Element => {
       return;
     }
     const privacy = isTeamPrivate ? "private" : "public";
-    let imageUrl = null;
+    let imageUrl = defaultTeamImgUrl;
     if (avatarFile) {
       try {
         imageUrl = await uploadImage(avatarFile);
         const teamData = {
           name: teamName,
           privacy: privacy,
-          avatarUrl: imageUrl || null,
+          avatarUrl: imageUrl,
         };
         console.log("teamData", teamData);
       } catch (error) {

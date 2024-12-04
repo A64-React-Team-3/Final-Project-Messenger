@@ -2,6 +2,8 @@ import { get, set, ref, query, equalTo, orderByChild } from "firebase/database";
 import { db } from "../config/firebase-config";
 import { transformUser } from "../helper/helper";
 import { UserModel } from "../models/UserModel";
+import { FriendModel } from "../models/User/FriendModel";
+import { Status } from "../common/constants";
 
 /**
  * Retrieves a user by their handle.
@@ -43,6 +45,7 @@ export const createUser = async (
     username,
     displayName: username,
     uid,
+    status: Status.ONLINE,
     createdOn: Date.now(),
   };
   await set(ref(db, `users/${handle}`), user);
@@ -63,4 +66,17 @@ export const getUser = async (uid: string): Promise<UserModel | null> => {
   );
   const user = transformUser(userSnapshot);
   return user;
+};
+
+export const getAllUsers = async (): Promise<UserModel[]> => {
+  const snapshot = await get(query(ref(db, "users")));
+  const users = snapshot.val();
+  return users;
+};
+export const getAllFriends = async (
+  username: string
+): Promise<FriendModel[]> => {
+  const snapshot = await get(query(ref(db, `users/${username}friends`)));
+  const friends = snapshot.val();
+  return friends;
 };

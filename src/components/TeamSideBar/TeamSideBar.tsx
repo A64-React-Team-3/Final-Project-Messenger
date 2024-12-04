@@ -1,18 +1,35 @@
-type TeamSideBarProps = {
-  channels: any[];
-  setChannel: any;
-}
+import { Dispatch, SetStateAction } from "react";
+import { ChannelModel } from "../../models/ChannelModel";
+import { TeamChannelModel } from "../../models/Team/TeamChannelModel";
 
-const TeamSideBar: React.FC<TeamSideBarProps> = ({ channels, setChannel }): JSX.Element => {
+type TeamSideBarProps = {
+  // channels: ChannelModel[] | TeamChannelModel[];
+  channels: any[];
+  // setChannel: Dispatch<SetStateAction<ChannelModel | TeamChannelModel | null>>;
+  setChannel: any;
+};
+
+const TeamSideBar: React.FC<TeamSideBarProps> = ({
+  channels,
+  setChannel,
+}): JSX.Element => {
   return (
     <div className="border-base-300 flex-col justify-center px-4 bg-slate-600 text-slate-50 h-full w-60">
       <div className="collapse">
         <input type="checkbox" />
-        <div className="collapse-title z-0 text-xl font-medium">Text Channels</div>
+        <div className="collapse-title z-0 text-xl font-medium">
+          Text Channels
+        </div>
         <div className="collapse-content">
           {channels.map((channel, idx) => (
             <div key={channel.id}>
-              <a onClick={() => setChannel(channel)} key={idx} className="text-sm">{channel.name}</a>
+              <a
+                onClick={() => setChannel(channel)}
+                key={idx}
+                className="text-sm"
+              >
+                {channel.name}
+              </a>
             </div>
           ))}
         </div>
@@ -28,7 +45,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({ channels, setChannel }): JSX.
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default TeamSideBar;

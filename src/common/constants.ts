@@ -6,14 +6,12 @@ export const validUsernameRegex = RegExp(/^[a-zA-Z0-9._%+-]{5,35}$/);
 export const validPasswordRegex = RegExp(/^[a-zA-Z0-9._%+-]{6,15}$/);
 //default team image
 export const defaultTeamImgUrl =
-  "https://firebasestorage.googleapis.com/v0/b/final-project-messenger-7b4c2.firebasestorage.app/o/avatars%2Fcommunity.png?alt=media&token=5397e237-077b-4a01-996f-bd5aaf9851a7";
+  " https://firebasestorage.googleapis.com/v0/b/final-project-messenger-7b4c2.firebasestorage.app/o/avatars%2Fcommunity.png?alt=media&token=b878f52c-d4a3-483d-996a-4196a2fc3bd4";
 
+export const reactionEmoji = ["👍", "❤️", "😂", "😢", "😲"];
 
-
-export const reactionEmoji = [
-  "👍",
-  "❤️",
-  "😂",
-  "😢",
-  "😲"
-]
+export enum Status {
+  ONLINE = "online",
+  IDLE = "idle",
+  OFFLINE = "offline",
+}
