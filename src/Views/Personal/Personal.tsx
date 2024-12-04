@@ -8,7 +8,7 @@ import { get, onValue, ref } from "firebase/database";
 import { transformChannels } from "../../helper/helper";
 import { db } from "../../config/firebase-config";
 import Channel from "../Channel/Channel";
-
+import { FaRocketchat } from "react-icons/fa6";
 const Personal: React.FC = (): JSX.Element => {
   const [channels, setChannels] = useState<ChannelModel[]>([]);
   const [channel, setChannel] = useState<ChannelModel | null>(null);
@@ -47,9 +47,12 @@ const Personal: React.FC = (): JSX.Element => {
                   <div className="mb-3" key={channel.id}>
                     <button
                       onClick={() => setChannel(channel)}
-                      className="btn btn-sm btn-outline btn-secondary  text-sm hover:bg-gray-700"
+                      className="btn btn-sm btn-outline btn-primary  text-sm hover:bg-gray-700"
                     >
-                      <span className="mr-2 text-lg">💬</span> {channel.name}
+                      <span className="mr-2 text-lg ">
+                        <FaRocketchat className="text-secondary" />
+                      </span>
+                      {channel.name}
                     </button>
                   </div>
                 ))}
