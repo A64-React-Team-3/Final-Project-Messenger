@@ -11,5 +11,5 @@ export type TeamModel = {
   members: TeamMemberModel[];
   channels?: TeamChannelModel[];
   joinRequests?: TeamJoinRequestModel[];
-  avatarUrl?: string | null;
+  avatarUrl?: string;
 };
