@@ -2,9 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
 
 type TeamSideBarProps = {
-  // channels: ChannelModel[] | TeamChannelModel[];
-  channels: ChannelModel[];
-  // setChannel: Dispatch<SetStateAction<ChannelModel | TeamChannelModel | null>>;
+  channels: (ChannelModel | undefined)[];
   setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
 };
 
@@ -21,13 +19,13 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
         </div>
         <div className="collapse-content">
           {channels.map((channel, idx) => (
-            <div key={channel.id}>
+            <div key={channel?.id}>
               <a
-                onClick={() => setChannel(channel)}
+                onClick={() => setChannel(channel ? channel : null)}
                 key={idx}
                 className="text-sm"
               >
-                {channel.name}
+                {channel?.name}
               </a>
             </div>
           ))}
