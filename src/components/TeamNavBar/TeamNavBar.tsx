@@ -23,7 +23,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-neutral w-full h-full bg-slate-600 rounded-none flex flex-col  justify-center items-center gap-2 p-4"
+            className="btn btn-neutral w-full h-full rounded-none flex flex-col  justify-center items-center gap-2 p-4"
           >
             <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 overflow-hidden">
               {team?.name}
@@ -32,7 +32,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
               <img
                 src={team?.avatarUrl}
                 alt="team image"
-                className="w-12 h-12"
+                className="w-12 h-12 rounded-full"
               />
             )}
           </div>

@@ -18,6 +18,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
   const { team, setTeam } = useContext(TeamAppContext);
 
   const handleToPersonal = () => {
+    setTeam(null);
     navigate("/dms");
   };
   const handleToTeam = async (team: TeamModel) => {
@@ -67,17 +68,16 @@ const HomeSideBar: React.FC = (): JSX.Element => {
             <CreateTeamButton />
           </span>
         </div>
-        <div className="list-of-teams flex flex-col space-y-2 pt-2 overflow-y-auto max-h-[calc(100vh-118px)] scrollbar-hide">
+        <div className="list-of-teams flex flex-col space-y-2 pt-2 overflow-y-auto max-h-[calc(100vh-118px)] scrollbar-hide ">
           {teams &&
             teams.map((teamData: TeamModel, index: number) => {
               return (
                 <span
                   key={index}
                   onClick={() => handleToTeam(teamData)}
-                  className={`transition-transform duration-200 ${
-                    team?.teamId === teamData.teamId
-                      ? `w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded transition animate-[spin_1s]`
-                      : ""
+                  className={`transition-transform duration-200 mb-2 ${
+                    team?.teamId === teamData.teamId &&
+                    `bg-gradient-to-r from-primary to-secondary rounded transition animate-[spin_1s]`
                   }`}
                 >
                   <TeamAvatarButton teamData={teamData} />
