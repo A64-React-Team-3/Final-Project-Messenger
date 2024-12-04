@@ -6,10 +6,11 @@ import { TeamModel } from "../../../models/Team/TeamModel";
 
 type CreateChannelProps = {
   team: TeamModel | null;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 
-const CreateChannel: React.FC<CreateChannelProps> = ({ team }): JSX.Element => {
+const CreateChannel: React.FC<CreateChannelProps> = ({ team, setIsModalOpen }): JSX.Element => {
   const [isChannelPrivate, setIsChannelPrivate] = useState(false);
   const [channelName, setChannelName] = useState("");
   const { user } = useContext(UserAppContext);
@@ -31,6 +32,7 @@ const CreateChannel: React.FC<CreateChannelProps> = ({ team }): JSX.Element => {
     try {
       if (team?.teamId) {
         await createChannel(user, channelName, isChannelPrivate, team?.teamId);
+        setIsModalOpen(false);
       } else {
         alert("Please select a team");
       }

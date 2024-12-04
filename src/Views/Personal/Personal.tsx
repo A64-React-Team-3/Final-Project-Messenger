@@ -5,7 +5,7 @@ import HomeSideBar from "../../components/HomeSideBar/HomeSideBar";
 import ProfileButton from "../../components/ProfileButton/ProfileButton";
 import { ChannelModel } from "../../models/ChannelModel";
 import { get, onValue, ref } from "firebase/database";
-import { transformChannels } from "../../helper/helper";
+import { transformChannelsFromSnapshot } from "../../helper/helper";
 import { db } from "../../config/firebase-config";
 import Channel from "../Channel/Channel";
 
@@ -18,7 +18,7 @@ const Personal: React.FC = (): JSX.Element => {
       .then(channelsSnapshot => {
         if (channelsSnapshot.exists()) {
           const unsubscribe = onValue(channelsRef, snapshot => {
-            const transformedData = transformChannels(snapshot);
+            const transformedData = transformChannelsFromSnapshot(snapshot);
             if (transformedData) {
               setChannels(transformedData);
             }

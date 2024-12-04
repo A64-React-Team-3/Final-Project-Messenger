@@ -1,4 +1,4 @@
-import { get, set, ref, query, equalTo, orderByChild, push, update } from "firebase/database";
+import { get, set, ref, query, equalTo, orderByChild, push, update, DataSnapshot } from "firebase/database";
 import { db } from "../config/firebase-config";
 import { UserModel } from "../models/UserModel";
 
@@ -55,19 +55,15 @@ export const getChannels = async (): Promise<any> => {
 
 export const getChannelsByIds = async (channelIds: string[]): Promise<any> => {
   try {
-    console.log("Channel ids", channelIds);
     const channels = await Promise.all(channelIds.map(async (channelId) => {
       const channelRef = ref(db, `channels/${channelId}`);
       const channelSnapshot = await get(channelRef);
       if (channelSnapshot.exists()) {
-        return channelSnapshot;
-      } else {
-        return null;
+        return channelSnapshot.val();
       }
     }));
-
-    console.log("Channels", channels);
     return channels;
+
   } catch (error) {
     console.error("Error getting channels by ids", error);
   }

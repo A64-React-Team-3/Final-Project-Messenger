@@ -73,7 +73,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       >
-        <CreateChannel team={team} />
+        <CreateChannel team={team} setIsModalOpen={setIsModalOpen} />
       </Modal>
     </div>
   );

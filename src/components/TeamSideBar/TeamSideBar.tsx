@@ -1,15 +1,47 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
+import { useState } from "react";
+import { TeamModel } from "../../models/Team/TeamModel";
+import { get, ref, onValue, DataSnapshot, set } from "firebase/database";
+import { db } from "../../config/firebase-config";
+import { getChannelsByIds } from "../../services/channel.service";
+import { transformChannelFromSnapshotVal } from "../../helper/helper";
+
 
 type TeamSideBarProps = {
-  channels: (ChannelModel | undefined)[];
+  team: TeamModel | null;
   setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
 };
 
 const TeamSideBar: React.FC<TeamSideBarProps> = ({
-  channels,
+  team,
   setChannel,
 }): JSX.Element => {
+  const [channels, setChannels] = useState<ChannelModel[]>([]);
+
+  useEffect(() => {
+    const teamChannelsRef = ref(db, `teams/${team?.teamId}/channels`);
+    get(teamChannelsRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const unsubscribe = onValue(teamChannelsRef, (snapshot) => {
+            const channelsData = Object.keys(snapshot.val());
+            getChannelsByIds(channelsData).then((channels) => {
+              setChannels(transformChannelFromSnapshotVal(channels));
+            });
+          });
+
+          return () => unsubscribe();
+        } else {
+          setChannels([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting channels", error);
+      });
+
+  }, [team]);
+
   return (
     <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60">
       <div className="collapse">

@@ -4,7 +4,7 @@ import TeamSideBar from "../../components/TeamSideBar/TeamSideBar";
 import { useState } from "react";
 import { DataSnapshot, get, onValue, ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
-import { transformChannels } from "../../helper/helper";
+import { transformChannelsFromSnapshot } from "../../helper/helper";
 import Channel from "../Channel/Channel";
 import { ChannelModel } from "../../models/ChannelModel";
 import { TeamAppContext } from "../../store/team.context";
@@ -21,7 +21,7 @@ const Team: React.FC = (): JSX.Element => {
       .then(channelsSnapshot => {
         if (channelsSnapshot.exists()) {
           const unsubscribe = onValue(channelsRef, snapshot => {
-            const transformedData = transformChannels(snapshot);
+            const transformedData = transformChannelsFromSnapshot(snapshot);
             if (transformedData) {
               setAllChannels(transformedData);
             }
@@ -35,27 +35,23 @@ const Team: React.FC = (): JSX.Element => {
       });
   }, []);
 
-  useEffect(() => {
-    if (team?.channels) {
-      const filteredChannels = team?.channels.map((channelId) => {
-        return allChannels.find((channel: ChannelModel) => channel.id === channelId);
-      });
-      if (filteredChannels) {
-        setTeamChannels(filteredChannels);
-      }
-    }
-  }, [team]);
+  // useEffect(() => {
+  //   if (team?.channels) {
+  //     const filteredChannels = team?.channels.map((channelId) => {
+  //       return allChannels.find((channel: ChannelModel) => channel.id === channelId);
+  //     });
+  //     if (filteredChannels) {
+  //       setTeamChannels(filteredChannels);
+  //     }
+  //   }
+  // }, [team?.channels]);
 
 
   return (
     <div className="border-base-200 bg-base-300 flex-col justify-center w-full ">
       <TeamNavBar channelName={currentChannel?.name} />
       <div className="flex w-full h-[calc(100vh-4rem)]">
-        {team?.channels ? (
-          <TeamSideBar channels={teamChannels} setChannel={setCurrentChannel} />
-        ) : (
-          <TeamSideBar channels={allChannels} setChannel={setCurrentChannel} />
-        )}
+        <TeamSideBar setChannel={setCurrentChannel} team={team} />
         <Channel channel={currentChannel} />
       </div>
     </div>
