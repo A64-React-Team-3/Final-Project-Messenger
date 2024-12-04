@@ -42,9 +42,9 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
     }
     const privacy = isTeamPrivate ? "private" : "public";
     let imageUrl = defaultTeamImgUrl;
+    setLoading(true);
+    closeModal();
     if (avatarFile) {
-      setLoading(true);
-      closeModal();
       try {
         imageUrl = await uploadImage(avatarFile);
         const teamData = {

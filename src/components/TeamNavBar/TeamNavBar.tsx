@@ -23,9 +23,11 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-neutral w-full h-full bg-slate-600 rounded-none flex flex-col justify-center items-center gap-2"
+            className="btn btn-neutral w-full h-full bg-slate-600 rounded-none flex flex-col  justify-center items-center gap-2 p-4"
           >
-            <h2 className="text-lg font-semibold">{team?.name}</h2>
+            <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 overflow-hidden">
+              {team?.name}
+            </h2>
             {team?.avatarUrl && (
               <img
                 src={team?.avatarUrl}
