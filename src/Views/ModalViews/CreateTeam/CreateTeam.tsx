@@ -14,7 +14,6 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
 }): JSX.Element => {
   const [isTeamPrivate, setIsTeamPrivate] = useState(false);
   const [teamName, setTeamName] = useState<string>("");
-
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const { user } = useContext(UserAppContext);
@@ -38,6 +37,11 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
   const handleCreateTeam = async () => {
     if (!teamName.trim()) {
       alert("Please enter a team name");
+      return;
+    }
+    if (teamName.trim().length < 3 || teamName.trim().length > 40) {
+      // toast.error("Team Name must be between 3 and 40 symbols");
+      // alert("Team Name must be between 3 and 40 symbols");
       return;
     }
     const privacy = isTeamPrivate ? "private" : "public";

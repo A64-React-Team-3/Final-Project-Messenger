@@ -27,9 +27,7 @@ const Authenticated: React.FC<AuthenticatedProps> = ({
 
   useEffect(() => {
     if (!loading) {
-      toast.error("Error");
       if (!authUser) {
-        console.log("test");
         navigate("/");
       }
     }
