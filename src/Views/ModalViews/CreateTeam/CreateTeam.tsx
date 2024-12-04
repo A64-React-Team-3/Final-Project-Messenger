@@ -36,7 +36,11 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
   };
   const handleCreateTeam = async () => {
     if (!teamName.trim()) {
-      alert("Please enter a team name");
+      toast.error("Please enter a team name", {
+        position: "top-center",
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
       return;
     }
     if (teamName.trim().length < 3 || teamName.trim().length > 40) {
@@ -45,8 +49,6 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
         closeOnClick: true,
         pauseOnHover: false,
       });
-
-      // alert("Team Name must be between 3 and 40 symbols");
       return;
     }
     const privacy = isTeamPrivate ? "private" : "public";
@@ -127,10 +129,13 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
             </div>
           </div>
           <div className="modal-action justify-between">
-            <button className="btn btn-success" onClick={handleCreateTeam}>
+            <button
+              className="btn btn-secondary btn-outline"
+              onClick={handleCreateTeam}
+            >
               Create
             </button>
-            <button className="btn btn-error" onClick={closeModal}>
+            <button className="btn btn-error btn-outline" onClick={closeModal}>
               Cancel
             </button>
           </div>
