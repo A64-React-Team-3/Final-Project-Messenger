@@ -13,7 +13,7 @@ import Team from "../Team/Team";
  */
 const Home: React.FC = (): JSX.Element => {
   return (
-    <div className="window border-base-300 flex h-screen bg-black">
+    <div className="window border-base-300 flex h-screen">
       <HomeSideBar />
       <Team />
     </div>

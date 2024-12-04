@@ -18,12 +18,10 @@ const HomeSideBar: React.FC = (): JSX.Element => {
   const handleToPersonal = () => {
     navigate("/dms");
   };
-  const handleToTeam = async (teamId: string) => {
+  const handleToTeam = async (team: TeamModel) => {
     navigate("/home");
-    console.log(teamId);
 
     try {
-      const team = await getTeamById(teamId);
       setTeam(team);
     } catch (error) {
       console.log("Error navigating to team view: ", error);
@@ -39,7 +37,6 @@ const HomeSideBar: React.FC = (): JSX.Element => {
         if (snapshot) {
           const unsubscribe = onValue(teamsRef, snapshot => {
             const teamsData = transformTeams(snapshot);
-            console.log("teamsData", teamsData);
             setTeams(teamsData);
           });
 
@@ -72,7 +69,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
               return (
                 <span
                   key={teamData.teamId}
-                  onClick={() => handleToTeam(teamData.teamId)}
+                  onClick={() => handleToTeam(teamData)}
                 >
                   <TeamAvatarButton teamData={teamData} />
                 </span>

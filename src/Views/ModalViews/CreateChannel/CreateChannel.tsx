@@ -1,12 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserAppContext } from "../../../store/user.context.ts";
 import { createChannel } from "../../../services/channel.service";
+import { TeamAppContext } from "../../../store/team.context";
+import { TeamModel } from "../../../models/Team/TeamModel";
 
-const CreateChannel: React.FC = (): JSX.Element => {
+type CreateChannelProps = {
+  team: TeamModel | null;
+};
+
+
+const CreateChannel: React.FC<CreateChannelProps> = ({ team }): JSX.Element => {
   const [isChannelPrivate, setIsChannelPrivate] = useState(false);
   const [channelName, setChannelName] = useState("");
-  const [teamId, setTeamId] = useState("personal");
   const { user } = useContext(UserAppContext);
+
 
   const updateChannelName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChannelName(event.target.value);
@@ -22,11 +29,20 @@ const CreateChannel: React.FC = (): JSX.Element => {
       return;
     }
     try {
-      await createChannel(user, channelName, isChannelPrivate, teamId);
+      if (team?.teamId) {
+        await createChannel(user, channelName, isChannelPrivate, team?.teamId);
+      } else {
+        alert("Please select a team");
+      }
+
     } catch (error) {
       console.error("Error creating channel", error);
     }
   };
+
+  useEffect(() => {
+    console.log(team);
+  }, [team]);
 
   return (
     <div>

@@ -2,7 +2,7 @@ import { get, set, ref, query, equalTo, orderByChild, push, update } from "fireb
 import { db } from "../config/firebase-config";
 import { UserModel } from "../models/UserModel";
 
-export const createChannel = async (user: UserModel | null, channelName: string, isPrivate: boolean, teamId: string): Promise<void> => {
+export const createChannel = async (user: UserModel | null, channelName: string, isPrivate: boolean, teamId?: string): Promise<void> => {
   if (!user) {
     console.error("User is not authenticated");
     return;
@@ -12,8 +12,8 @@ export const createChannel = async (user: UserModel | null, channelName: string,
     name: channelName,
     members: { [user && user.uid ? user.uid : '']: true },
     creator: { id: user?.uid, username: user?.username },
-    teamId: teamId,
     private: isPrivate,
+    teamId: teamId ? teamId : user.uid,
     createdOn: Date.now(),
   };
 
@@ -21,11 +21,20 @@ export const createChannel = async (user: UserModel | null, channelName: string,
     const result = await push(ref(db, `channels/`), channel);
     const id = result.key;
     await update(ref(db), { [`channels/${id}/id`]: id });
+    await update(ref(db), { [`teams/${teamId}/channels/${id}`]: true });
   } catch (error) {
     console.error("Error creating channel", error);
   }
 
 };
+
+const addChannelToTeam = async (teamId: string, channelId: string | null): Promise<void> => {
+  try {
+    await update(ref(db), { [`teams/${teamId}/channels/${channelId}`]: true });
+  } catch (error) {
+    console.error("Error adding channel to team", error);
+  }
+}
 
 export const getChannels = async (): Promise<any> => {
   const channelsRef = ref(db, "channels/");
@@ -41,6 +50,26 @@ export const getChannels = async (): Promise<any> => {
     }
   } catch (error) {
     console.error("Error getting channels", error);
+  }
+};
+
+export const getChannelsByIds = async (channelIds: string[]): Promise<any> => {
+  try {
+    console.log("Channel ids", channelIds);
+    const channels = await Promise.all(channelIds.map(async (channelId) => {
+      const channelRef = ref(db, `channels/${channelId}`);
+      const channelSnapshot = await get(channelRef);
+      if (channelSnapshot.exists()) {
+        return channelSnapshot;
+      } else {
+        return null;
+      }
+    }));
+
+    console.log("Channels", channels);
+    return channels;
+  } catch (error) {
+    console.error("Error getting channels by ids", error);
   }
 };
 

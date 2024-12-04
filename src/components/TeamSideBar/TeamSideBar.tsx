@@ -1,12 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
-import { TeamChannelModel } from "../../models/Team/TeamChannelModel";
 
 type TeamSideBarProps = {
   // channels: ChannelModel[] | TeamChannelModel[];
-  channels: any[];
+  channels: ChannelModel[];
   // setChannel: Dispatch<SetStateAction<ChannelModel | TeamChannelModel | null>>;
-  setChannel: any;
+  setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
 };
 
 const TeamSideBar: React.FC<TeamSideBarProps> = ({
@@ -14,7 +13,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
   setChannel,
 }): JSX.Element => {
   return (
-    <div className="border-base-300 flex-col justify-center px-4 bg-slate-600 text-slate-50 h-full w-60">
+    <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60">
       <div className="collapse">
         <input type="checkbox" />
         <div className="collapse-title z-0 text-xl font-medium">

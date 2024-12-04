@@ -54,7 +54,7 @@ export const transformTeams = (
         joinRequests: team.joinRequests
           ? Object.values(team.joinRequests)
           : null,
-        channels: team.channels ? Object.values(team.channels) : null,
+        channels: team.channels ? Object.keys(team.channels) : null,
       } as TeamModel;
     }
   );
