@@ -40,7 +40,12 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
       return;
     }
     if (teamName.trim().length < 3 || teamName.trim().length > 40) {
-      // toast.error("Team Name must be between 3 and 40 symbols");
+      toast.error("Team Name must be between 3 and 40 symbols", {
+        position: "top-center",
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
+
       // alert("Team Name must be between 3 and 40 symbols");
       return;
     }
