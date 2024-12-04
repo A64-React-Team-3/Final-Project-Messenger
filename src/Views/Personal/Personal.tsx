@@ -33,7 +33,7 @@ const Personal: React.FC = (): JSX.Element => {
   }, []);
   return (
     <>
-      <div className="flex w-full h-screen overflow-hidden">
+      <div className="flex w-full h-screen">
         <HomeSideBar />
         <div className="border-base-300 flex-col justify-center bg-slate-600 text-slate-50 h-full w-96 p-1">
           <FriendRequests />
@@ -42,7 +42,7 @@ const Personal: React.FC = (): JSX.Element => {
             <input type="checkbox" />
             <div className="collapse-title z-0 text-xl font-medium">Chats</div>
             <div className="collapse-content">
-              <div className="max-h-96 overflow-y-auto">
+              <div className="h-64 overflow-y-auto">
                 {channels.map(channel => (
                   <div className="mb-3" key={channel.id}>
                     <button
