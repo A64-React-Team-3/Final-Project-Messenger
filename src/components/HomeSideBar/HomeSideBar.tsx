@@ -3,13 +3,12 @@ import TeamAvatarButton from "../TeamAvatarButton/TeamAvatarButton";
 import CreateTeamButton from "../CreateTeamButton/CreateTeamButton";
 import { useContext, useEffect, useState } from "react";
 import CreateTeam from "../../Views/ModalViews/CreateTeam/CreateTeam";
-import { get, onValue, ref } from "firebase/database";
+import { onValue, ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
 import { TeamAppContext } from "../../store/team.context";
-import { getTeamById } from "../../services/team.service";
+import { getTeamById, getTeams } from "../../services/team.service";
 import { transformTeams } from "../../helper/helper";
 import { TeamModel } from "../../models/Team/TeamModel";
-// import { TeamModel } from "../../helper/helper";
 const HomeSideBar: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -35,9 +34,9 @@ const HomeSideBar: React.FC = (): JSX.Element => {
   };
   useEffect(() => {
     const teamsRef = ref(db, "teams/");
-    get(teamsRef)
+    getTeams()
       .then(snapshot => {
-        if (snapshot.exists()) {
+        if (snapshot) {
           const unsubscribe = onValue(teamsRef, snapshot => {
             const teamsData = transformTeams(snapshot);
             console.log("teamsData", teamsData);

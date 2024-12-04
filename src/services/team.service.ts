@@ -36,7 +36,7 @@ export const createTeam = async (
   }
 };
 
-export const getTeams = async (): Promise<TeamModel[] | void> => {
+export const getTeams = async (): Promise<TeamModel[] | null> => {
   const teamsRef = ref(db, "teams/");
   try {
     const teams = await get(teamsRef);
@@ -48,6 +48,7 @@ export const getTeams = async (): Promise<TeamModel[] | void> => {
     }
   } catch (error) {
     console.error("Error getting teams: ", error);
+    return null;
   }
 };
 export const getTeamById = async (
