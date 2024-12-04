@@ -15,7 +15,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [loadingCreateTeam, setLoadingCreateTeam] = useState<boolean>(false);
   const [teams, setTeams] = useState<TeamModel[] | null>(null);
-  const { setTeam } = useContext(TeamAppContext);
+  const { team, setTeam } = useContext(TeamAppContext);
 
   const handleToPersonal = () => {
     navigate("/dms");
@@ -71,7 +71,15 @@ const HomeSideBar: React.FC = (): JSX.Element => {
           {teams &&
             teams.map((teamData: TeamModel, index: number) => {
               return (
-                <span key={index} onClick={() => handleToTeam(teamData)}>
+                <span
+                  key={index}
+                  onClick={() => handleToTeam(teamData)}
+                  className={`transition-transform duration-200 ${
+                    team?.teamId === teamData.teamId
+                      ? `w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded transition animate-[spin_1s]`
+                      : ""
+                  }`}
+                >
                   <TeamAvatarButton teamData={teamData} />
                 </span>
               );
