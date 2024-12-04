@@ -1,3 +1,4 @@
+import { Status } from "../common/constants";
 import { FriendModel } from "./User/FriendModel";
 import { UserChannel } from "./User/UserChannel";
 import { UserTeam } from "./User/UserTeam";
@@ -13,5 +14,5 @@ export type UserModel = {
   friends?: FriendModel[];
   blocked?: FriendModel[];
   avatarUrl?: string;
-  status: "online" | "idle" | "offline";
+  status: Status;
 };

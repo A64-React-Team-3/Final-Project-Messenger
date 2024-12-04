@@ -9,3 +9,9 @@ export const defaultTeamImgUrl =
   " https://firebasestorage.googleapis.com/v0/b/final-project-messenger-7b4c2.firebasestorage.app/o/avatars%2Fcommunity.png?alt=media&token=b878f52c-d4a3-483d-996a-4196a2fc3bd4";
 
 export const reactionEmoji = ["👍", "❤️", "😂", "😢", "😲"];
+
+export enum Status {
+  ONLINE = "online",
+  IDLE = "idle",
+  OFFLINE = "offline",
+}
