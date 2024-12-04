@@ -57,7 +57,7 @@ const Personal: React.FC = (): JSX.Element => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col h-screen overflow-x-hidden">
+        <div className="flex flex-col h-screen">
           <div className="navbar py-0 px-0 bg-zinc-900 h-14 w-full flex items-center justify-between">
             <div className="left-content">
               <h2 className="p-2">
@@ -68,7 +68,7 @@ const Personal: React.FC = (): JSX.Element => {
               <ProfileButton />
             </div>
           </div>
-          <div className="flex-grow text-slate-50 ">
+          <div className="flex-grow text-slate-50 overflow-auto">
             <Channel channel={channel} />
           </div>
         </div>
