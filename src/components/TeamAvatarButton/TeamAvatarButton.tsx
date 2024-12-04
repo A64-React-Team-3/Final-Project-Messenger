@@ -7,8 +7,8 @@ const TeamAvatarButton: React.FC<TeamAvatarButtonProps> = ({
   teamData,
 }): JSX.Element => {
   return (
-    <div className="avatar placeholder">
-      <div className="mb-2 bg-neutral btn btn-secondary text-neutral-content w-12 rounded-full border-none">
+    <div className="avatar placeholder ">
+      <div className="bg-neutral btn btn-secondary text-neutral-content w-12 h-12 rounded-full border-none">
         <span>
           <img
             style={{ transform: "scale(2.6)" }}

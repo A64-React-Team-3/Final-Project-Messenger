@@ -10,11 +10,11 @@ import React from "react";
  */
 const ChatSettings: React.FC = (): JSX.Element => {
   return (
-    <div className="bg-dark p-8 rounded-lg space-y-8">
+    <div className="bg-dark p-2 rounded-lg space-y-8">
       <h2 className="text-3xl font-bold">Chat Settings</h2>
       <p className="text-xl">Customize your chat preferences.</p>
 
-      <div className="mt-8 h-[60vh] overflow-y-auto scrollbar scrollbar-thumb-base-content scrollbar-track-base-300 scrollbar-thumb-rounded-lg scrollbar-w-4 rounded-lg">
+      <div className="mt-8 h-80 overflow-y-auto scrollbar scrollbar-thumb-base-content scrollbar-track-base-300 scrollbar-thumb-rounded-lg scrollbar-w-4 rounded-lg">
         <form className="space-y-6">
           <div className="space-y-2">
             <label className="block text-lg font-medium">
@@ -78,12 +78,9 @@ const ChatSettings: React.FC = (): JSX.Element => {
               <option>Bulgarian</option>
             </select>
           </div>
-
-          <button className="btn btn-primary btn-lg w-1/4 text-xl mt-6">
-            Save Changes
-          </button>
         </form>
       </div>
+      <button className="btn btn-outline btn-primary">Save Changes</button>
     </div>
   );
 };

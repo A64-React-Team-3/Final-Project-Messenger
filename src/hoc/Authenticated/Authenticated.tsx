@@ -27,9 +27,7 @@ const Authenticated: React.FC<AuthenticatedProps> = ({
 
   useEffect(() => {
     if (!loading) {
-      toast.error("Error");
       if (!authUser) {
-        console.log("test");
         navigate("/");
       }
     }
@@ -37,7 +35,11 @@ const Authenticated: React.FC<AuthenticatedProps> = ({
   if (authUser) {
     return <div>{children}</div>;
   } else {
-    return <LoadingSpinner />;
+    return (
+      <div className=" flex justify-center align-center bg-transparent h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 };
 
