@@ -22,19 +22,32 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
   useEffect(() => {
     const teamChannelsRef = ref(db, `teams/${team?.teamId}/channels`);
     get(teamChannelsRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const unsubscribe = onValue(teamChannelsRef, (snapshot) => {
+      .then((_snapshot) => {
+        const unsubscribe = onValue(teamChannelsRef, (snapshot) => {
+          if (snapshot.exists()) {
             const channelsData = Object.keys(snapshot.val());
             getChannelsByIds(channelsData).then((channels) => {
               setChannels(transformChannelFromSnapshotVal(channels));
             });
-          });
+          } else {
+            setChannels([]);
+          }
+        });
 
-          return () => unsubscribe();
-        } else {
-          setChannels([]);
-        }
+        return () => unsubscribe;
+
+        // if (snapshot.exists()) {
+        //   const unsubscribe = onValue(teamChannelsRef, (snapshot) => {
+        //     const channelsData = Object.keys(snapshot.val());
+        //     getChannelsByIds(channelsData).then((channels) => {
+        //       setChannels(transformChannelFromSnapshotVal(channels));
+        //     });
+        //   });
+
+        //   return () => unsubscribe();
+        // } else {
+        //   setChannels([]);
+        // }
       })
       .catch((error) => {
         console.error("Error getting channels", error);
@@ -42,8 +55,9 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
 
   }, [team]);
 
+
   return (
-    <div className="border-base-300 flex-col justify-center px-4 bg-slate-600 text-slate-50 h-full w-60 ">
+    <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 ">
       <div className="collapse">
         <input type="checkbox" />
         <div className="collapse-title z-0 text-xl font-medium">

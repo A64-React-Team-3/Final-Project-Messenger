@@ -94,19 +94,20 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
     if (channel) {
       const channelRef = ref(db, `channels/${channel.id}/messages`);
       get(channelRef)
-        .then(channelSnapshot => {
-          if (channelSnapshot.exists()) {
-            const unsubscribe = onValue(channelRef, snapshot => {
+        .then(_channelSnapshot => {
+          const unsubscribe = onValue(channelRef, snapshot => {
+            if (snapshot.exists()) {
               const transformedData = transformMessages(snapshot);
               if (transformedData) {
                 setMessages(transformedData);
               }
-            });
+            } else {
+              setMessages([]);
+            }
+          });
 
-            return () => unsubscribe();
-          } else {
-            setMessages([]);
-          }
+          return () => unsubscribe;
+
         })
         .catch(error => {
           console.error("Error getting messages", error);

@@ -15,36 +15,25 @@ const Team: React.FC = (): JSX.Element => {
   const [teamChannels, setTeamChannels] = useState<(ChannelModel | undefined)[]>([]);
   const [currentChannel, setCurrentChannel] = useState<ChannelModel | null>(null);
   const { team } = useContext(TeamAppContext);
-  useEffect(() => {
-    const channelsRef = ref(db, `channels/`);
-    get(channelsRef)
-      .then(channelsSnapshot => {
-        if (channelsSnapshot.exists()) {
-          const unsubscribe = onValue(channelsRef, snapshot => {
-            const transformedData = transformChannelsFromSnapshot(snapshot);
-            if (transformedData) {
-              setAllChannels(transformedData);
-            }
-          });
-
-          return () => unsubscribe();
-        }
-      })
-      .catch(error => {
-        console.error("Error getting channels", error);
-      });
-  }, []);
-
   // useEffect(() => {
-  //   if (team?.channels) {
-  //     const filteredChannels = team?.channels.map((channelId) => {
-  //       return allChannels.find((channel: ChannelModel) => channel.id === channelId);
+  //   const channelsRef = ref(db, `channels/`);
+  //   get(channelsRef)
+  //     .then(channelsSnapshot => {
+  //       if (channelsSnapshot.exists()) {
+  //         const unsubscribe = onValue(channelsRef, snapshot => {
+  //           const transformedData = transformChannelsFromSnapshot(snapshot);
+  //           if (transformedData) {
+  //             setAllChannels(transformedData);
+  //           }
+  //         });
+
+  //         return () => unsubscribe();
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error("Error getting channels", error);
   //     });
-  //     if (filteredChannels) {
-  //       setTeamChannels(filteredChannels);
-  //     }
-  //   }
-  // }, [team?.channels]);
+  // }, []);
 
 
   return (
