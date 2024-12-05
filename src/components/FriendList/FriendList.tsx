@@ -99,12 +99,12 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const toggleFriendSettings = (id: string) => {
     setFriendSettings(prev => (prev === id ? null : id));
-    if (friendSettingsRef.current && friendSettings === id) {
-      friendSettingsRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+    // if (friendSettingsRef.current && friendSettings === id) {
+    //   friendSettingsRef.current.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "start",
+    //   });
+    // }
   };
   const handleInviteToTeam = () => {
     if (!pickTeam) {
