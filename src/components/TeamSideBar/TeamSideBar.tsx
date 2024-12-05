@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
+import { FaRocketchat } from "react-icons/fa";
 
 
 type TeamSideBarProps = {
@@ -22,13 +23,17 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
         <div className="collapse-content">
           {teamChannels.map((channel, idx) => (
             <div key={channel?.id}>
-              <a
-                onClick={() => setChannel(channel ? channel : null)}
-                key={idx}
-                className="text-sm"
-              >
-                {channel?.name}
-              </a>
+              <div className="flex flex-row">
+                <button
+                  onClick={() => setChannel(channel)}
+                  className="btn btn-ghost btn-sm items-center"
+                >
+                  <span className="icon">
+                    <FaRocketchat />
+                  </span>
+                  <span>{channel.name}</span>
+                </button>
+              </div>
             </div>
           ))}
         </div>
