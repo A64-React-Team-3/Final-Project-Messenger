@@ -112,7 +112,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
           console.error("Error getting messages", error);
         });
     }
-  }, [channel]);
+  }, [messages.length, channel]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -138,7 +138,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
         >
           {messages.length !== 0 ? (
             messages.map((msg, idx) => (
-              <MessageComponent key={idx} message={msg} />
+              <MessageComponent key={idx} message={msg} setMessages={setMessages} />
             ))
           ) : (
             <p>No Messages in {channel?.name}</p>
