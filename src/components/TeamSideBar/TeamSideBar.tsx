@@ -1,60 +1,16 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
-import { useState } from "react";
-import { TeamModel } from "../../models/Team/TeamModel";
-import { get, ref, onValue, DataSnapshot, set } from "firebase/database";
-import { db } from "../../config/firebase-config";
-import { getChannelsByIds } from "../../services/channel.service";
-import { transformChannelFromSnapshotVal } from "../../helper/helper";
 
 
 type TeamSideBarProps = {
-  team: TeamModel | null;
   setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
+  teamChannels: ChannelModel[];
 };
 
 const TeamSideBar: React.FC<TeamSideBarProps> = ({
-  team,
   setChannel,
+  teamChannels,
 }): JSX.Element => {
-  const [channels, setChannels] = useState<ChannelModel[]>([]);
-
-  useEffect(() => {
-    const teamChannelsRef = ref(db, `teams/${team?.teamId}/channels`);
-    get(teamChannelsRef)
-      .then((_snapshot) => {
-        const unsubscribe = onValue(teamChannelsRef, (snapshot) => {
-          if (snapshot.exists()) {
-            const channelsData = Object.keys(snapshot.val());
-            getChannelsByIds(channelsData).then((channels) => {
-              setChannels(transformChannelFromSnapshotVal(channels));
-            });
-          } else {
-            setChannels([]);
-          }
-        });
-
-        return () => unsubscribe;
-
-        // if (snapshot.exists()) {
-        //   const unsubscribe = onValue(teamChannelsRef, (snapshot) => {
-        //     const channelsData = Object.keys(snapshot.val());
-        //     getChannelsByIds(channelsData).then((channels) => {
-        //       setChannels(transformChannelFromSnapshotVal(channels));
-        //     });
-        //   });
-
-        //   return () => unsubscribe();
-        // } else {
-        //   setChannels([]);
-        // }
-      })
-      .catch((error) => {
-        console.error("Error getting channels", error);
-      });
-
-  }, [team]);
-
 
   return (
     <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 ">
@@ -64,7 +20,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
           Text Channels
         </div>
         <div className="collapse-content">
-          {channels.map((channel, idx) => (
+          {teamChannels.map((channel, idx) => (
             <div key={channel?.id}>
               <a
                 onClick={() => setChannel(channel ? channel : null)}

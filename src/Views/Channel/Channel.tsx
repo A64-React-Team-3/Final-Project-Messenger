@@ -14,6 +14,7 @@ import { MdAddReaction } from "react-icons/md";
 import { RiImageAddFill } from "react-icons/ri";
 import PreviewImage from "../../components/PreviewImage/PreviewImage";
 import { uploadMessageImage } from "../../services/storage.service";
+import { TeamAppContext } from "../../store/team.context";
 
 type ChannelProps = {
   channel: ChannelModel | null;
@@ -30,6 +31,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
   const [showPicker, setShowPicker] = useState<boolean>(false);
   const [imagePreviewFilesURL, setImagePreviewFilesURL] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const { team } = useContext(TeamAppContext);
 
   const handleSendMessage = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
