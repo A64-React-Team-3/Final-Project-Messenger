@@ -1,43 +1,47 @@
 import { Dispatch, SetStateAction } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
 import { FaRocketchat } from "react-icons/fa";
-import { useState } from "react";
-import { TeamModel } from "../../models/Team/TeamModel";
-import { get, ref, onValue, DataSnapshot, set } from "firebase/database";
-import { db } from "../../config/firebase-config";
-import { getChannelsByIds } from "../../services/channel.service";
-import { transformChannelFromSnapshotVal } from "../../helper/helper";
-import { FaRocketchat } from "react-icons/fa6";
 import { MdOutlineVoiceChat } from "react-icons/md";
+import { IoMdSettings } from "react-icons/io";
 type TeamSideBarProps = {
   setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
   teamChannels: ChannelModel[];
+  setIsNamePrivacyModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const TeamSideBar: React.FC<TeamSideBarProps> = ({
   setChannel,
   teamChannels,
+  setIsNamePrivacyModalOpen
 }): JSX.Element => {
   return (
     <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 ">
-      <div className="collapse">
+      <div className="collapse !overflow-visible">
         <input type="checkbox" />
         <div className="collapse-title z-0 text-xl font-medium">
           Text Channels
         </div>
         <div className="collapse-content">
-          {teamChannels.map((channel, idx) => (
-            <div key={channel?.id}>
-              <div className="flex flex-row">
+          {teamChannels.map((channel) => (
+            <div key={channel?.id} className="flex flex-row rounded-md my-2 p-0 w-full">
+              <div className="flex justify-between w-full items-center">
                 <button
                   onClick={() => setChannel(channel)}
-                  className="btn btn-ghost btn-sm items-center"
+                  className="btn btn-ghost btn-sm"
                 >
                   <span className="icon">
                     <FaRocketchat />
                   </span>
                   <span>{channel.name}</span>
                 </button>
+                <div className="dropdown dropdown-bottom dropdown-start">
+                  <div tabIndex={0} role="button" className="btn btn-sm m-1" onClick={() => setChannel(channel)}><IoMdSettings /></div>
+                  <ul tabIndex={0} className="dropdown-content menu-sm bg-base-100 rounded-box z-[40] w-52 p-2 shadow">
+                    <li><button className="btn btn-ghost btn-sm w-full" onClick={() => { setIsNamePrivacyModalOpen(true), setChannel(channel) }}>Name & privacy</button></li>
+                    <li><button className="btn btn-ghost btn-sm w-full">Members</button></li>
+                    <li><button className="btn btn-ghost btn-sm w-full">Delete</button></li>
+                  </ul>
+                </div>
               </div>
             </div>
           ))}
@@ -47,7 +51,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
         <input type="checkbox" />
         <div className="collapse-title text-xl font-medium">Voice Channel</div>
         <div className="collapse-content flex flex-row">
-          <button className="btn btn-sm btn-outline btn-primary  text-sm hover:bg-gray-700 mb-3">
+          <button className="btn btn-sm btn-outline btn-primary text-sm hover:bg-gray-700 mb-3">
             <span className="mr-2 text-lg">
               <MdOutlineVoiceChat className="text-secondary" />
             </span>

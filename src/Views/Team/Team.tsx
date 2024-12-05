@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import TeamNavBar from "../../components/TeamNavBar/TeamNavBar";
 import TeamSideBar from "../../components/TeamSideBar/TeamSideBar";
 import { useState } from "react";
@@ -9,10 +9,14 @@ import { ChannelModel } from "../../models/ChannelModel";
 import { TeamAppContext } from "../../store/team.context";
 import { getChannelsByIds } from "../../services/channel.service";
 import { transformChannelFromSnapshotVal } from "../../helper/helper";
+import Modal from "../../hoc/Modal/Modal";
+import ChannelSettings from "../ModalViews/ChannelSettings/ChannelSettings";
 
 const Team: React.FC = (): JSX.Element => {
   const [teamChannels, setTeamChannels] = useState<ChannelModel[]>([]);
   const [currentChannel, setCurrentChannel] = useState<ChannelModel | null>(null);
+  const channelSettings = useRef<HTMLDialogElement>(null);
+  const [isNamePrivacyModalOpen, setIsNamePrivacyModalOpen] = useState<boolean>(false);
   const { team } = useContext(TeamAppContext);
 
   useEffect(() => {
@@ -52,9 +56,17 @@ const Team: React.FC = (): JSX.Element => {
     <div className="border-base-200 bg-base-300 flex-col justify-center w-full ">
       <TeamNavBar channelName={currentChannel?.name} />
       <div className="flex w-full h-[calc(100vh-4rem)]">
-        <TeamSideBar setChannel={setCurrentChannel} teamChannels={teamChannels} />
+        <TeamSideBar
+          setChannel={setCurrentChannel}
+          teamChannels={teamChannels}
+          setIsNamePrivacyModalOpen={setIsNamePrivacyModalOpen}
+        />
         <Channel channel={currentChannel} />
       </div>
+      <Modal modalRef={channelSettings} isModalOpen={isNamePrivacyModalOpen} setIsModalOpen={setIsNamePrivacyModalOpen}>
+        <ChannelSettings currentChannel={currentChannel} setIsModalOpen={setIsNamePrivacyModalOpen} isModalOpen={isNamePrivacyModalOpen} />
+      </Modal>
+
     </div>
   );
 };
