@@ -33,29 +33,33 @@ const Personal: React.FC = (): JSX.Element => {
   }, []);
   return (
     <>
-      <div className="flex w-full h-screen">
+      <div className="flex w-full h-screen ">
         <HomeSideBar />
-        <div className="border-base-300 flex-col justify-center bg-slate-600 text-slate-50 h-full w-96 p-1">
+        <div className="border-base-300 flex-col justify-center bg-slate-600 text-slate-50 h-full w-96 p-1 ">
           <FriendRequests />
-          <FriendList />
-          <div className="collapse collapse-arrow">
-            <input type="checkbox" />
-            <div className="collapse-title z-0 text-xl font-medium">Chats</div>
-            <div className="collapse-content">
-              <div className="h-64 overflow-y-auto">
-                {channels.map(channel => (
-                  <div className="mb-3" key={channel.id}>
-                    <button
-                      onClick={() => setChannel(channel)}
-                      className="btn btn-sm btn-outline btn-primary  text-sm hover:bg-gray-700"
-                    >
-                      <span className="mr-2 text-lg ">
-                        <FaRocketchat className="text-secondary" />
-                      </span>
-                      {channel.name}
-                    </button>
-                  </div>
-                ))}
+          <div className="overflow-y-auto min-h-[50vh] max-h-[66vh] scrollbar-hide">
+            <FriendList />
+            <div className="collapse collapse-arrow ">
+              <input type="checkbox" />
+              <div className="collapse-title z-0 text-xl font-medium">
+                Chats
+              </div>
+              <div className="collapse-content ">
+                <div className="h-64 overflow-y-auto scrollbar-hide">
+                  {channels.map(channel => (
+                    <div className="mb-3" key={channel.id}>
+                      <button
+                        onClick={() => setChannel(channel)}
+                        className="btn btn-sm btn-outline btn-primary  text-sm hover:bg-gray-700"
+                      >
+                        <span className="mr-2 text-lg ">
+                          <FaRocketchat className="text-secondary" />
+                        </span>
+                        {channel.name}
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

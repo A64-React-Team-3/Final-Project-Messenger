@@ -29,7 +29,9 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
   const [messages, setMessages] = useState<MessageModel[]>([]);
   const [textareaHeight, setTextareaHeight] = useState(0);
   const [showPicker, setShowPicker] = useState<boolean>(false);
-  const [imagePreviewFilesURL, setImagePreviewFilesURL] = useState<string[]>([]);
+  const [imagePreviewFilesURL, setImagePreviewFilesURL] = useState<string[]>(
+    []
+  );
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const { team } = useContext(TeamAppContext);
 
@@ -37,40 +39,50 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
     if (e.key === "Enter") {
       e.preventDefault();
       if (imageFiles.length > 0) {
-        uploadMessageImage(imageFiles).then((imageURLs) => {
-          if (channel) {
-            sendMessage(channel.id, user?.uid, user?.displayName, messageToSend, imageURLs);
-            setMessageToSend("");
-            setImagePreviewFilesURL([]);
-            setImageFiles([]);
-            if (fileInputRef.current) {
-              fileInputRef.current.value = "";
+        uploadMessageImage(imageFiles)
+          .then(imageURLs => {
+            if (channel) {
+              sendMessage(
+                channel.id,
+                user?.uid,
+                user?.displayName,
+                messageToSend,
+                imageURLs
+              );
+              setMessageToSend("");
+              setImagePreviewFilesURL([]);
+              setImageFiles([]);
+              if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+              }
             }
-          }
-        }).catch((error) => {
-          console.error("Error uploading image", error);
-        });
+          })
+          .catch(error => {
+            console.error("Error uploading image", error);
+          });
       } else if (messageToSend.trim() !== "" && channel) {
         sendMessage(channel.id, user?.uid, user?.displayName, messageToSend);
         setMessageToSend("");
       }
-    };
+    }
   };
 
   const addImageFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       const filesArray = Array.from(files);
-      const imageURLs = filesArray.map((file) => URL.createObjectURL(file));
-      setImagePreviewFilesURL((prevValue) => [...prevValue, ...imageURLs]);
+      const imageURLs = filesArray.map(file => URL.createObjectURL(file));
+      setImagePreviewFilesURL(prevValue => [...prevValue, ...imageURLs]);
 
-      setImageFiles((prevValue) => [...prevValue, ...filesArray]);
+      setImageFiles(prevValue => [...prevValue, ...filesArray]);
     }
   };
 
   const removeImageFiles = (idx: number) => {
-    setImagePreviewFilesURL((prevValue) => prevValue.filter((_, index) => index !== idx));
-    setImageFiles((prevValue) => prevValue.filter((_, index) => index !== idx));
+    setImagePreviewFilesURL(prevValue =>
+      prevValue.filter((_, index) => index !== idx)
+    );
+    setImageFiles(prevValue => prevValue.filter((_, index) => index !== idx));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -137,7 +149,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
       <div className="flex flex-col w-[calc(100vw-35rem)] h-full">
         <div
           ref={chatRef}
-          className="display-chat w-[calc(100vw-35rem)] flex-grow overflow-auto p-3"
+          className="display-chat w-[calc(100vw-35rem)] flex-grow overflow-auto p-3 scrollbar-hide"
         >
           {messages.length !== 0 ? (
             messages.map((msg, idx) => (
@@ -152,7 +164,12 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             {imagePreviewFilesURL.length > 0 && (
               <div className="flex flex-row gap-2 mb-1">
                 {imagePreviewFilesURL.map((imageURL, idx) => (
-                  <PreviewImage key={idx} idx={idx} imageURL={imageURL} removeImageFiles={removeImageFiles} />
+                  <PreviewImage
+                    key={idx}
+                    idx={idx}
+                    imageURL={imageURL}
+                    removeImageFiles={removeImageFiles}
+                  />
                 ))}
               </div>
             )}
@@ -165,7 +182,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
               onInput={handleInput}
               value={messageToSend}
               onChange={e => {
-                setMessageToSend(e.target.value)
+                setMessageToSend(e.target.value);
               }}
               onKeyDown={handleSendMessage}
               style={{ height: `${textareaHeight}px` }}
@@ -186,7 +203,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
                   type="file"
                   multiple={true}
                   className="file-input file-input-bordered w-full max-w-xs hidden"
-                  onChange={(e) => addImageFiles(e)}
+                  onChange={e => addImageFiles(e)}
                 />
                 <RiImageAddFill size={30} />
               </button>
@@ -197,7 +214,11 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
                   className="absolute bottom-20 right-0 bg-base-100 rounded-box z-10 p-2 shadow"
                 >
                   <div className="h-96">
-                    <EmojiPicker height="100%" lazyLoadEmojis={true} onEmojiClick={handleEmojiClick} />
+                    <EmojiPicker
+                      height="100%"
+                      lazyLoadEmojis={true}
+                      onEmojiClick={handleEmojiClick}
+                    />
                   </div>
                 </div>
               )}
