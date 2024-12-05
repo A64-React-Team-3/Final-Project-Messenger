@@ -1,13 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
 import { FaRocketchat } from "react-icons/fa";
-import { useState } from "react";
-import { TeamModel } from "../../models/Team/TeamModel";
-import { get, ref, onValue, DataSnapshot, set } from "firebase/database";
-import { db } from "../../config/firebase-config";
-import { getChannelsByIds } from "../../services/channel.service";
-import { transformChannelFromSnapshotVal } from "../../helper/helper";
-import { FaRocketchat } from "react-icons/fa6";
 import { MdOutlineVoiceChat } from "react-icons/md";
 type TeamSideBarProps = {
   setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
