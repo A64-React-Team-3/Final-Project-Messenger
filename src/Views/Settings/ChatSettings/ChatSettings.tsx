@@ -1,4 +1,7 @@
 import React from "react";
+import { useLanguage } from "../../../hooks/useLanguage";
+import { Translations } from "../../../common/translations";
+import { Language } from "../../../common/types/LanguageType";
 /**
  * ChatSettings Component
  *
@@ -9,6 +12,7 @@ import React from "react";
  * @returns {JSX.Element} The rendered `ChatSettings` component.
  */
 const ChatSettings: React.FC = (): JSX.Element => {
+  const { language, setLanguage, translate } = useLanguage();
   return (
     <div className="bg-dark p-2 rounded-lg space-y-8">
       <h2 className="text-3xl font-bold">Chat Settings</h2>
@@ -71,11 +75,17 @@ const ChatSettings: React.FC = (): JSX.Element => {
 
           <div className="space-y-2">
             <label className="block text-lg font-medium">
-              Language Preferences
+              {translate(Translations.LANGUAGE_PREFERENCE_EN)}
             </label>
-            <select className="select select-bordered w-1/2 text-lg">
-              <option>English</option>
-              <option>Bulgarian</option>
+            <select
+              value={language}
+              onChange={e => setLanguage(e.target.value as Language)}
+              className="select select-bordered w-1/2 text-lg"
+            >
+              <option value={"EN"}>{translate(Translations.ENGLISH_EN)}</option>
+              <option value={"BG"}>
+                {translate(Translations.BULGARIAN_EN)}
+              </option>
             </select>
           </div>
         </form>

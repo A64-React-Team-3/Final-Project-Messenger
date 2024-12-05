@@ -10,9 +10,8 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 }): JSX.Element => {
   const [language, setLanguage] = useState<Language>("EN");
 
-  const translate = (key: keyof typeof Translations): string => {
-    const translationKey =
-      `${key}_${language.toUpperCase()}` as keyof typeof Translations;
+  const translate = (key: Translations): string => {
+    const translationKey = `${key}_${language}` as keyof typeof Translations;
     return Translations[translationKey] || key;
   };
 
