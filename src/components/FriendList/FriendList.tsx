@@ -212,7 +212,7 @@ const FriendList: React.FC = (): JSX.Element => {
             ))}
           {pickFriend && (
             <div className="modal modal-open" style={{ zIndex: 49 }}>
-              <div className="modal-box flex flex-col items-center bg-base-200 h-72 w-80 overflow-hidden">
+              <div className="modal-box flex flex-col items-center bg-base-300 h-auto w-80 overflow-hidden">
                 <h3 className="font-bold text-xl text-primary text-center mb-3">
                   Invite {pickFriend.displayName} to team:
                 </h3>
