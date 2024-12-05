@@ -5,7 +5,7 @@ import { db } from "../../config/firebase-config";
 import { getAllUsers } from "../../services/user.service";
 import { UserModel } from "../../models/UserModel";
 import { TeamAppContext } from "../../store/team.context";
-import { getTeams } from "../../services/team.service";
+import { getTeams, inviteToTeam } from "../../services/team.service";
 import { TeamModel } from "../../models/Team/TeamModel";
 import { defaultTeamImgUrl } from "../../common/constants";
 import { transformTeams } from "../../helper/helper";
@@ -17,7 +17,7 @@ const FriendList: React.FC = (): JSX.Element => {
   const [unfriendConfirm, setUnfriendConfirm] = useState<string | null>(null);
   const [pickTeam, setPickTeam] = useState<string | null>(null);
   const [pickedTeamName, setPickedTeamName] = useState<string | null>(null);
-  const [pickFriend, setPickFriend] = useState<string | null>(null);
+  const [pickFriend, setPickFriend] = useState<UserModel | null>(null);
   const [friends, setFriends] = useState<UserModel[] | null>(null);
   const [teams, setTeams] = useState<TeamModel[] | null>([]);
   const { user } = useContext(UserAppContext);
@@ -106,15 +106,22 @@ const FriendList: React.FC = (): JSX.Element => {
     //   });
     // }
   };
-  const handleInviteToTeam = () => {
+  const handleInviteToTeam = async () => {
     if (!pickTeam) {
       toast.info("Please select a team first!");
       return;
     }
-    console.log("Invite ", pickFriend, "to team ", pickTeam);
-    setPickFriend(null);
-    setPickTeam(null);
-    setPickedTeamName(null);
+    if (pickFriend) {
+      console.log("Invite ", pickFriend?.displayName, "to team ", pickTeam);
+      try {
+        await inviteToTeam(pickFriend.username, pickTeam);
+      } catch (error) {
+        console.error("Error inviting user to team: ", error);
+      }
+      setPickFriend(null);
+      setPickTeam(null);
+      setPickedTeamName(null);
+    }
   };
   const selectTeamOption = (teamId: string, name: string) => {
     setPickTeam(teamId);
@@ -163,7 +170,7 @@ const FriendList: React.FC = (): JSX.Element => {
                     <li>
                       <button
                         className="text-primary hover:text-secondary"
-                        onClick={() => setPickFriend(friend.displayName)}
+                        onClick={() => setPickFriend(friend)}
                       >
                         Invite to Team
                       </button>
@@ -207,7 +214,7 @@ const FriendList: React.FC = (): JSX.Element => {
             <div className="modal modal-open" style={{ zIndex: 49 }}>
               <div className="modal-box flex flex-col items-center bg-base-200 h-72 w-80 overflow-hidden">
                 <h3 className="font-bold text-xl text-primary text-center mb-3">
-                  Invite {pickFriend} to team:
+                  Invite {pickFriend.displayName} to team:
                 </h3>
 
                 <div className="form-control w-3/4 flex items-center bg-base-300">

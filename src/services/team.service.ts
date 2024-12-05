@@ -68,3 +68,16 @@ export const getTeamById = async (
     return null;
   }
 };
+
+export const inviteToTeam = async (
+  username: string,
+  teamId: string
+): Promise<void> => {
+  try {
+    await update(ref(db), {
+      [`teams/${teamId}/members/${username}`]: "member",
+    });
+  } catch (error) {
+    console.error("Error inviting the user to team", error);
+  }
+};
