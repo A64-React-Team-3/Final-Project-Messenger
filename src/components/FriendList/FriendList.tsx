@@ -193,13 +193,13 @@ const FriendList: React.FC = (): JSX.Element => {
                       </h3>
                       <div className="modal-action justify-center space-x-4">
                         <button
-                          className="btn btn-error text-lg font-semibold rounded-full shadow-md  hover:scale-105 transition-all"
+                          className="btn btn-error btn-outline font-semibold rounded-full shadow-md  hover:scale-105 transition-all"
                           onClick={() => handleUnfriend(friend.uid)}
                         >
                           Yes, Unfriend
                         </button>
                         <button
-                          className="btn btn-secondary text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-all"
+                          className="btn btn-secondary btn-outline font-semibold rounded-full shadow-md hover:scale-105 transition-all"
                           onClick={() => setUnfriendConfirm(null)}
                         >
                           Cancel
