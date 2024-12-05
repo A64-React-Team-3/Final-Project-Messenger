@@ -94,7 +94,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
             />
             <div className="flex justify-evenly items-center">
               <label className="label cursor-pointer">
-                <span className="label-text text-white">Private</span>
+                <span className="label-text ">Private</span>
                 <input
                   type="checkbox"
                   name="teamPrivacy"
@@ -102,7 +102,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
                   onChange={handleSwitchChange}
                   className="toggle mx-2 border-primary bg-primary hover:border-secondary  hover:bg-secondary"
                 />
-                <span className="label-text  text-white">Public</span>
+                <span className="label-text  ">Public</span>
               </label>
             </div>
             <div className="flex flex-col items-center">
