@@ -28,14 +28,6 @@ export const createChannel = async (user: UserModel | null, channelName: string,
 
 };
 
-const addChannelToTeam = async (teamId: string, channelId: string | null): Promise<void> => {
-  try {
-    await update(ref(db), { [`teams/${teamId}/channels/${channelId}`]: true });
-  } catch (error) {
-    console.error("Error adding channel to team", error);
-  }
-}
-
 export const getChannels = async (): Promise<any> => {
   const channelsRef = ref(db, "channels/");
   try {
@@ -68,6 +60,26 @@ export const getChannelsByIds = async (channelIds: string[]): Promise<any> => {
     console.error("Error getting channels by ids", error);
   }
 };
+
+export const deleteChannel = async (channelId: string, teamId: string): Promise<void> => {
+  try {
+    console.log("channelID", channelId);
+    console.log("teamId", teamId);
+    await set(ref(db, `teams/${teamId}/channels/${channelId}`), null);
+    await set(ref(db, `channels/${channelId}`), null);
+  } catch (error) {
+    console.error("Error deleting channel", error);
+  }
+}
+
+export const updateChannel = async (channelId: string, channelName: string, channelPrivate: boolean): Promise<void> => {
+  try {
+    await update(ref(db), { [`channels/${channelId}/name`]: channelName });
+    await update(ref(db), { [`channels/${channelId}/private`]: channelPrivate });
+  } catch (error) {
+    console.error("Error updating channel", error);
+  }
+}
 
 export const sendMessage = async (channelId: string, userId: string | null | undefined, userDisplayName: string | null | undefined, message: string, imageUrl?: object | null): Promise<void> => {
   const messageObj = {
