@@ -14,6 +14,7 @@ import { MdAddReaction } from "react-icons/md";
 import { RiImageAddFill } from "react-icons/ri";
 import PreviewImage from "../../components/PreviewImage/PreviewImage";
 import { uploadMessageImage } from "../../services/storage.service";
+import { TeamAppContext } from "../../store/team.context";
 
 type ChannelProps = {
   channel: ChannelModel | null;
@@ -32,6 +33,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
     []
   );
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const { team } = useContext(TeamAppContext);
 
   const handleSendMessage = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -106,25 +108,26 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
     if (channel) {
       const channelRef = ref(db, `channels/${channel.id}/messages`);
       get(channelRef)
-        .then(channelSnapshot => {
-          if (channelSnapshot.exists()) {
-            const unsubscribe = onValue(channelRef, snapshot => {
+        .then(_channelSnapshot => {
+          const unsubscribe = onValue(channelRef, snapshot => {
+            if (snapshot.exists()) {
               const transformedData = transformMessages(snapshot);
               if (transformedData) {
                 setMessages(transformedData);
               }
-            });
+            } else {
+              setMessages([]);
+            }
+          });
 
-            return () => unsubscribe();
-          } else {
-            setMessages([]);
-          }
+          return () => unsubscribe;
+
         })
         .catch(error => {
           console.error("Error getting messages", error);
         });
     }
-  }, [channel]);
+  }, [messages.length, channel]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -150,7 +153,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
         >
           {messages.length !== 0 ? (
             messages.map((msg, idx) => (
-              <MessageComponent key={idx} message={msg} />
+              <MessageComponent key={idx} message={msg} setMessages={setMessages} />
             ))
           ) : (
             <p>No Messages in {channel?.name}</p>

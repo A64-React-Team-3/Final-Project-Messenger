@@ -15,9 +15,10 @@ import EditMessage from "../../Views/ModalViews/EditMessage/EditMessage";
 
 type MessageProps = {
   message: MessageModel;
+  setMessages: React.Dispatch<React.SetStateAction<MessageModel[]>>;
 };
 
-const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
+const Message: React.FC<MessageProps> = ({ message, setMessages }): JSX.Element => {
   const { user } = useContext(UserAppContext);
   const [showPicker, setShowPicker] = useState<boolean>(false);
   const [showMessageOptions, setShowMessageOptions] = useState<boolean>(false);
@@ -129,7 +130,7 @@ const Message: React.FC<MessageProps> = ({ message }): JSX.Element => {
         </div>
       </div>
       <Modal modalRef={deleteMessageRef} isModalOpen={isDeleteModalOpen} setIsModalOpen={setIsDeleteModalOpen}>
-        <DeleteMessage message={message} setIsModalOpen={setIsDeleteModalOpen} />
+        <DeleteMessage message={message} setIsModalOpen={setIsDeleteModalOpen} setMessages={setMessages} />
       </Modal>
       <Modal modalRef={editMessageRef} isModalOpen={isEditModalOpen} setIsModalOpen={setIsEditModalOpen}>
         <EditMessage message={message} setIsModalOpen={setIsEditModalOpen} />

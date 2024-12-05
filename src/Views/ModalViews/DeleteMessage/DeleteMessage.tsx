@@ -3,18 +3,21 @@ import { useContext } from "react";
 import { UserAppContext } from "../../../store/user.context";
 import { transformDate } from "../../../helper/helper";
 import { deleteMessage } from "../../../services/channel.service";
+import { set } from "firebase/database";
 
 type deleteMessageProps = {
   message: MessageModel;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setMessages: React.Dispatch<React.SetStateAction<MessageModel[]>>;
 };
 
-const DeleteMessage: React.FC<deleteMessageProps> = ({ message, setIsModalOpen }): JSX.Element => {
+const DeleteMessage: React.FC<deleteMessageProps> = ({ message, setIsModalOpen, setMessages }): JSX.Element => {
   const { user } = useContext(UserAppContext);
 
   const handleDeleteMessage = () => {
     if (user?.uid === message.sender) {
       deleteMessage(message.channelId, message.id);
+      setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== message.id));
       setIsModalOpen(false);
     } else {
       alert("You cannot delete this message");

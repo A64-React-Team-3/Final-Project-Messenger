@@ -1,5 +1,6 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
+import { FaRocketchat } from "react-icons/fa";
 import { useState } from "react";
 import { TeamModel } from "../../models/Team/TeamModel";
 import { get, ref, onValue, DataSnapshot, set } from "firebase/database";
@@ -8,60 +9,36 @@ import { getChannelsByIds } from "../../services/channel.service";
 import { transformChannelFromSnapshotVal } from "../../helper/helper";
 import { FaRocketchat } from "react-icons/fa6";
 import { MdOutlineVoiceChat } from "react-icons/md";
-
 type TeamSideBarProps = {
-  team: TeamModel | null;
   setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
+  teamChannels: ChannelModel[];
 };
 
 const TeamSideBar: React.FC<TeamSideBarProps> = ({
-  team,
   setChannel,
+  teamChannels,
 }): JSX.Element => {
-  const [channels, setChannels] = useState<ChannelModel[]>([]);
-
-  useEffect(() => {
-    const teamChannelsRef = ref(db, `teams/${team?.teamId}/channels`);
-    get(teamChannelsRef)
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          const unsubscribe = onValue(teamChannelsRef, snapshot => {
-            const channelsData = Object.keys(snapshot.val());
-            getChannelsByIds(channelsData).then(channels => {
-              setChannels(transformChannelFromSnapshotVal(channels));
-            });
-          });
-
-          return () => unsubscribe();
-        } else {
-          setChannels([]);
-        }
-      })
-      .catch(error => {
-        console.error("Error getting channels", error);
-      });
-  }, [team]);
-
   return (
-    <div className="border-base-300 flex-col justify-center px-4 bg-slate-600 text-slate-50 h-full w-60 ">
-      <div className="collapse collapse-arrow">
+    <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 ">
+      <div className="collapse">
         <input type="checkbox" />
         <div className="collapse-title z-0 text-xl font-medium">
           Text Channels
         </div>
         <div className="collapse-content">
-          {channels.map((channel, idx) => (
+          {teamChannels.map((channel, idx) => (
             <div key={channel?.id}>
-              <button
-                onClick={() => setChannel(channel ? channel : null)}
-                key={idx}
-                className="btn btn-sm btn-outline btn-primary  text-sm hover:bg-gray-700 mb-3"
-              >
-                <span className="mr-2 text-lg">
-                  <FaRocketchat className="text-secondary" />
-                </span>
-                {channel?.name}
-              </button>
+              <div className="flex flex-row">
+                <button
+                  onClick={() => setChannel(channel)}
+                  className="btn btn-ghost btn-sm items-center"
+                >
+                  <span className="icon">
+                    <FaRocketchat />
+                  </span>
+                  <span>{channel.name}</span>
+                </button>
+              </div>
             </div>
           ))}
         </div>

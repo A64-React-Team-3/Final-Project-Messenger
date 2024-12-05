@@ -42,7 +42,6 @@ const HomeSideBar: React.FC = (): JSX.Element => {
           if (snapshot) {
             const unsubscribe = onValue(teamsRef, snapshot => {
               const teamsData = transformTeams(snapshot);
-              console.log("teamsData", teamsData);
               setTeams(teamsData);
             });
             return () => unsubscribe();
@@ -78,10 +77,9 @@ const HomeSideBar: React.FC = (): JSX.Element => {
                 <span
                   key={index}
                   onClick={() => handleToTeam(teamData)}
-                  className={`transition-transform duration-200 mb-2 ${
-                    team?.teamId === teamData.teamId &&
+                  className={`transition-transform duration-200 mb-2 ${team?.teamId === teamData.teamId &&
                     `bg-gradient-to-r from-primary to-secondary rounded transition animate-[spin_1s]`
-                  }`}
+                    }`}
                 >
                   <TeamAvatarButton teamData={teamData} />
                 </span>

@@ -23,7 +23,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-neutral w-full h-full rounded-none flex flex-col  justify-center items-center gap-2 p-4"
+            className="btn btn-neutral bg-base-100 border-none w-full h-full rounded-none flex flex-col justify-center items-center gap-2 p-4"
           >
             <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 overflow-hidden">
               {team?.name}

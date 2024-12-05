@@ -42,9 +42,6 @@ const CreateChannel: React.FC<CreateChannelProps> = ({ team, setIsModalOpen }): 
     }
   };
 
-  useEffect(() => {
-    console.log(team);
-  }, [team]);
 
   return (
     <div>
