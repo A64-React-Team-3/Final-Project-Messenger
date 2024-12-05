@@ -8,9 +8,10 @@ type ChannelSettingsProps = {
   currentChannel: ChannelModel | null;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalOpen: boolean;
+  setIsChannelEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ChannelSettings: React.FC<ChannelSettingsProps> = ({ currentChannel, setIsModalOpen, isModalOpen }): JSX.Element => {
+const ChannelSettings: React.FC<ChannelSettingsProps> = ({ currentChannel, setIsModalOpen, isModalOpen, setIsChannelEditing }): JSX.Element => {
   const [isChannelPrivate, setIsChannelPrivate] = useState(false);
   const [channelName, setChannelName] = useState<string>(currentChannel?.name || "");
 
@@ -21,6 +22,7 @@ const ChannelSettings: React.FC<ChannelSettingsProps> = ({ currentChannel, setIs
   const handleSave = () => {
     if (currentChannel?.id) {
       updateChannel(currentChannel.id, channelName, isChannelPrivate);
+      setIsChannelEditing(preValue => !preValue);
       setIsModalOpen(false);
     } else {
       console.error("No channel id found");

@@ -1,19 +1,25 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
 import { FaRocketchat } from "react-icons/fa";
 import { MdOutlineVoiceChat } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
+import { useState } from "react";
+
 type TeamSideBarProps = {
   setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
   teamChannels: ChannelModel[];
   setIsNamePrivacyModalOpen: Dispatch<SetStateAction<boolean>>;
+  setIsChannelDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const TeamSideBar: React.FC<TeamSideBarProps> = ({
   setChannel,
   teamChannels,
-  setIsNamePrivacyModalOpen
+  setIsNamePrivacyModalOpen,
+  setIsChannelDeleteModalOpen
 }): JSX.Element => {
+
+
   return (
     <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 ">
       <div className="collapse !overflow-visible">
@@ -27,19 +33,19 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
               <div className="flex justify-between w-full items-center">
                 <button
                   onClick={() => setChannel(channel)}
-                  className="btn btn-ghost btn-sm"
+                  className="btn btn-ghost btn-sm w-36"
                 >
                   <span className="icon">
                     <FaRocketchat />
                   </span>
-                  <span>{channel.name}</span>
+                  <span className="break-words truncate max-w-24">{channel.name}</span>
                 </button>
                 <div className="dropdown dropdown-bottom dropdown-start">
                   <div tabIndex={0} role="button" className="btn btn-sm m-1" onClick={() => setChannel(channel)}><IoMdSettings /></div>
                   <ul tabIndex={0} className="dropdown-content menu-sm bg-base-100 rounded-box z-[40] w-52 p-2 shadow">
                     <li><button className="btn btn-ghost btn-sm w-full" onClick={() => { setIsNamePrivacyModalOpen(true), setChannel(channel) }}>Name & privacy</button></li>
                     <li><button className="btn btn-ghost btn-sm w-full">Members</button></li>
-                    <li><button className="btn btn-ghost btn-sm w-full">Delete</button></li>
+                    <li><button className="btn btn-ghost btn-sm w-full" onClick={() => { setIsChannelDeleteModalOpen(true), setChannel(channel) }}>Delete</button></li>
                   </ul>
                 </div>
               </div>

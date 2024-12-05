@@ -63,8 +63,10 @@ export const getChannelsByIds = async (channelIds: string[]): Promise<any> => {
 
 export const deleteChannel = async (channelId: string, teamId: string): Promise<void> => {
   try {
-    await set(ref(db, `channels/${channelId}`), null);
+    console.log("channelID", channelId);
+    console.log("teamId", teamId);
     await set(ref(db, `teams/${teamId}/channels/${channelId}`), null);
+    await set(ref(db, `channels/${channelId}`), null);
   } catch (error) {
     console.error("Error deleting channel", error);
   }
