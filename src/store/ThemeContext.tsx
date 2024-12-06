@@ -6,36 +6,28 @@ import {
     ReactNode,
 } from 'react';
 
-export type Theme = 'light' | 'dark' | 'cupcake' | 'synthwave' | 'emerald' | 'corporate' | 'forest';
+import { Themes } from '../common/constants';
 
 interface ThemeContextType {
-    theme: Theme;
-    setTheme: (theme: Theme) => void;
-    availableThemes: Theme[];
+    theme: Themes;
+    setTheme: (theme: Themes) => void;
+    availableThemes: Themes[];
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const AVAILABLE_THEMES: Theme[] = [
-    'light',
-    'dark',
-    'cupcake',
-    'synthwave',
-    'emerald',
-    'corporate',
-    'forest',
-];
+const AVAILABLE_THEMES: Themes[] = Object.values(Themes);
 
 interface ThemeProviderProps {
     children: ReactNode;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-    const [theme, setThemeState] = useState<Theme>(() => {
-        return (localStorage.getItem('theme') as Theme) || 'light';
+    const [theme, setThemeState] = useState<Themes>(() => {
+        return (localStorage.getItem('theme') as Themes) || 'light';
     });
 
-    const setTheme = (newTheme: Theme) => {
+    const setTheme = (newTheme: Themes) => {
         if (AVAILABLE_THEMES.includes(newTheme)) {
             setThemeState(newTheme);
             localStorage.setItem('theme', newTheme);
