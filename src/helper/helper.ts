@@ -2,6 +2,7 @@ import { ChannelModel } from "../models/ChannelModel";
 import { MessageModel } from "../models/MessageModel";
 import { TeamModel } from "../models/Team/TeamModel";
 import { UserModel } from "../models/UserModel";
+import { defaultUserAvatarPath } from "../common/constants";
 
 /**
  * Transforms a Firebase DataSnapshot into a User object.
@@ -12,10 +13,24 @@ import { UserModel } from "../models/UserModel";
  */
 export const transformUser = (
   user: import("firebase/database").DataSnapshot
-): Promise<UserModel | null> => {
+): UserModel => {
   const userData = user.val()[Object.keys(user.val())[0]];
-  return userData;
+  return {
+    username: userData.username,
+    uid: userData.uid,
+    email: userData.email,
+    displayName: userData.displayName,
+    phoneNumber: userData.phoneNumber || null,
+    avatarUrl: userData.avatarUrl || defaultUserAvatarPath,
+    status: userData.status || null,
+    teams: userData.teams ? Object.values(userData.teams) : null,
+    channels: userData.channels ? Object.values(userData.channels) : null,
+    friends: userData.friends ? Object.values(userData.friends) : null,
+    blocked: userData.blocked ? Object.values(userData.blocked) : null,
+    createdOn: userData.createdOn,
+  } as UserModel;
 };
+
 
 export const transformChannelsFromSnapshot = (
   channels: import("firebase/database").DataSnapshot

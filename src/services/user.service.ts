@@ -80,3 +80,22 @@ export const getAllFriends = async (
   const friends = snapshot.val();
   return friends;
 };
+
+export const updateUser = async (userName: string, displayName: string, phoneNumber: string, avatarUrl?: string): Promise<void> => {
+  try {
+    const userRef = ref(db, `users/${userName}`);
+    const userSnapshot = await get(userRef);
+    if (userSnapshot.exists()) {
+      await set(userRef, {
+        ...userSnapshot.val(),
+        displayName,
+        avatarUrl,
+        phoneNumber
+      });
+    }
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw new Error("Failed to update user");
+  }
+};
+

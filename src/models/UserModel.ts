@@ -9,6 +9,7 @@ export type UserModel = {
   username: string;
   displayName: string;
   createdOn: number;
+  phoneNumber?: string;
   teams?: UserTeam[];
   channels?: UserChannel[];
   friends?: FriendModel[];
