@@ -18,7 +18,10 @@ type MessageProps = {
   setMessages: React.Dispatch<React.SetStateAction<MessageModel[]>>;
 };
 
-const Message: React.FC<MessageProps> = ({ message, setMessages }): JSX.Element => {
+const Message: React.FC<MessageProps> = ({
+  message,
+  setMessages,
+}): JSX.Element => {
   const { user } = useContext(UserAppContext);
   const [showPicker, setShowPicker] = useState<boolean>(false);
   const [showMessageOptions, setShowMessageOptions] = useState<boolean>(false);
@@ -47,8 +50,9 @@ const Message: React.FC<MessageProps> = ({ message, setMessages }): JSX.Element 
   return (
     <>
       <div
-        className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"
-          } mt-5 p-2 relative rounded-2xl hover:bg-base-200`}
+        className={`chat ${
+          message.sender === user!.uid ? "chat-end" : "chat-start"
+        } mt-5 p-2 relative rounded-2xl hover:bg-base-200`}
         onMouseEnter={() => setShowMessageOptions(true)}
         onMouseLeave={() => setShowMessageOptions(false)}
       >
@@ -56,12 +60,15 @@ const Message: React.FC<MessageProps> = ({ message, setMessages }): JSX.Element 
           <div className="w-10 rounded-full">
             <img
               alt="Tailwind CSS chat bubble component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+            />
           </div>
         </div>
         <div
-          className={`chat-header flex gap-1 items-center ${message.sender === user!.uid ? "flex-row-reverse" : ""
-            }`}>
+          className={`chat-header flex gap-1 items-center ${
+            message.sender === user!.uid ? "flex-row-reverse" : ""
+          }`}
+        >
           <span>{message.senderName}</span>
           <time className="text-xs opacity-50">
             {" "}
@@ -69,8 +76,10 @@ const Message: React.FC<MessageProps> = ({ message, setMessages }): JSX.Element 
           </time>
         </div>
         <div
-          className={`chat-bubble ${message.sender === user!.uid ? "chat-bubble-primary" : ""
-            } break-words max-w-full`}>
+          className={`chat-bubble ${
+            message.sender === user!.uid ? "chat-bubble-primary" : ""
+          } break-words max-w-full`}
+        >
           {message.imageUrl && (
             <div className="flex flex-row gap-2">
               {message.imageUrl.map((url, index) => (
@@ -83,17 +92,40 @@ const Message: React.FC<MessageProps> = ({ message, setMessages }): JSX.Element 
           <p className="break-words">{message.message}</p>
         </div>
         {showMessageOptions && (
-          <div className={`message-options flex absolute top-0 rounded-2xl items-center p-1 ${message.sender === user!.uid ? "left-0 flex-row-reverse" : "right-0"
-            }`}>
-            <div className={`message-reactions flex gap-2 px-1 ${message.sender === user!.uid ? "flex-row-reverse" : ""}`}>
+          <div
+            className={`message-options flex absolute top-0 rounded-2xl items-center p-1 ${
+              message.sender === user!.uid
+                ? "left-0 flex-row-reverse"
+                : "right-0"
+            }`}
+          >
+            <div
+              className={`message-reactions flex gap-2 px-1 ${
+                message.sender === user!.uid ? "flex-row-reverse" : ""
+              }`}
+            >
               {reactionEmoji.map((emoji, index) => (
-                <button key={index} onClick={(e) => handleEmojiClick(emoji, e)} className="flex items-center rounded-full hover:scale-125">{emoji}</button>
+                <button
+                  key={index}
+                  onClick={e => handleEmojiClick(emoji, e)}
+                  className="flex items-center rounded-full hover:scale-125"
+                >
+                  {emoji}
+                </button>
               ))}
-              <button className="flex items-center rounded-full scale-[1.35] hover:scale-150" onClick={handleShowPicker}><MdAddReaction /></button>
+              <button
+                className="flex items-center rounded-full scale-[1.35] hover:scale-150"
+                onClick={handleShowPicker}
+              >
+                <MdAddReaction />
+              </button>
               {showPicker && (
                 <div
-                  className={`absolute z-10 h-96 ${message.sender === user!.uid ? "left-[6rem]" : "right-[6rem]"
-                    }`}
+                  className={`absolute z-10 h-96 ${
+                    message.sender === user!.uid
+                      ? "left-[6rem]"
+                      : "right-[6rem]"
+                  }`}
                 >
                   <EmojiPicker
                     onEmojiClick={handleEmojiReactionClick}
@@ -107,18 +139,34 @@ const Message: React.FC<MessageProps> = ({ message, setMessages }): JSX.Element 
             {message.sender === user?.uid && (
               <>
                 <div className="mx-1">|</div>
-                <div className={`message-buttons flex gap-2 px-1 ${message.sender === user!.uid ? "flex-row-reverse" : ""}`}>
-                  <button className="flex items-center rounded-full scale-[1.35] hover:scale-150" onClick={() => setIsEditModalOpen(true)}><MdEdit /></button>
-                  <button className="flex items-center rounded-full scale-[1.35] hover:scale-150" onClick={() => setIsDeleteModalOpen(true)}><MdDelete /></button>
+                <div
+                  className={`message-buttons flex gap-2 px-1 ${
+                    message.sender === user!.uid ? "flex-row-reverse" : ""
+                  }`}
+                >
+                  <button
+                    className="flex items-center rounded-full scale-[1.35] hover:scale-150"
+                    onClick={() => setIsEditModalOpen(true)}
+                  >
+                    <MdEdit />
+                  </button>
+                  <button
+                    className="flex items-center rounded-full scale-[1.35] hover:scale-150"
+                    onClick={() => setIsDeleteModalOpen(true)}
+                  >
+                    <MdDelete />
+                  </button>
                 </div>
               </>
             )}
           </div>
         )}
       </div>
-      <div className={`flex gap-2 z-10 flex-wrap ${message.sender === user!.uid
-        ? "left-[70rem] flex-row-reverse"
-        : "right-[70rem]"
+      <div
+        className={`flex gap-2 z-10 flex-wrap ${
+          message.sender === user!.uid
+            ? "left-[70rem] flex-row-reverse"
+            : "right-[70rem]"
         }`}
       >
         <div className="mx-12">
@@ -129,10 +177,22 @@ const Message: React.FC<MessageProps> = ({ message, setMessages }): JSX.Element 
           ))}
         </div>
       </div>
-      <Modal modalRef={deleteMessageRef} isModalOpen={isDeleteModalOpen} setIsModalOpen={setIsDeleteModalOpen}>
-        <DeleteMessage message={message} setIsModalOpen={setIsDeleteModalOpen} setMessages={setMessages} />
+      <Modal
+        modalRef={deleteMessageRef}
+        isModalOpen={isDeleteModalOpen}
+        setIsModalOpen={setIsDeleteModalOpen}
+      >
+        <DeleteMessage
+          message={message}
+          setIsModalOpen={setIsDeleteModalOpen}
+          setMessages={setMessages}
+        />
       </Modal>
-      <Modal modalRef={editMessageRef} isModalOpen={isEditModalOpen} setIsModalOpen={setIsEditModalOpen}>
+      <Modal
+        modalRef={editMessageRef}
+        isModalOpen={isEditModalOpen}
+        setIsModalOpen={setIsEditModalOpen}
+      >
         <EditMessage message={message} setIsModalOpen={setIsEditModalOpen} />
       </Modal>
     </>
