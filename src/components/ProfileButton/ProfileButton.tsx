@@ -20,7 +20,7 @@ const ProfileButton: React.FC = (): JSX.Element => {
     navigate("/settings");
   };
   return (
-    <div className="dropdown dropdown-end">
+    <div className="dropdown dropdown-end ">
       <div
         tabIndex={0}
         role="button"
@@ -35,7 +35,7 @@ const ProfileButton: React.FC = (): JSX.Element => {
       </div>
       <ul
         tabIndex={0}
-        className="menu menu-sm dropdown-content bg-base-200 rounded-box mt-3 w-52 p-2 shadow"
+        className="menu menu-sm dropdown-content bg-gray-800 rounded-box mt-3 w-52 p-2 shadow !z-50"
       >
         <li>
           <a className="justify-between">
