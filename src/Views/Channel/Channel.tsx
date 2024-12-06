@@ -121,7 +121,6 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
           });
 
           return () => unsubscribe;
-
         })
         .catch(error => {
           console.error("Error getting messages", error);
@@ -153,7 +152,11 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
         >
           {messages.length !== 0 ? (
             messages.map((msg, idx) => (
-              <MessageComponent key={idx} message={msg} setMessages={setMessages} />
+              <MessageComponent
+                key={idx}
+                message={msg}
+                setMessages={setMessages}
+              />
             ))
           ) : (
             <p>No Messages in {channel?.name}</p>
@@ -226,7 +229,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
           </div>
         </div>
       </div>
-      <ChannelSideBar />
+      {team && <ChannelSideBar />}
     </div>
   );
 };

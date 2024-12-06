@@ -38,25 +38,24 @@ export const transformChannelsFromSnapshot = (
   return tChannels;
 };
 
-export const transformChannelFromSnapshotVal = (channels: any[]): ChannelModel[] => {
-  const tChannels = channels.map(
-    (channel: any): ChannelModel => {
-      return {
-        id: channel.id,
-        name: channel.name,
-        members: Object.keys(channel.members || {}),
-        messages: channel.messages ? Object.values(channel.messages) : null,
-        creator: channel.creator,
-        teamId: channel.teamId,
-        private: channel.private,
-        createdOn: channel.createdOn,
-      } as ChannelModel;
-    }
-  );
+export const transformChannelFromSnapshotVal = (
+  channels: any[]
+): ChannelModel[] => {
+  const tChannels = channels.map((channel: any): ChannelModel => {
+    return {
+      id: channel.id,
+      name: channel.name,
+      members: Object.keys(channel.members || {}),
+      messages: channel.messages ? Object.values(channel.messages) : null,
+      creator: channel.creator,
+      teamId: channel.teamId,
+      private: channel.private,
+      createdOn: channel.createdOn,
+    } as ChannelModel;
+  });
 
   return tChannels;
-}
-
+};
 
 export const transformTeams = (
   teams: import("firebase/database").DataSnapshot
@@ -110,8 +109,8 @@ export const transformDate = (timestamp: number): string => {
     daysAgo === 0
       ? "Today"
       : daysAgo === 1
-        ? "Yesterday"
-        : date.toLocaleDateString();
+      ? "Yesterday"
+      : date.toLocaleDateString();
 
   return `${day} ${date.toLocaleTimeString("en-US", {
     hour: "2-digit",
