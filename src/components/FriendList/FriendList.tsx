@@ -11,6 +11,7 @@ import { defaultTeamImgUrl } from "../../common/constants";
 import { transformTeams } from "../../helper/helper";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { FriendModel } from "../../models/User/FriendModel";
 
 const FriendList: React.FC = (): JSX.Element => {
   const [friendSettings, setFriendSettings] = useState<string | null>(null);
@@ -92,8 +93,9 @@ const FriendList: React.FC = (): JSX.Element => {
       }
     }
   }, [pickFriend]);
-  const handleUnfriend = (friendId: string) => {
-    console.log("unfriend: ", friendId);
+  const handleUnfriend = (friend: UserModel) => {
+    console.log("unfriend: ", friend.displayName);
+    toast.error(`${friend.displayName} was removed from friends!`);
     setUnfriendConfirm(null);
     setFriendSettings(null);
   };
@@ -199,7 +201,7 @@ const FriendList: React.FC = (): JSX.Element => {
                       <div className="modal-action justify-center space-x-4">
                         <button
                           className="btn btn-error btn-outline font-semibold rounded-full shadow-md  hover:scale-105 transition-all"
-                          onClick={() => handleUnfriend(friend.uid)}
+                          onClick={() => handleUnfriend(friend)}
                         >
                           Yes, Unfriend
                         </button>
