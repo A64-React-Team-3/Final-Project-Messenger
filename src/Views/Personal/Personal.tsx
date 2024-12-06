@@ -9,6 +9,7 @@ import { transformChannelsFromSnapshot } from "../../helper/helper";
 import { db } from "../../config/firebase-config";
 import Channel from "../Channel/Channel";
 import { FaRocketchat } from "react-icons/fa6";
+import { toast } from "react-toastify";
 const Personal: React.FC = (): JSX.Element => {
   const [channels, setChannels] = useState<ChannelModel[]>([]);
   const [channel, setChannel] = useState<ChannelModel | null>(null);
@@ -29,6 +30,7 @@ const Personal: React.FC = (): JSX.Element => {
       })
       .catch(error => {
         console.error("Error getting channels", error);
+        toast.error("Error getting channels");
       });
   }, []);
   return (

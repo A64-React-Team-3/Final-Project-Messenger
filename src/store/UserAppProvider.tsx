@@ -4,6 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase-config";
 import { getUser } from "../services/user.service";
 import { UserModel } from "../models/UserModel";
+import { toast } from "react-toastify";
 interface UserAppProviderProps {
   children: React.ReactNode;
 }
@@ -24,6 +25,7 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
         })
         .catch(error => {
           console.error("Failed to fetch user data:", error.message);
+          toast.error("Failed to fetch user data");
           setUser(null);
           // setError(error.message);
         });

@@ -66,13 +66,16 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
         console.log("teamData", teamData);
       } catch (error) {
         console.error("Error uploading image", error);
+        toast.error("Error uploading image");
       }
     }
     try {
       await createTeam(user!, teamName, privacy, imageUrl);
+      toast.success(`Team "${teamName}" created successfully!`);
       setLoading(false);
     } catch (error) {
       console.error("Error with creating team: ", error);
+      toast.error("Error with creating team");
       setLoading(false);
     }
   };
