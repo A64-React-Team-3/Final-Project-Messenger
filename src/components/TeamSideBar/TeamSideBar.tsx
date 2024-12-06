@@ -21,7 +21,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
 
 
   return (
-    <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 ">
+    <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 shadow-lg shadow-primary">
       <div className="collapse !overflow-visible">
         <input type="checkbox" />
         <div className="collapse-title z-0 text-xl font-medium">

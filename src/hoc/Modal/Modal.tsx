@@ -36,9 +36,9 @@ const Modal: React.FC<ModalProps> = ({ modalRef, children, isModalOpen, setIsMod
       <div className="modal-box bg-base-300">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
-          <button onClick={() => setIsModalOpen((prevValue) => !prevValue)} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-black">✕</button>
+          <button onClick={() => setIsModalOpen((prevValue) => !prevValue)} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 ">✕</button>
         </form>
-        <div className="text-black">
+        <div>
           {children}
         </div>
       </div>

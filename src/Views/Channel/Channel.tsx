@@ -159,7 +159,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             <p>No Messages in {channel?.name}</p>
           )}
         </div>
-        <div className="p-3 border-t border-base-200 flex flex-col gap-1 items-center">
+        <div className="p-3 flex flex-col gap-1 items-center">
           <div className="flex w-full">
             {imagePreviewFilesURL.length > 0 && (
               <div className="flex flex-row gap-2 mb-1">
@@ -177,7 +177,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
           <div className="w-full flex flex-row items-center">
             <textarea
               ref={textareaRef}
-              className="textarea p-2 resize-none overflow-hidden w-full"
+              className="textarea p-2 resize-none overflow-hidden w-full shadow-md shadow-primary"
               placeholder="Type your message here... and press Enter to send"
               onInput={handleInput}
               value={messageToSend}

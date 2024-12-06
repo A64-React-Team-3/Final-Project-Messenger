@@ -17,15 +17,15 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { team } = useContext(TeamAppContext);
   return (
-    <div className="navbar py-0 px-0 bg-base-100 h-14">
+    <div className="navbar py-0 px-0 bg-base-100 h-14 shadow-md z-10 shadow-primary">
       <div className=" h-full">
         <div className="dropdown dropdown-end h-full w-60">
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-neutral bg-base-100 border-none w-full h-full rounded-none flex flex-col justify-center items-center gap-2 p-4"
+            className="btn btn-neutral bg-base-100 border-none hover:bg-base-300 w-full h-full rounded-none flex flex-col justify-center items-center gap-2 p-4"
           >
-            <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 overflow-hidden">
+            <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 text-neutral-content overflow-hidden">
               {team?.name}
             </h2>
             {team?.avatarUrl && (
@@ -65,7 +65,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
           <input
             type="text"
             placeholder="Search"
-            className="input input-bordered w-24 md:w-auto"
+            className="input input-sm input-bordered w-24 md:w-auto"
           />
         </div>
         <ProfileButton />
