@@ -25,7 +25,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
             role="button"
             className="btn btn-neutral bg-base-100 border-none hover:bg-base-300 w-full h-full rounded-none flex flex-col justify-center items-center gap-2 p-4"
           >
-            <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 text-neutral-content overflow-hidden">
+            <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 text-primary overflow-hidden">
               {team?.name}
             </h2>
             {team?.avatarUrl && (
