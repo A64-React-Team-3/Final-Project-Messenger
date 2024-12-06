@@ -1,7 +1,9 @@
-import React, { useContext, useEffect } from "react";
-import { UserAppContext } from "../../store/app-context";
+import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../config/firebase-config";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 type AuthenticatedProps = {
   /** React components to render if the user is authenticated */
@@ -20,26 +22,25 @@ type AuthenticatedProps = {
 const Authenticated: React.FC<AuthenticatedProps> = ({
   children,
 }: AuthenticatedProps): JSX.Element => {
-  const { user, loading, error } = useContext(UserAppContext);
   const navigate = useNavigate();
+  const [authUser, loading] = useAuthState(auth);
 
   useEffect(() => {
     if (!loading) {
-      toast.error(error);
-      if (!user) {
-        console.log("test");
+      if (!authUser) {
         navigate("/");
       }
     }
-  }, [user, loading]);
-  if (loading) {
+  }, [authUser, loading]);
+  if (authUser) {
+    return <div>{children}</div>;
+  } else {
     return (
-      <>
-        <h2>loading....</h2>
-      </>
+      <div className=" flex justify-center align-center bg-transparent h-screen">
+        <LoadingSpinner />
+      </div>
     );
   }
-  return <div>{children}</div>;
 };
 
 export default Authenticated;
