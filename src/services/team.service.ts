@@ -80,4 +80,11 @@ export const inviteToTeam = async (
   } catch (error) {
     console.error("Error inviting the user to team", error);
   }
+  try {
+    await update(ref(db), {
+      [`users/${username}/teams/${teamId}`]: true,
+    });
+  } catch (error) {
+    console.error("Error inviting the user to team", error);
+  }
 };
