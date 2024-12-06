@@ -71,6 +71,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
     }
     try {
       await createTeam(user!, teamName, privacy, imageUrl);
+      toast.success(`Team "${teamName}" created successfully!`);
       setLoading(false);
     } catch (error) {
       console.error("Error with creating team: ", error);

@@ -116,6 +116,9 @@ const FriendList: React.FC = (): JSX.Element => {
       console.log("Invite ", pickFriend?.displayName, "to team ", pickTeam);
       try {
         await inviteToTeam(pickFriend.username, pickTeam);
+        toast.success(
+          `Invited ${pickFriend.displayName} to team ${pickedTeamName}!`
+        );
       } catch (error) {
         console.error("Error inviting user to team: ", error);
         toast.error("Error inviting user to team!");
