@@ -4,6 +4,7 @@ import { transformUser } from "../helper/helper";
 import { UserModel } from "../models/UserModel";
 import { FriendModel } from "../models/User/FriendModel";
 import { Status } from "../common/constants";
+import { TeamMemberModel } from "../models/Team/TeamMemberModel";
 
 /**
  * Retrieves a user by their handle.
@@ -66,6 +67,19 @@ export const getUser = async (uid: string): Promise<UserModel | null> => {
   );
   const user = transformUser(userSnapshot);
   return user;
+};
+
+export const getByUserName = async (
+  username: Partial<TeamMemberModel>
+): Promise<UserModel | null> => {
+  const userSnapshot = await get(query(ref(db, `users/${username}`)));
+  if (!userSnapshot.exists()) {
+    console.error(`No user found with username: ${username}`);
+    return null;
+  } else {
+    const user = userSnapshot.val() as UserModel;
+    return user;
+  }
 };
 
 export const getAllUsers = async (): Promise<UserModel[]> => {
