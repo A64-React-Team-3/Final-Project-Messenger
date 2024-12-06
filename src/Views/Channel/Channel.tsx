@@ -144,6 +144,10 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
     }
   }, [messages.length]);
 
+  useEffect(() => {
+    console.log("user", user);
+  }, [channel]);
+
   return (
     <div className="channel-view flex h-full w-[calc(100vw-20rem)]">
       <div className="flex flex-col w-[calc(100vw-35rem)] h-full">

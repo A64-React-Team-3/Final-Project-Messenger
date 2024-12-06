@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { UserAppContext } from "../../../store/user.context";
 import { uploadUserAvatar } from "../../../services/storage.service";
 import { set, update, get, ref } from "firebase/database";
-import { updateUser } from "../../../services/user.service";
+import { getUser, updateUser } from "../../../services/user.service";
 import { db } from "../../../config/firebase-config";
 import { transformUser } from "../../../helper/helper";
 import { useNavigate } from "react-router-dom";
@@ -48,11 +48,19 @@ const ProfileSettings: React.FC = (): JSX.Element => {
     if (avatarFile.name) {
       const avatarUrl = await uploadUserAvatar(avatarFile, avatarFile.name);
       if (user) {
-        await updateUser(user.username, displayName, phoneNumber, avatarUrl);
+        await updateUser(user.uid, displayName, phoneNumber, avatarUrl);
+        const newUser = await getUser(user.uid);
+        if (newUser) {
+          setUser(newUser);
+        }
       }
     } else {
       if (user) {
-        await updateUser(user.username, displayName, phoneNumber);
+        await updateUser(user.uid, displayName, phoneNumber);
+        const newUser = await getUser(user.uid);
+        if (newUser) {
+          setUser(newUser);
+        }
       }
     }
   };

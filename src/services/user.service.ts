@@ -61,11 +61,16 @@ export const createUser = async (
  * @throws {import('firebase/database').DatabaseError} If retrieval fails.
  */
 export const getUser = async (uid: string): Promise<UserModel | null> => {
-  const userSnapshot = await get(
-    query(ref(db, "users"), orderByChild("uid"), equalTo(uid))
-  );
-  const user = transformUser(userSnapshot);
-  return user;
+  try {
+    const userSnapshot = await get(
+      query(ref(db, "users"), orderByChild("uid"), equalTo(uid))
+    );
+    const user = transformUser(userSnapshot);
+    return user;
+  } catch (error) {
+    console.error("Error getting user:", error);
+    throw new Error("Failed to get user");
+  }
 };
 
 export const getAllUsers = async (): Promise<UserModel[]> => {
@@ -81,18 +86,17 @@ export const getAllFriends = async (
   return friends;
 };
 
-export const updateUser = async (userName: string, displayName: string, phoneNumber: string, avatarUrl?: string): Promise<void> => {
+export const updateUser = async (userId: string, displayName: string, phoneNumber: string, avatarUrl?: string): Promise<void> => {
   try {
-    const userRef = ref(db, `users/${userName}`);
+    const userRef = query(ref(db, "users"), orderByChild("uid"), equalTo(userId));
     const userSnapshot = await get(userRef);
-    if (userSnapshot.exists()) {
-      await set(userRef, {
-        ...userSnapshot.val(),
-        displayName,
-        avatarUrl,
-        phoneNumber
-      });
+    const user = transformUser(userSnapshot);
+    user.displayName = displayName;
+    user.phoneNumber = phoneNumber;
+    if (avatarUrl) {
+      user.avatarUrl = avatarUrl;
     }
+    await set(ref(db, `users/${user.username}`), user);
   } catch (error) {
     console.error("Error updating user:", error);
     throw new Error("Failed to update user");
