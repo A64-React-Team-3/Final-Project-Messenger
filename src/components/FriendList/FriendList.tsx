@@ -60,12 +60,13 @@ const FriendList: React.FC = (): JSX.Element => {
             });
             return () => unsubscribe();
           } else {
-            console.log("failed to get friends");
+            toast.error("failed to get friends");
             return null;
           }
         })
         .catch(error => {
           console.error("Error getting friends", error);
+          toast.error("Error getting friends");
         })
         .finally(() => setLoadingFriends(false));
     }
@@ -117,6 +118,7 @@ const FriendList: React.FC = (): JSX.Element => {
         await inviteToTeam(pickFriend.username, pickTeam);
       } catch (error) {
         console.error("Error inviting user to team: ", error);
+        toast.error("Error inviting user to team!");
       }
       setPickFriend(null);
       setPickTeam(null);

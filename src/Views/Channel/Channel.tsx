@@ -15,6 +15,7 @@ import { RiImageAddFill } from "react-icons/ri";
 import PreviewImage from "../../components/PreviewImage/PreviewImage";
 import { uploadMessageImage } from "../../services/storage.service";
 import { TeamAppContext } from "../../store/team.context";
+import { toast } from "react-toastify";
 
 type ChannelProps = {
   channel: ChannelModel | null;
@@ -59,6 +60,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
           })
           .catch(error => {
             console.error("Error uploading image", error);
+            toast.error("Error uploading image");
           });
       } else if (messageToSend.trim() !== "" && channel) {
         sendMessage(channel.id, user?.uid, user?.displayName, messageToSend);
@@ -124,6 +126,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
         })
         .catch(error => {
           console.error("Error getting messages", error);
+          toast.error("Error getting messages");
         });
     }
   }, [messages.length, channel]);
