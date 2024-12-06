@@ -66,6 +66,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
         console.log("teamData", teamData);
       } catch (error) {
         console.error("Error uploading image", error);
+        toast.error("Error uploading image");
       }
     }
     try {
@@ -73,6 +74,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({
       setLoading(false);
     } catch (error) {
       console.error("Error with creating team: ", error);
+      toast.error("Error with creating team");
       setLoading(false);
     }
   };

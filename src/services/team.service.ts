@@ -2,6 +2,7 @@ import { get, push, ref, update } from "firebase/database";
 import { UserModel } from "../models/UserModel";
 import { db } from "../config/firebase-config";
 import { TeamModel } from "../models/Team/TeamModel";
+import { toast } from "react-toastify";
 
 export const createTeam = async (
   user: UserModel,
@@ -11,6 +12,7 @@ export const createTeam = async (
 ): Promise<void> => {
   if (!user) {
     console.error("User is not authenticated");
+    toast.error("User is not authenticated");
     return;
   }
   console.log("user", user);
@@ -33,6 +35,7 @@ export const createTeam = async (
     await update(ref(db), { [`teams/${id}/id`]: id });
   } catch (error) {
     console.error("Error creating team (service fn): ", error);
+    toast.error("Error creating team");
   }
 };
 
@@ -48,6 +51,7 @@ export const getTeams = async (): Promise<TeamModel[] | null> => {
     }
   } catch (error) {
     console.error("Error getting teams: ", error);
+    toast.error("Error getting teams ");
     return null;
   }
 };
@@ -65,6 +69,7 @@ export const getTeamById = async (
     }
   } catch (error) {
     console.error("Error getting team: ", error);
+    toast.error("Error getting team");
     return null;
   }
 };
@@ -79,6 +84,7 @@ export const inviteToTeam = async (
     });
   } catch (error) {
     console.error("Error inviting the user to team", error);
+    toast.error("Error inviting the user to team");
   }
   try {
     await update(ref(db), {
@@ -86,5 +92,6 @@ export const inviteToTeam = async (
     });
   } catch (error) {
     console.error("Error inviting the user to team", error);
+    toast.error("Error inviting the user to team");
   }
 };

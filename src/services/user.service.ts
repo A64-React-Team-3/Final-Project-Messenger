@@ -5,6 +5,7 @@ import { UserModel } from "../models/UserModel";
 import { FriendModel } from "../models/User/FriendModel";
 import { Status } from "../common/constants";
 import { TeamMemberModel } from "../models/Team/TeamMemberModel";
+import { toast } from "react-toastify";
 
 /**
  * Retrieves a user by their handle.
@@ -75,6 +76,7 @@ export const getByUserName = async (
   const userSnapshot = await get(query(ref(db, `users/${username}`)));
   if (!userSnapshot.exists()) {
     console.error(`No user found with username: ${username}`);
+    toast.error(`No user found with username: ${username}`);
     return null;
   } else {
     const user = userSnapshot.val() as UserModel;
