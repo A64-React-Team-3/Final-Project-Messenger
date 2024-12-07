@@ -1,7 +1,9 @@
 import { get } from "firebase/database";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getAllUsers } from "../../../services/user.service";
 import { UserModel } from "../../../models/UserModel";
+import { sendFriendRequest } from "../../../services/notification.service";
+import { UserAppContext } from "../../../store/user.context";
 
 type UserSearchProps = {
   setIsUserSearchModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,6 +14,18 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
   const [searchUserTerm, setSearchUserTerm] = useState<string>("");
   const [allUsers, setAllUsers] = useState<UserModel[]>([]);
   const [searchedUsers, setSearchedUsers] = useState<UserModel[]>([]);
+  const { user } = useContext(UserAppContext);
+
+  const handleFriendRequest = async (senderId: string, recipientId: string) => {
+    if (senderId && recipientId) {
+      const result = await sendFriendRequest(senderId, recipientId);
+      if (result) {
+        console.log("Friend request sent");
+      } else {
+        console.error("Error sending friend request");
+      }
+    }
+  };
 
   useEffect(() => {
     getAllUsers().then((users) => {
@@ -19,6 +33,8 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
       setSearchedUsers(users.filter((user) => user.username.toLowerCase().includes(searchUserTerm.toLowerCase())));
     });
   }, [searchUserTerm]);
+
+
 
 
   return (
@@ -43,19 +59,19 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
             </tr>
           </thead>
           <tbody>
-            {searchedUsers.map((user) => (
-              <tr key={user.uid}>
+            {searchedUsers.map((userData) => (
+              <tr key={userData.uid}>
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle h-12 w-12">
                         <img
-                          src={user.avatarUrl}
+                          src={userData.avatarUrl}
                           alt="Avatar Tailwind CSS Component" />
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">{user.username}</div>
+                      <div className="font-bold">{userData.username}</div>
                     </div>
                   </div>
                 </td>
@@ -63,7 +79,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
                   <button className="btn btn-sm btn-primary">Team Invite</button>
                 </td>
                 <td>
-                  <button className="btn btn-sm btn-secondary">Friend Invite</button>
+                  <button className="btn btn-sm btn-secondary" onClick={() => handleFriendRequest(user!.username, userData.username)}>Friend Invite</button>
                 </td>
               </tr>
             ))}
