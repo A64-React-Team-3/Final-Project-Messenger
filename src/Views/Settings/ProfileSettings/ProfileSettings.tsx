@@ -45,6 +45,10 @@ const ProfileSettings: React.FC = (): JSX.Element => {
 
   const handleUpdateUser = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    if (displayName.length < 3 || displayName.length > 20) {
+      alert("Display name must be between 3 and 20 characters");
+      return;
+    }
     if (avatarFile.name) {
       const avatarUrl = await uploadUserAvatar(avatarFile, avatarFile.name);
       if (user) {
@@ -68,7 +72,7 @@ const ProfileSettings: React.FC = (): JSX.Element => {
 
 
   return (
-    <div className="w-full max-w-xl bg-base-100 p-2 rounded-lg space-y-8">
+    <div className="w-full max-w-3xl bg-base-100 p-2 rounded-lg space-y-8">
       <h2 className="text-3xl font-bold">Profile Settings</h2>
       <p className="text-xl">Update your personal information here.</p>
 

@@ -36,14 +36,8 @@ const ProfileButton: React.FC = (): JSX.Element => {
       </div>
       <ul
         tabIndex={0}
-        className="menu menu-sm dropdown-content  rounded-box mt-3 w-52 p-2 shadow !z-50"
+        className="menu menu-sm dropdown-content bg-base-300 rounded-box mt-3 w-52 p-2 shadow !z-50"
       >
-        <li>
-          <a className="justify-between">
-            Profile
-            <span className="badge">New</span>
-          </a>
-        </li>
         <li>
           <a onClick={handleToSettings}>Settings</a>
         </li>
