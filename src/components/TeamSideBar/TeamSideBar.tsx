@@ -4,6 +4,7 @@ import { FaRocketchat } from "react-icons/fa";
 import { MdOutlineVoiceChat } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
 import { useState } from "react";
+import { createMeeting } from "../../services/meeting.service";
 
 type TeamSideBarProps = {
   setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
@@ -16,10 +17,8 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
   setChannel,
   teamChannels,
   setIsNamePrivacyModalOpen,
-  setIsChannelDeleteModalOpen
+  setIsChannelDeleteModalOpen,
 }): JSX.Element => {
-
-
   return (
     <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 shadow-lg shadow-primary">
       <div className="collapse !overflow-visible">
@@ -28,8 +27,11 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
           Text Channels
         </div>
         <div className="collapse-content">
-          {teamChannels.map((channel) => (
-            <div key={channel?.id} className="flex flex-row rounded-md my-2 p-0 w-full">
+          {teamChannels.map(channel => (
+            <div
+              key={channel?.id}
+              className="flex flex-row rounded-md my-2 p-0 w-full"
+            >
               <div className="flex justify-between w-full items-center">
                 <button
                   onClick={() => setChannel(channel)}
@@ -38,14 +40,49 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
                   <span className="icon">
                     <FaRocketchat />
                   </span>
-                  <span className="break-words truncate max-w-24">{channel.name}</span>
+                  <span className="break-words truncate max-w-24">
+                    {channel.name}
+                  </span>
                 </button>
                 <div className="dropdown dropdown-bottom dropdown-start">
-                  <div tabIndex={0} role="button" className="btn btn-sm m-1" onClick={() => setChannel(channel)}><IoMdSettings /></div>
-                  <ul tabIndex={0} className="dropdown-content menu-sm bg-base-100 rounded-box z-[40] w-52 p-2 shadow">
-                    <li><button className="btn btn-ghost btn-sm w-full" onClick={() => { setIsNamePrivacyModalOpen(true), setChannel(channel) }}>Name & privacy</button></li>
-                    <li><button className="btn btn-ghost btn-sm w-full">Members</button></li>
-                    <li><button className="btn btn-ghost btn-sm w-full" onClick={() => { setIsChannelDeleteModalOpen(true), setChannel(channel) }}>Delete</button></li>
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-sm m-1"
+                    onClick={() => setChannel(channel)}
+                  >
+                    <IoMdSettings />
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content menu-sm bg-base-100 rounded-box z-[40] w-52 p-2 shadow"
+                  >
+                    <li>
+                      <button
+                        className="btn btn-ghost btn-sm w-full"
+                        onClick={() => {
+                          setIsNamePrivacyModalOpen(true), setChannel(channel);
+                        }}
+                      >
+                        Name & privacy
+                      </button>
+                    </li>
+                    <li>
+                      <button className="btn btn-ghost btn-sm w-full">
+                        Members
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="btn btn-ghost btn-sm w-full"
+                        onClick={() => {
+                          setIsChannelDeleteModalOpen(true),
+                            setChannel(channel);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -57,7 +94,12 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
         <input type="checkbox" />
         <div className="collapse-title text-xl font-medium">Voice Channel</div>
         <div className="collapse-content flex flex-row">
-          <button className="btn btn-sm btn-outline btn-primary text-sm hover:bg-gray-700 mb-3">
+          <button
+            className="btn btn-sm btn-outline btn-primary text-sm hover:bg-gray-700 mb-3"
+            onClick={() => {
+              createMeeting();
+            }}
+          >
             <span className="mr-2 text-lg">
               <MdOutlineVoiceChat className="text-secondary" />
             </span>
