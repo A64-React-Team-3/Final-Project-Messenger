@@ -10,6 +10,7 @@ import { getTeams } from "../../services/team.service";
 import { transformTeams } from "../../helper/helper";
 import { TeamModel } from "../../models/Team/TeamModel";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { toast } from "react-toastify";
 const HomeSideBar: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -49,6 +50,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
         })
         .catch(error => {
           console.error("Error getting channels", error);
+          toast.error("Error getting channels");
         })
         .finally(() => setLoadingTeamsData(false));
     }
@@ -77,9 +79,10 @@ const HomeSideBar: React.FC = (): JSX.Element => {
                 <span
                   key={index}
                   onClick={() => handleToTeam(teamData)}
-                  className={`transition-transform duration-200 mb-2 ${team?.teamId === teamData.teamId &&
-                    `bg-gradient-to-r from-primary to-secondary rounded transition animate-[spin_1s]`
-                    }`}
+                  className={`transition-transform duration-200 mb-2 ${
+                    team?.teamId === teamData.teamId &&
+                    `bg-gradient-to-r from-primary to-secondary rounded-full transition animate-[spin_1s]`
+                  }`}
                 >
                   <TeamAvatarButton teamData={teamData} />
                 </span>

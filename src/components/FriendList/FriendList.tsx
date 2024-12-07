@@ -5,19 +5,20 @@ import { db } from "../../config/firebase-config";
 import { getAllUsers } from "../../services/user.service";
 import { UserModel } from "../../models/UserModel";
 import { TeamAppContext } from "../../store/team.context";
-import { getTeams } from "../../services/team.service";
+import { getTeams, inviteToTeam } from "../../services/team.service";
 import { TeamModel } from "../../models/Team/TeamModel";
 import { defaultTeamImgUrl } from "../../common/constants";
 import { transformTeams } from "../../helper/helper";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { FriendModel } from "../../models/User/FriendModel";
 
 const FriendList: React.FC = (): JSX.Element => {
   const [friendSettings, setFriendSettings] = useState<string | null>(null);
   const [unfriendConfirm, setUnfriendConfirm] = useState<string | null>(null);
   const [pickTeam, setPickTeam] = useState<string | null>(null);
   const [pickedTeamName, setPickedTeamName] = useState<string | null>(null);
-  const [pickFriend, setPickFriend] = useState<string | null>(null);
+  const [pickFriend, setPickFriend] = useState<UserModel | null>(null);
   const [friends, setFriends] = useState<UserModel[] | null>(null);
   const [teams, setTeams] = useState<TeamModel[] | null>([]);
   const { user } = useContext(UserAppContext);
@@ -60,12 +61,13 @@ const FriendList: React.FC = (): JSX.Element => {
             });
             return () => unsubscribe();
           } else {
-            console.log("failed to get friends");
+            toast.error("failed to get friends");
             return null;
           }
         })
         .catch(error => {
           console.error("Error getting friends", error);
+          toast.error("Error getting friends");
         })
         .finally(() => setLoadingFriends(false));
     }
@@ -91,30 +93,42 @@ const FriendList: React.FC = (): JSX.Element => {
       }
     }
   }, [pickFriend]);
-  const handleUnfriend = (friendId: string) => {
-    console.log("unfriend: ", friendId);
+  const handleUnfriend = (friend: UserModel) => {
+    console.log("unfriend: ", friend.displayName);
+    toast.error(`${friend.displayName} was removed from friends!`);
     setUnfriendConfirm(null);
     setFriendSettings(null);
   };
 
   const toggleFriendSettings = (id: string) => {
     setFriendSettings(prev => (prev === id ? null : id));
-    if (friendSettingsRef.current && friendSettings === id) {
-      friendSettingsRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+    // if (friendSettingsRef.current && friendSettings === id) {
+    //   friendSettingsRef.current.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "start",
+    //   });
+    // }
   };
-  const handleInviteToTeam = () => {
+  const handleInviteToTeam = async () => {
     if (!pickTeam) {
       toast.info("Please select a team first!");
       return;
     }
-    console.log("Invite ", pickFriend, "to team ", pickTeam);
-    setPickFriend(null);
-    setPickTeam(null);
-    setPickedTeamName(null);
+    if (pickFriend) {
+      console.log("Invite ", pickFriend?.displayName, "to team ", pickTeam);
+      try {
+        await inviteToTeam(pickFriend.username, pickTeam);
+        toast.success(
+          `Invited ${pickFriend.displayName} to team ${pickedTeamName}!`
+        );
+      } catch (error) {
+        console.error("Error inviting user to team: ", error);
+        toast.error("Error inviting user to team!");
+      }
+      setPickFriend(null);
+      setPickTeam(null);
+      setPickedTeamName(null);
+    }
   };
   const selectTeamOption = (teamId: string, name: string) => {
     setPickTeam(teamId);
@@ -163,7 +177,7 @@ const FriendList: React.FC = (): JSX.Element => {
                     <li>
                       <button
                         className="text-primary hover:text-secondary"
-                        onClick={() => setPickFriend(friend.displayName)}
+                        onClick={() => setPickFriend(friend)}
                       >
                         Invite to Team
                       </button>
@@ -186,13 +200,13 @@ const FriendList: React.FC = (): JSX.Element => {
                       </h3>
                       <div className="modal-action justify-center space-x-4">
                         <button
-                          className="btn btn-error text-lg font-semibold rounded-full shadow-md  hover:scale-105 transition-all"
-                          onClick={() => handleUnfriend(friend.uid)}
+                          className="btn btn-error btn-outline font-semibold rounded-full shadow-md  hover:scale-105 transition-all"
+                          onClick={() => handleUnfriend(friend)}
                         >
                           Yes, Unfriend
                         </button>
                         <button
-                          className="btn btn-secondary text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-all"
+                          className="btn btn-secondary btn-outline font-semibold rounded-full shadow-md hover:scale-105 transition-all"
                           onClick={() => setUnfriendConfirm(null)}
                         >
                           Cancel
@@ -205,9 +219,9 @@ const FriendList: React.FC = (): JSX.Element => {
             ))}
           {pickFriend && (
             <div className="modal modal-open" style={{ zIndex: 49 }}>
-              <div className="modal-box flex flex-col items-center bg-base-200 h-72 w-80 overflow-hidden">
+              <div className="modal-box flex flex-col items-center bg-base-300 h-auto w-80 overflow-hidden">
                 <h3 className="font-bold text-xl text-primary text-center mb-3">
-                  Invite {pickFriend} to team:
+                  Invite {pickFriend.displayName} to team:
                 </h3>
 
                 <div className="form-control w-3/4 flex items-center bg-base-300">

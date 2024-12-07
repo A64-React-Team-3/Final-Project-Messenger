@@ -9,6 +9,7 @@ import { transformChannelsFromSnapshot } from "../../helper/helper";
 import { db } from "../../config/firebase-config";
 import Channel from "../Channel/Channel";
 import { FaRocketchat } from "react-icons/fa6";
+import { toast } from "react-toastify";
 const Personal: React.FC = (): JSX.Element => {
   const [channels, setChannels] = useState<ChannelModel[]>([]);
   const [channel, setChannel] = useState<ChannelModel | null>(null);
@@ -29,13 +30,14 @@ const Personal: React.FC = (): JSX.Element => {
       })
       .catch(error => {
         console.error("Error getting channels", error);
+        toast.error("Error getting channels");
       });
   }, []);
   return (
     <>
       <div className="flex w-full h-screen ">
         <HomeSideBar />
-        <div className="border-base-300 flex-col justify-center bg-slate-600 text-slate-50 h-full w-96 p-1 ">
+        <div className="border-base-300 flex-col justify-center h-full   ">
           <FriendRequests />
           <div className="overflow-y-auto min-h-[50vh] max-h-[66vh] scrollbar-hide">
             <FriendList />
@@ -65,7 +67,7 @@ const Personal: React.FC = (): JSX.Element => {
           </div>
         </div>
         <div className="flex flex-col h-screen">
-          <div className="navbar py-0 px-0 bg-zinc-900 h-14 w-full flex items-center justify-between">
+          <div className="navbar py-0 px-0 bh-14 w-full flex items-center justify-between">
             <div className="left-content">
               <h2 className="p-2">
                 {channel ? channel.name : "Personal view"}
@@ -75,7 +77,7 @@ const Personal: React.FC = (): JSX.Element => {
               <ProfileButton />
             </div>
           </div>
-          <div className="flex-grow text-slate-50 overflow-auto">
+          <div className="flex-grow bg-base-300 overflow-auto">
             <Channel channel={channel} />
           </div>
         </div>
