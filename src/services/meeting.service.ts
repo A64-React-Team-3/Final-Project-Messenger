@@ -28,13 +28,13 @@ export const createMeeting = async ({
         live_stream_on_start: false,
         recording_config: {
           max_seconds: 60,
-          file_name_prefix: "string",
+          file_name_prefix: `rec_${meetingName}_`,
           video_config: {
             codec: "H264",
             width: 1280,
             height: 720,
             watermark: {
-              url: "http://example.com",
+              url: "https://firebasestorage.googleapis.com/v0/b/final-project-messenger-7b4c2.firebasestorage.app/o/avatars%2Fcommunity.png?alt=media&token=b878f52c-d4a3-483d-996a-4196a2fc3bd4",
               size: { width: 1, height: 1 },
               position: "left top",
             },
@@ -61,9 +61,6 @@ export const createMeeting = async ({
           },
           dyte_bucket_config: {
             enabled: true,
-          },
-          live_streaming_config: {
-            rtmp_url: "rtmp://a.rtmp.youtube.com/live2",
           },
         },
         ai_config: {
