@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import { ChannelModel } from "../../models/ChannelModel";
 import { FaRocketchat } from "react-icons/fa";
 import { MdOutlineVoiceChat } from "react-icons/md";
@@ -9,6 +9,10 @@ import {
   createMeetingProps,
 } from "../../services/meeting.service";
 import { TeamModel } from "../../models/Team/TeamModel";
+import { TeamAppContext } from "../../store/team.context";
+import { UserAppContext } from "../../store/user.context";
+import { defaultTeamImgUrl } from "../../common/constants";
+import { MeetingParticipantModel } from "../../models/MeetingParticipantModel";
 
 type TeamSideBarProps = {
   teamName: string;
@@ -25,6 +29,16 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
   setIsNamePrivacyModalOpen,
   setIsChannelDeleteModalOpen,
 }): JSX.Element => {
+  const { team } = useContext(TeamAppContext);
+  const { user } = useContext(UserAppContext);
+  const meetingParticipant = {
+    username: user?.username,
+    customParticipantId: "string",
+    name: user?.displayName,
+    pictureUrl: user?.avatarUrl || defaultTeamImgUrl,
+    createdAt: "string",
+    token: "string",
+  } as MeetingParticipantModel;
   return (
     <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 shadow-lg shadow-primary">
       <div className="collapse !overflow-visible">
@@ -106,7 +120,11 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
             <button
               className="btn btn-sm btn-outline btn-primary text-sm hover:bg-gray-700 mb-3"
               onClick={() => {
-                createMeeting({ meetingName: `${teamName}` });
+                createMeeting({
+                  meetingName: `${teamName}`,
+                  teamId: `${team?.teamId}`,
+                  participant: meetingParticipant,
+                });
               }}
             >
               <span className="mr-2 text-lg">
