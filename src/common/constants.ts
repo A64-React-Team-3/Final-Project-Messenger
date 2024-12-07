@@ -26,3 +26,7 @@ export enum Status {
   IDLE = "idle",
   OFFLINE = "offline",
 }
+export enum MeetingStatus {
+  active = "ACTIVE",
+  inactive = "INACTIVE ",
+}

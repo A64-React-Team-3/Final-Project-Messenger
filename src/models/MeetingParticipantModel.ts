@@ -1,5 +1,5 @@
 export type MeetingParticipantModel = {
-  id: string;
+  username: string;
   customParticipantId: string;
   name: string;
   pictureUrl: string;
