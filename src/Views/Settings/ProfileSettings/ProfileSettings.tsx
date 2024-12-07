@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { UserAppContext } from "../../../store/user.context";
 import { uploadUserAvatar } from "../../../services/storage.service";
-import { set, update, get, ref } from "firebase/database";
 import { getUser, updateUser } from "../../../services/user.service";
-import { db } from "../../../config/firebase-config";
-import { transformUser } from "../../../helper/helper";
 import { useNavigate } from "react-router-dom";
-import { UserModel } from "../../../models/UserModel";
 import { defaultUserAvatarPath } from "../../../common/constants";
 
 /**

@@ -31,6 +31,27 @@ export const transformUser = (
   } as UserModel;
 };
 
+export const transformUserFromSnapshotVal = (users: import("firebase/database").DataSnapshot): UserModel[] => {
+  const tUsers = Object.values(users).map((user: any): UserModel => {
+    return {
+      username: user.username,
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      phoneNumber: user.phoneNumber || null,
+      avatarUrl: user.avatarUrl || defaultUserAvatarPath,
+      status: user.status || null,
+      teams: user.teams ? Object.values(user.teams) : null,
+      channels: user.channels ? Object.values(user.channels) : null,
+      friends: user.friends ? Object.values(user.friends) : null,
+      blocked: user.blocked ? Object.values(user.blocked) : null,
+      createdOn: user.createdOn,
+    } as UserModel;
+  });
+
+  return tUsers;
+};
+
 
 export const transformChannelsFromSnapshot = (
   channels: import("firebase/database").DataSnapshot
@@ -124,8 +145,8 @@ export const transformDate = (timestamp: number): string => {
     daysAgo === 0
       ? "Today"
       : daysAgo === 1
-      ? "Yesterday"
-      : date.toLocaleDateString();
+        ? "Yesterday"
+        : date.toLocaleDateString();
 
   return `${day} ${date.toLocaleTimeString("en-US", {
     hour: "2-digit",

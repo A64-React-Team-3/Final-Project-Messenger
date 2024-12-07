@@ -13,6 +13,7 @@ import Modal from "../../hoc/Modal/Modal";
 import ChannelSettings from "../ModalViews/ChannelSettings/ChannelSettings";
 import ChannelDelete from "../ModalViews/ChannelDelete/ChannelDelete";
 import { toast } from "react-toastify";
+import UserSearch from "../ModalViews/UserSearch/UserSearch";
 
 const Team: React.FC = (): JSX.Element => {
   const [teamChannels, setTeamChannels] = useState<ChannelModel[]>([]);
@@ -23,10 +24,12 @@ const Team: React.FC = (): JSX.Element => {
   const [isChannelDeleting, setIsChannelDeleting] = useState<boolean>(false);
   const channelSettings = useRef<HTMLDialogElement>(null);
   const channelDelete = useRef<HTMLDialogElement>(null);
+  const userSearch = useRef<HTMLDialogElement>(null);
   const [isChannelDeleteModalOpen, setIsChannelDeleteModalOpen] =
     useState<boolean>(false);
   const [isNamePrivacyModalOpen, setIsNamePrivacyModalOpen] =
     useState<boolean>(false);
+  const [isUserSearchModalOpen, setIsUserSearchModalOpen] = useState<boolean>(false);
   const { team } = useContext(TeamAppContext);
 
   useEffect(() => {
@@ -62,7 +65,7 @@ const Team: React.FC = (): JSX.Element => {
 
   return (
     <div className="border-base-200 bg-base-300 flex-col justify-center w-full ">
-      <TeamNavBar channelName={currentChannel?.name} />
+      <TeamNavBar channelName={currentChannel?.name} setIsUserSearchModalOpen={setIsUserSearchModalOpen} />
       <div className="flex w-full h-[calc(100vh-4rem)]">
         <TeamSideBar
           setChannel={setCurrentChannel}
@@ -94,6 +97,13 @@ const Team: React.FC = (): JSX.Element => {
           setIsModalOpen={setIsChannelDeleteModalOpen}
           setIsChannelDeleting={setIsChannelDeleting}
         />
+      </Modal>
+      <Modal
+        modalRef={userSearch}
+        isModalOpen={isUserSearchModalOpen}
+        setIsModalOpen={setIsUserSearchModalOpen}
+      >
+        <UserSearch setIsUserSearchModalOpen={setIsUserSearchModalOpen} />
       </Modal>
     </div>
   );
