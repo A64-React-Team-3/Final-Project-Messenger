@@ -42,3 +42,16 @@ export const uploadMessageImage = async (files: File[]): Promise<object> => {
     throw new Error("Failed to upload image");
   }
 };
+
+export const uploadUserAvatar = async (file: File, avatars: string): Promise<string> => {
+  try {
+    const storageRef = ref(storage, `user-avatars/${Date.now()}-${avatars}`);
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    return downloadURL;
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    throw new Error("Failed to upload image");
+  }
+};
+

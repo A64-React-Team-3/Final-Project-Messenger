@@ -7,7 +7,7 @@ import EmojiPicker from "emoji-picker-react";
 import { useState } from "react";
 import { sendReaction } from "../../services/channel.service";
 import { MdEdit } from "react-icons/md";
-import { reactionEmoji } from "../../common/constants";
+import { defaultUserAvatarPath, reactionEmoji } from "../../common/constants";
 import Modal from "../../hoc/Modal/Modal";
 import { useRef } from "react";
 import DeleteMessage from "../../Views/ModalViews/DeleteMessage/DeleteMessage";
@@ -59,9 +59,8 @@ const Message: React.FC<MessageProps> = ({
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
             <img
-              alt="Tailwind CSS chat bubble component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            />
+              alt={defaultUserAvatarPath}
+              src={user?.avatarUrl} />
           </div>
         </div>
         <div

@@ -4,6 +4,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase-config";
 import { getUser } from "../services/user.service";
 import { UserModel } from "../models/UserModel";
+import { equalTo, onValue, orderByChild, query, ref } from "firebase/database";
+import { db } from "../config/firebase-config";
+import { transformUser } from "../helper/helper";
 import { toast } from "react-toastify";
 interface UserAppProviderProps {
   children: React.ReactNode;
@@ -37,6 +40,7 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
       // setLoading(false);
     }
   }, [authUser]);
+
 
   return (
     <UserAppContext.Provider value={{ user, setUser, loading }}>
