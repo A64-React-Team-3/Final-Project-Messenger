@@ -22,8 +22,8 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
 
 
   return (
-    <div className="flex flex-col mt-4">
-      <div className="form-control">
+    <div className="flex flex-col mt-4 max-h-96">
+      <div className="form-control mb-5">
         <input
           value={searchUserTerm}
           onChange={(e) => setSearchUserTerm(e.target.value)}
@@ -34,7 +34,6 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
       </div>
       <div className="overflow-x-auto">
         <table className="table">
-          {/* head */}
           <thead>
             <tr>
               <th>Name</th>
@@ -44,7 +43,6 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
             </tr>
           </thead>
           <tbody>
-            {/* row 1 */}
             {searchedUsers.map((user) => (
               <tr key={user.uid}>
                 <td>
@@ -64,7 +62,9 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
                 <td>
                   <button className="btn btn-sm btn-primary">Team Invite</button>
                 </td>
-                <td>friend invite</td>
+                <td>
+                  <button className="btn btn-sm btn-secondary">Friend Invite</button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -80,7 +80,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
       </div>
       <button
         className="btn btn-primary btn-sm mt-4"
-        onClick={() => setIsUserSearchModalOpen(false)}
+        onClick={() => { setIsUserSearchModalOpen(false); setSearchUserTerm("") }}
       >
         Close
       </button>

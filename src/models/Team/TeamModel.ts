@@ -10,6 +10,5 @@ export type TeamModel = {
   private: boolean;
   members: Partial<TeamMemberModel>[];
   channels?: string[];
-  joinRequests?: TeamJoinRequestModel[];
   avatarUrl?: string;
 };
