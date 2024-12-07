@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@dytesdk/react-ui-kit": "^2.0.6",
+    "@dytesdk/react-web-core": "^2.1.13",
     "@dytesdk/web-core": "^2.1.13",
     "@types/dotenv": "^8.2.3",
     "@types/firebase": "^3.2.3",
