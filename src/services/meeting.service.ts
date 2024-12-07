@@ -1,10 +1,18 @@
-export const createMeeting = async (): Promise<void> => {
+import { TeamModel } from "../models/Team/TeamModel";
+
+export type createMeetingProps = {
+  meetingName: string;
+};
+export const createMeeting = async ({
+  meetingName,
+}: createMeetingProps): Promise<void> => {
   const url = "https://api.dyte.io/v2/meetings";
   const apiString = `
   ${import.meta.env.VITE_DYTE_ORG_ID}:${import.meta.env.VITE_DYTE_API_KEY}
 `;
   const encodedApiKey = btoa(apiString);
   console.log("encodedApiKey", encodedApiKey);
+  console.log("meetingName", meetingName);
   try {
     const response = await fetch(url, {
       method: "POST",
@@ -14,7 +22,7 @@ export const createMeeting = async (): Promise<void> => {
         Authorization: `Basic ${encodedApiKey}`,
       },
       body: JSON.stringify({
-        title: "newMeeting",
+        title: `${meetingName}`,
         preferred_region: "eu-central-1",
         record_on_start: false,
         live_stream_on_start: false,

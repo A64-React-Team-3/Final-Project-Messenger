@@ -4,9 +4,14 @@ import { FaRocketchat } from "react-icons/fa";
 import { MdOutlineVoiceChat } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
 import { useState } from "react";
-import { createMeeting } from "../../services/meeting.service";
+import {
+  createMeeting,
+  createMeetingProps,
+} from "../../services/meeting.service";
+import { TeamModel } from "../../models/Team/TeamModel";
 
 type TeamSideBarProps = {
+  teamName: string;
   setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
   teamChannels: ChannelModel[];
   setIsNamePrivacyModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -14,6 +19,7 @@ type TeamSideBarProps = {
 };
 
 const TeamSideBar: React.FC<TeamSideBarProps> = ({
+  teamName,
   setChannel,
   teamChannels,
   setIsNamePrivacyModalOpen,
@@ -90,23 +96,27 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
           ))}
         </div>
       </div>
-      <div className="collapse collapse-arrow">
-        <input type="checkbox" />
-        <div className="collapse-title text-xl font-medium">Voice Channel</div>
-        <div className="collapse-content flex flex-row">
-          <button
-            className="btn btn-sm btn-outline btn-primary text-sm hover:bg-gray-700 mb-3"
-            onClick={() => {
-              createMeeting();
-            }}
-          >
-            <span className="mr-2 text-lg">
-              <MdOutlineVoiceChat className="text-secondary" />
-            </span>
-            Audio/Video Call
-          </button>
+      {teamName && (
+        <div className="collapse collapse-arrow">
+          <input type="checkbox" />
+          <div className="collapse-title text-xl font-medium">
+            Voice Channel
+          </div>
+          <div className="collapse-content flex flex-row">
+            <button
+              className="btn btn-sm btn-outline btn-primary text-sm hover:bg-gray-700 mb-3"
+              onClick={() => {
+                createMeeting({ meetingName: `${teamName}` });
+              }}
+            >
+              <span className="mr-2 text-lg">
+                <MdOutlineVoiceChat className="text-secondary" />
+              </span>
+              Audio/Video Call
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
