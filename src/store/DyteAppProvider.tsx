@@ -9,8 +9,10 @@ export const DyteAppProvider: React.FC<DyteAppProviderProps> = ({
   const [meeting, initMeeting] = useDyteClient();
 
   useEffect(() => {
+    console.log(`${import.meta.env.VITE_DYTE_AUTH_TOKEN}`);
+
     initMeeting({
-      authToken: "<auth-token>",
+      authToken: "Basic 442ef3d270cf030b5470",
       defaults: {
         audio: false,
         video: false,
