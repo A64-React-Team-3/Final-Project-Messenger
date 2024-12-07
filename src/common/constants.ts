@@ -23,8 +23,20 @@ export const defaultTeamImgUrl =
 
 export const reactionEmoji = ["👍", "❤️", "😂", "😢", "😲"];
 
+export enum NotificationType {
+  FRIEND_REQUEST = "friendRequest",
+  TEAM_REQUEST = "teamRequest",
+  TEAM_INVITE = "teamInvite",
+  MESSAGE = "message",
+}
+
+export enum NotificationStatus {
+  PENDING = "pending",
+  ACCEPTED = "accepted",
+  REJECTED = "rejected",
+}
+
 export enum Status {
   ONLINE = "online",
-  IDLE = "idle",
   OFFLINE = "offline",
 }

@@ -1,8 +1,9 @@
+import { NotificationType } from "../common/constants";
 import { FriendRequestModel } from "./FriendRequestModel";
 import { TeamRequestModel } from "./TeamRequestModel";
 
 export type NotificationModel = {
-  type: "friendRequest" | "teamRequest" | "teamInvite" | "message";
+  type: NotificationType;
   friendRequest?: FriendRequestModel;
   teamRequest?: TeamRequestModel;
   teamInvite?: TeamRequestModel;
