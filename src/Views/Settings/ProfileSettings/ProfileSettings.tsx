@@ -52,6 +52,7 @@ const ProfileSettings: React.FC = (): JSX.Element => {
         const newUser = await getUser(user.uid);
         if (newUser) {
           setUser(newUser);
+          alert("User updated successfully");
         }
       }
     } else {
@@ -82,6 +83,9 @@ const ProfileSettings: React.FC = (): JSX.Element => {
               placeholder="Enter your display name"
               className="input input-bordered "
             />
+            {(displayName.length < 3 || displayName.length > 20) && (
+              <p className="text-red-500">Display name must be between 3 and 20 characters</p>
+            )}
           </div>
           <div className="space-y-2">
             <label className="block  font-medium">Phone number: </label>

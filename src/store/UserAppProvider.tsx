@@ -39,19 +39,6 @@ export const UserAppProvider: React.FC<UserAppProviderProps> = ({
     }
   }, [authUser]);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const unsubscribe = onValue(query(ref(db, "users"), orderByChild("uid"), equalTo(user.uid)), snapshot => {
-  //       if (snapshot.exists()) {
-  //         setUser(transformUser(snapshot));
-  //         console.log("User updated:", user);
-  //       }
-  //     });
-
-  //     return () => unsubscribe();
-  //   }
-  // }, [user]);
-
 
   return (
     <UserAppContext.Provider value={{ user, setUser, loading }}>
