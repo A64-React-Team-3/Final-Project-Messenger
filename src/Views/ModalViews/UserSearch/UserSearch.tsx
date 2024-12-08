@@ -16,9 +16,9 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
   const [searchedUsers, setSearchedUsers] = useState<UserModel[]>([]);
   const { user } = useContext(UserAppContext);
 
-  const handleFriendRequest = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string) => {
-    if (senderUserName && recipientUserName && senderAvatarUrl) {
-      const result = await sendFriendRequest(senderUserName, senderAvatarUrl, recipientUserName);
+  const handleFriendRequest = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string, recipientAvatarUrl: string) => {
+    if (senderUserName && recipientUserName && senderAvatarUrl && recipientAvatarUrl) {
+      const result = await sendFriendRequest(senderUserName, senderAvatarUrl, recipientUserName, recipientAvatarUrl);
       if (result) {
         console.log("Friend request sent");
       } else {
@@ -80,8 +80,8 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
                 </td>
                 <td>
                   <button className="btn btn-sm btn-secondary" onClick={() => {
-                    if (user && user.username && user.avatarUrl) {
-                      handleFriendRequest(user.username, user.avatarUrl, userData.username);
+                    if (user && user.username && user.avatarUrl && userData.username && userData.avatarUrl) {
+                      handleFriendRequest(user.username, user.avatarUrl, userData.username, userData.avatarUrl);
                     }
                   }}>Friend Invite</button>
                 </td>

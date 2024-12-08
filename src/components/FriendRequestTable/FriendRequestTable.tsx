@@ -1,4 +1,6 @@
 import { NotificationModel } from '../../models/NotificationModel';
+import { NotificationStatus } from '../../common/constants';
+import { rejectFriendRequest } from '../../services/notification.service';
 
 type FriendRequestTableProps = {
   notifications: NotificationModel[];
@@ -6,9 +8,20 @@ type FriendRequestTableProps = {
 
 
 const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }): JSX.Element => {
+
+  const handleFriendRequestReject = async (notificationId: string, senderUserName: string, recipientUserName: string) => {
+    if (notificationId && senderUserName && recipientUserName) {
+      const result = await rejectFriendRequest(notificationId, senderUserName, recipientUserName);
+      if (result) {
+        console.log('Friend request rejected');
+      } else {
+        console.error('Error rejecting friend request');
+      }
+    };
+  }
   return (
     <div className="overflow-x-auto">
-      <table className="table">
+      {notifications.length > 0 ? <table className="table">
         <thead>
           <tr>
             <th>From</th>
@@ -36,10 +49,17 @@ const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }
                 </div>
               </td>
               <td>
-                <button className="btn btn-sm btn-primary">Accept</button>
+                <button className={`btn btn-sm btn-primary ${notification.friendRequest?.status === NotificationStatus.PENDING ? "" : "disabled"}`}>Accept</button>
               </td>
               <td>
-                <button className="btn btn-sm btn-secondary">Reject</button>
+                <button
+                  className={`btn btn-sm btn-secondary ${notification.friendRequest?.status === NotificationStatus.PENDING ? "" : "disabled"}`}
+                  onClick={() => {
+                    if (notification?.id && notification.friendRequest?.from && notification.friendRequest?.to) {
+                      handleFriendRequestReject(notification.id, notification.friendRequest.from, notification.friendRequest.to);
+                    }
+                  }}
+                >Reject</button>
               </td>
               <td>
                 <p className='text-lg'>{notification.friendRequest?.status}</p>
@@ -59,7 +79,7 @@ const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }
             <th>Remove</th>
           </tr>
         </tfoot>
-      </table>
+      </table> : <div className="text-center text-lg">No friend requests</div>}
     </div>
   );
 };

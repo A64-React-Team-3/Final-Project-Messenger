@@ -4,6 +4,7 @@ import { NotificationType } from "../../../common/constants";
 import FriendRequestTable from "../../../components/FriendRequestTable/FriendRequestTable";
 import { useContext } from "react";
 import { UserAppContext } from "../../../store/user.context";
+import FriendInviteTable from "../../../components/FriendInviteTable/FriendInviteTable";
 
 type UserNotificationProps = {
   setIsUserNotificationModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,8 +25,8 @@ const UserNotification: React.FC<UserNotificationProps> = ({
   const [teamReuqests, setTeamRequests] = useState<NotificationModel[]>([]);
 
   useEffect(() => {
-    const friendRequests = notifications.filter(notification => notification.type === NotificationType.FRIEND_REQUEST);
-    const friendInvites = notifications.filter(notification => notification.friendRequest?.from === user?.username);
+    const friendRequests = notifications.filter(notification => (notification.type === NotificationType.FRIEND_REQUEST && notification.friendRequest?.to === user?.username));
+    const friendInvites = notifications.filter(notification => (notification.type === NotificationType.FRIEND_REQUEST && notification.friendRequest?.from === user?.username));
     const teamInvites = notifications.filter(notification => notification.type === NotificationType.TEAM_INVITE);
     const teamRequests = notifications.filter(notification => notification.type === NotificationType.TEAM_REQUEST);
 
@@ -38,7 +39,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({
 
 
   return (
-    <div className="flex flex-col mt-4 max-h-96">
+    <div className="flex flex-col mt-4 max-h-[35rem]">
       <div className="flex flex-col items-center mb-4">
         <h1 className="text-2xl font-semibold">Notifications</h1>
       </div>
@@ -53,7 +54,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({
         <input type="checkbox" />
         <div className="collapse-title text-xl font-medium">Friend Invitations</div>
         <div className="collapse-content">
-          <p>tabindex={0} attribute is necessary to make the div focusable</p>
+          <FriendInviteTable notifications={friendInvites} />
         </div>
       </div>
       <div tabIndex={0} className="collapse collapse-arrow border-base-300 bg-base-200 border mb-2">
