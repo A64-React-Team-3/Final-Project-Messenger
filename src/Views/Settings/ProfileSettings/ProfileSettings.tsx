@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { UserAppContext } from "../../../store/user.context";
 import { uploadUserAvatar } from "../../../services/storage.service";
-import { set, update, get, ref } from "firebase/database";
 import { getUser, updateUser } from "../../../services/user.service";
-import { db } from "../../../config/firebase-config";
-import { transformUser } from "../../../helper/helper";
 import { useNavigate } from "react-router-dom";
-import { UserModel } from "../../../models/UserModel";
 import { defaultUserAvatarPath } from "../../../common/constants";
 
 /**
@@ -112,7 +108,7 @@ const ProfileSettings: React.FC = (): JSX.Element => {
         </form>
         <div className="flex flex-col items-center">
           <label className="block font-medium mb-2">Avatar Preview </label>
-          <img className="max-w-48 max-h-48 rounded-full" src={avatar}></img>
+          <img className="max-w-48 max-h-48 rounded-md" src={avatar}></img>
         </div>
       </div>
     </div >

@@ -1,6 +1,6 @@
 import { get, set, ref, query, equalTo, orderByChild } from "firebase/database";
 import { db } from "../config/firebase-config";
-import { transformUser } from "../helper/helper";
+import { transformUser, transformUserFromSnapshotVal } from "../helper/helper";
 import { UserModel } from "../models/UserModel";
 import { FriendModel } from "../models/User/FriendModel";
 import { Status } from "../common/constants";
@@ -91,9 +91,10 @@ export const getByUserName = async (
 
 export const getAllUsers = async (): Promise<UserModel[]> => {
   const snapshot = await get(query(ref(db, "users")));
-  const users = snapshot.val();
+  const users = transformUserFromSnapshotVal(snapshot.val());
   return users;
 };
+
 export const getAllFriends = async (
   username: string
 ): Promise<FriendModel[]> => {
@@ -117,5 +118,11 @@ export const updateUser = async (userId: string, displayName: string, phoneNumbe
     console.error("Error updating user:", error);
     throw new Error("Failed to update user");
   }
+};
+
+export const serchUser = async (search: string): Promise<UserModel[]> => {
+  const snapshot = await get(query(ref(db, "users"), orderByChild("username"),));
+  const users = snapshot.val();
+  return users;
 };
 
