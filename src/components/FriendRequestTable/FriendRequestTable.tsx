@@ -2,6 +2,7 @@ import { NotificationModel } from '../../models/NotificationModel';
 import { defaultUserAvatarPath, NotificationStatus } from '../../common/constants';
 import { rejectFriendRequest, removeNotificationFromRecipient, acceptFriendRequest } from '../../services/notification.service';
 import { transformDate } from '../../helper/helper';
+import { toast } from 'react-toastify';
 
 type FriendRequestTableProps = {
   notifications: NotificationModel[];
@@ -14,9 +15,9 @@ const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }
     if (notificationId && senderUserName && recipientUserName) {
       const result = await rejectFriendRequest(notificationId, senderUserName, recipientUserName);
       if (result) {
-        console.log('Friend request rejected');
+        toast.success(`Friend request from ${senderUserName} rejected`);
       } else {
-        console.error('Error rejecting friend request');
+        toast.error('Error rejecting friend request');
       }
     };
   };
@@ -25,9 +26,9 @@ const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }
     if (notificationId && senderUserName && recipientUserName && senderAvatarUrl && recipientAvatarUrl) {
       const result = await acceptFriendRequest(notificationId, senderUserName, recipientUserName, senderAvatarUrl, recipientAvatarUrl);
       if (result) {
-        console.log('Friend request accepted');
+        toast.success(`Friend request from ${senderUserName} accepted`);
       } else {
-        console.error('Error accepting friend request');
+        toast.error('Error accepting friend request');
       }
     };
   };

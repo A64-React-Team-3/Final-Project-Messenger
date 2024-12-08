@@ -4,6 +4,7 @@ export type TeamRequestModel = {
   from: string;
   fromAvatarUrl: string;
   to: string;
+  toAvatarUrl: string;
   teamId: string;
   teamName: string;
   teamAvatarUrl: string;

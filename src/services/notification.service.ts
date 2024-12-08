@@ -5,6 +5,8 @@ import { db } from '../config/firebase-config';
 import { ref, push, update, get, set, remove } from 'firebase/database';
 import { FriendModel } from '../models/User/FriendModel';
 import { TeamRequestModel } from '../models/TeamRequestModel';
+import { UserTeam } from '../models/User/UserTeam';
+import { TeamMemberModel } from '../models/Team/TeamMemberModel';
 
 
 export const sendFriendRequest = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string, recipientAvatarUrl: string): Promise<boolean | null> => {
@@ -107,6 +109,7 @@ export const sendTeamInvite = async (
   senderUserName: string,
   senderAvatarUrl: string,
   recipientUserName: string,
+  recipientAvatarUrl: string,
   teamId: string,
   teamName: string,
   teamAvatarUrl: string
@@ -117,6 +120,7 @@ export const sendTeamInvite = async (
       from: senderUserName,
       fromAvatarUrl: senderAvatarUrl,
       to: recipientUserName,
+      toAvatarUrl: recipientAvatarUrl,
       teamId: teamId,
       teamName: teamName,
       teamAvatarUrl: teamAvatarUrl,
@@ -139,6 +143,51 @@ export const sendTeamInvite = async (
     };
   } catch (error) {
     console.error('Error sending team invite', error);
+    return null;
+  };
+};
+
+export const rejectTeamInvite = async (notificationId: string, senderUserName: string, recipientUserName: string): Promise<boolean | null> => {
+  try {
+    await update(ref(db), { [`notifications/${notificationId}/teamInvite/status`]: NotificationStatus.REJECTED });
+    await update(ref(db), { [`users/${senderUserName}/notifications/${notificationId}/teamInvite/status`]: NotificationStatus.REJECTED });
+    await update(ref(db), { [`users/${recipientUserName}/notifications/${notificationId}/teamInvite/status`]: NotificationStatus.REJECTED });
+    return true;
+  } catch (error) {
+    console.error('Error rejecting team invite', error);
+    return null;
+  };
+};
+
+export const acceptTeamInvite = async (
+  notificationId: string,
+  senderName: string,
+  recipientName: string,
+  teamId: string,
+  teamName: string,
+  teamAvatarUrl: string): Promise<boolean | null> => {
+
+  try {
+    const userTeam: UserTeam = {
+      teamId: teamId,
+      teamName: teamName,
+      teamAvatarUrl: teamAvatarUrl,
+    };
+
+    const teamMember: TeamMemberModel = {
+      username: recipientName,
+      role: 'member',
+    };
+
+    await update(ref(db), { [`users/${recipientName}/teams/${teamId}`]: userTeam });
+    await update(ref(db), { [`teams/${teamId}/members/${recipientName}`]: teamMember });
+
+    await update(ref(db), { [`notifications/${notificationId}/teamInvite/status`]: NotificationStatus.ACCEPTED });
+    await update(ref(db), { [`users/${senderName}/notifications/${notificationId}/teamInvite/status`]: NotificationStatus.ACCEPTED });
+    await update(ref(db), { [`users/${recipientName}/notifications/${notificationId}/teamInvite/status`]: NotificationStatus.ACCEPTED });
+    return true;
+  } catch (error) {
+    console.error('Error accepting team invite', error);
     return null;
   };
 };

@@ -6,6 +6,9 @@ import { useContext } from "react";
 import { UserAppContext } from "../../../store/user.context";
 import FriendInviteTable from "../../../components/FriendInviteTable/FriendInviteTable";
 import { TeamAppContext } from "../../../store/team.context";
+import Team from "../../Team/Team";
+import TeamInviteTable from "../../../components/TeamInviteTable/TeamInviteTable";
+import TeamRequestTable from "../../../components/TeamRequestTable/TeamRequestTable";
 
 type UserNotificationProps = {
   setIsUserNotificationModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,8 +36,8 @@ const UserNotification: React.FC<UserNotificationProps> = ({
   useEffect(() => {
     const friendRequests = notifications.filter(notification => (notification.type === NotificationType.FRIEND_REQUEST && notification.friendRequest?.to === user?.username));
     const friendInvites = notifications.filter(notification => (notification.type === NotificationType.FRIEND_REQUEST && notification.friendRequest?.from === user?.username));
-    const teamInvites = notifications.filter(notification => notification.type === NotificationType.TEAM_INVITE);
-    const teamRequests = notifications.filter(notification => notification.type === NotificationType.TEAM_REQUEST);
+    const teamInvites = notifications.filter(notification => (notification.type === NotificationType.TEAM_INVITE && notification.teamInvite?.from === user?.username));
+    const teamRequests = notifications.filter(notification => (notification.type === NotificationType.TEAM_INVITE && notification.teamInvite?.to === user?.username));
 
     setFriendRequests(friendRequests);
     setFriendInvites(friendInvites);
@@ -69,7 +72,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({
       <div tabIndex={0} className="collapse collapse-arrow border-base-300 bg-base-200 border mb-2">
         <input type="checkbox" />
         <div className="collapse-title text-xl font-medium">
-          Friend Invitations
+          Your Friend Invitations
           <div className="badge badge-primary ml-2">{friendInviteCount}</div>
         </div>
         <div className="collapse-content">
@@ -83,17 +86,17 @@ const UserNotification: React.FC<UserNotificationProps> = ({
           <div className="badge badge-primary ml-2">{teamRequestCount}</div>
         </div>
         <div className="collapse-content">
-          <p>tabindex={0} attribute is necessary to make the div focusable</p>
+          <TeamRequestTable notifications={teamRequests} />
         </div>
       </div>
       <div tabIndex={0} className="collapse collapse-arrow border-base-300 bg-base-200 border mb-2">
         <input type="checkbox" />
         <div className="collapse-title text-xl font-medium">
-          Team Invites
+          Team Invitations
           <div className="badge badge-primary ml-2">{teamInviteCount}</div>
         </div>
         <div className="collapse-content">
-          <p>tabindex={0} attribute is necessary to make the div focusable</p>
+          <TeamInviteTable notifications={teamInvites} />
         </div>
       </div>
     </div>

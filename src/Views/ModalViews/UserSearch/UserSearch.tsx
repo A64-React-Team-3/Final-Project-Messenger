@@ -21,6 +21,10 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
 
   const handleFriendRequest = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string, recipientAvatarUrl: string) => {
     if (senderUserName && recipientUserName && senderAvatarUrl && recipientAvatarUrl) {
+      if (senderUserName === recipientUserName) {
+        toast.error("You cannot send friend request to yourself");
+        return;
+      }
       const result = await sendFriendRequest(senderUserName, senderAvatarUrl, recipientUserName, recipientAvatarUrl);
       if (result) {
         toast.success("Friend request sent");
@@ -30,9 +34,13 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
     }
   };
 
-  const handleTeamInvite = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string, teamId: string, teamName: string, recipientAvatarUrl: string) => {
+  const handleTeamInvite = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string, recipientAvatarUrl: string, teamId: string, teamName: string, teamAvatarUrl: string) => {
+    if (senderUserName === recipientUserName) {
+      toast.error("You cannot send team invite to yourself");
+      return;
+    }
     if (senderUserName && recipientUserName && teamId && teamName && senderAvatarUrl && recipientAvatarUrl) {
-      const result = await sendTeamInvite(senderUserName, senderAvatarUrl, recipientUserName, teamId, teamName, recipientAvatarUrl);
+      const result = await sendTeamInvite(senderUserName, senderAvatarUrl, recipientUserName, recipientAvatarUrl, teamId, teamName, teamAvatarUrl);
       if (result) {
         toast.success("Team invite sent");
       } else {
@@ -47,7 +55,6 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
       setSearchedUsers(users.filter((user) => user.username.toLowerCase().includes(searchUserTerm.toLowerCase())));
     });
   }, [searchUserTerm]);
-
 
 
 
@@ -90,9 +97,9 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
                   </div>
                 </td>
                 <td>
-                  <button className="btn btn-sm btn-primary" onClick={() => {
-                    if (user?.username && user?.avatarUrl && userData.username && team?.teamId && team.name && userData.avatarUrl) {
-                      handleTeamInvite(user.username, user.avatarUrl, userData.username, team.teamId, team.name, userData.avatarUrl);
+                  <button className={`btn btn-sm btn-primary ${team?.members.includes(user!.username) ? "" : "btn-disabled"}`} onClick={() => {
+                    if (user?.username && user?.avatarUrl && userData.username && userData.avatarUrl && team?.teamId && team.name && team.avatarUrl) {
+                      handleTeamInvite(user.username, user.avatarUrl, userData.username, userData.avatarUrl, team.teamId, team.name, team.avatarUrl);
                     }
                   }}>
                     Team Invite
