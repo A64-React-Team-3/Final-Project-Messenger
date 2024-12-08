@@ -9,11 +9,13 @@ import { IoNotificationsCircleOutline } from "react-icons/io5";
 type TeamNavBarProps = {
   channelName: string | undefined;
   setIsUserSearchModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsUserNotificationModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const TeamNavBar: React.FC<TeamNavBarProps> = ({
   channelName,
-  setIsUserSearchModalOpen
+  setIsUserSearchModalOpen,
+  setIsUserNotificationModalOpen
 }): JSX.Element => {
   const createChannelRef = useRef<HTMLDialogElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,7 +64,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
         </div>
       </div>
       <div className="flex-1 pl-3">{channelName}</div>
-      <button className="btn btn-circle flex-none gap-2 mr-3">
+      <button className="btn btn-circle flex-none gap-2 mr-3" onClick={() => setIsUserNotificationModalOpen(true)}>
         <IoNotificationsCircleOutline className="text-2xl text-primary scale-125" />
       </button>
       <div className="flex-none gap-2">
