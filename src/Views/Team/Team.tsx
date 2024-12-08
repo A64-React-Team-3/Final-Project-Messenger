@@ -79,7 +79,7 @@ const Team: React.FC<TeamProps> = ({ notifications, setNotifications }): JSX.Ele
 
   return (
     <div className="border-base-200 bg-base-300 flex-col justify-center w-full ">
-      <TeamNavBar channelName={currentChannel?.name} setIsUserSearchModalOpen={setIsUserSearchModalOpen} setIsUserNotificationModalOpen={setIsUserNotificationModalOpen} />
+      <TeamNavBar channelName={currentChannel?.name} setIsUserSearchModalOpen={setIsUserSearchModalOpen} setIsUserNotificationModalOpen={setIsUserNotificationModalOpen} notifications={notifications} />
       <div className="flex w-full h-[calc(100vh-4rem)]">
         <TeamSideBar
           setChannel={setCurrentChannel}

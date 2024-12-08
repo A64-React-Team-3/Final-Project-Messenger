@@ -108,7 +108,7 @@ const ProfileSettings: React.FC = (): JSX.Element => {
         </form>
         <div className="flex flex-col items-center">
           <label className="block font-medium mb-2">Avatar Preview </label>
-          <img className="max-w-48 max-h-48 rounded-full" src={avatar}></img>
+          <img className="max-w-48 max-h-48 rounded-md" src={avatar}></img>
         </div>
       </div>
     </div >

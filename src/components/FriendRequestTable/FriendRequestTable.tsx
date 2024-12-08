@@ -1,6 +1,6 @@
 import { NotificationModel } from '../../models/NotificationModel';
 import { defaultUserAvatarPath, NotificationStatus } from '../../common/constants';
-import { rejectFriendRequest, removeNotificationFromRecipient } from '../../services/notification.service';
+import { rejectFriendRequest, removeNotificationFromRecipient, acceptFriendRequest } from '../../services/notification.service';
 import { transformDate } from '../../helper/helper';
 
 type FriendRequestTableProps = {
@@ -19,7 +19,18 @@ const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }
         console.error('Error rejecting friend request');
       }
     };
-  }
+  };
+
+  const handleFriendRequestAccept = async (notificationId: string, senderUserName: string, recipientUserName: string, senderAvatarUrl: string, recipientAvatarUrl: string) => {
+    if (notificationId && senderUserName && recipientUserName && senderAvatarUrl && recipientAvatarUrl) {
+      const result = await acceptFriendRequest(notificationId, senderUserName, recipientUserName, senderAvatarUrl, recipientAvatarUrl);
+      if (result) {
+        console.log('Friend request accepted');
+      } else {
+        console.error('Error accepting friend request');
+      }
+    };
+  };
 
   const handleRemoveNotification = async (notificationId: string, recipientUserName: string) => {
     if (notificationId && recipientUserName) {
@@ -62,11 +73,21 @@ const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }
                 </div>
               </td>
               <td>
-                <button className={`btn btn-sm btn-primary ${notification.friendRequest?.status === NotificationStatus.PENDING ? "" : "disabled"}`}>Accept</button>
+                <button
+                  className={`btn btn-sm btn-primary ${notification.friendRequest?.status === NotificationStatus.PENDING ? "" : "btn-disabled"}`}
+                  onClick={() => {
+                    if (notification?.id && notification.friendRequest?.from && notification.friendRequest?.to && notification.friendRequest?.fromAvatarUrl && notification.friendRequest?.toAvatarUrl) {
+                      handleFriendRequestAccept(notification.id, notification.friendRequest.from, notification.friendRequest.to, notification.friendRequest.fromAvatarUrl, notification.friendRequest.toAvatarUrl);
+                    }
+                  }}
+                >
+                  Accept
+                </button>
+
               </td>
               <td>
                 <button
-                  className={`btn btn-sm btn-secondary ${notification.friendRequest?.status === NotificationStatus.PENDING ? "" : "disabled"}`}
+                  className={`btn btn-sm btn-secondary ${notification.friendRequest?.status === NotificationStatus.PENDING ? "" : "btn-disabled"}`}
                   onClick={() => {
                     if (notification?.id && notification.friendRequest?.from && notification.friendRequest?.to) {
                       handleFriendRequestReject(notification.id, notification.friendRequest.from, notification.friendRequest.to);
@@ -90,16 +111,6 @@ const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }
             </tr>
           ))}
         </tbody>
-        <tfoot>
-          <tr>
-            <th>From</th>
-            <th>Accept</th>
-            <th>Reject</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Remove</th>
-          </tr>
-        </tfoot>
       </table> : <div className="text-center text-lg">No friend requests</div>}
     </div>
   );

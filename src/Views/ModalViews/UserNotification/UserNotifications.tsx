@@ -22,7 +22,11 @@ const UserNotification: React.FC<UserNotificationProps> = ({
   const [friendRequests, setFriendRequests] = useState<NotificationModel[]>([]);
   const [friendInvites, setFriendInvites] = useState<NotificationModel[]>([]);
   const [teamInvites, setTeamInvites] = useState<NotificationModel[]>([]);
-  const [teamReuqests, setTeamRequests] = useState<NotificationModel[]>([]);
+  const [teamRequests, setTeamRequests] = useState<NotificationModel[]>([]);
+  const [friendRequestCount, setFriendRequestCount] = useState<number>(0);
+  const [friendInviteCount, setFriendInviteCount] = useState<number>(0);
+  const [teamInviteCount, setTeamInviteCount] = useState<number>(0);
+  const [teamRequestCount, setTeamRequestCount] = useState<number>(0);
 
   useEffect(() => {
     const friendRequests = notifications.filter(notification => (notification.type === NotificationType.FRIEND_REQUEST && notification.friendRequest?.to === user?.username));
@@ -36,6 +40,13 @@ const UserNotification: React.FC<UserNotificationProps> = ({
     setTeamRequests(teamRequests);
   }, [notifications]);
 
+  useEffect(() => {
+    setFriendRequestCount(friendRequests.length);
+    setFriendInviteCount(friendInvites.length);
+    setTeamInviteCount(teamInvites.length);
+    setTeamRequestCount(teamRequests.length);
+  }, [friendRequests, friendInvites, teamInvites, teamRequests]);
+
 
 
   return (
@@ -45,28 +56,40 @@ const UserNotification: React.FC<UserNotificationProps> = ({
       </div>
       <div tabIndex={0} className="collapse collapse-arrow border-base-300 bg-base-200 border mb-2">
         <input type="checkbox" />
-        <div className="collapse-title text-xl font-medium">Friend Requests</div>
+        <div className="collapse-title text-xl font-medium">
+          Friend Requests
+          <div className="badge badge-primary ml-2">{friendRequestCount}</div>
+        </div>
         <div className="collapse-content">
           <FriendRequestTable notifications={friendRequests} />
         </div>
       </div>
       <div tabIndex={0} className="collapse collapse-arrow border-base-300 bg-base-200 border mb-2">
         <input type="checkbox" />
-        <div className="collapse-title text-xl font-medium">Friend Invitations</div>
+        <div className="collapse-title text-xl font-medium">
+          Friend Invitations
+          <div className="badge badge-primary ml-2">{friendInviteCount}</div>
+        </div>
         <div className="collapse-content">
           <FriendInviteTable notifications={friendInvites} />
         </div>
       </div>
       <div tabIndex={0} className="collapse collapse-arrow border-base-300 bg-base-200 border mb-2">
         <input type="checkbox" />
-        <div className="collapse-title text-xl font-medium">Team Requests</div>
+        <div className="collapse-title text-xl font-medium">
+          Team Requests
+          <div className="badge badge-primary ml-2">{teamRequestCount}</div>
+        </div>
         <div className="collapse-content">
           <p>tabindex={0} attribute is necessary to make the div focusable</p>
         </div>
       </div>
       <div tabIndex={0} className="collapse collapse-arrow border-base-300 bg-base-200 border mb-2">
         <input type="checkbox" />
-        <div className="collapse-title text-xl font-medium">Team Invites</div>
+        <div className="collapse-title text-xl font-medium">
+          Team Invites
+          <div className="badge badge-primary ml-2">{teamInviteCount}</div>
+        </div>
         <div className="collapse-content">
           <p>tabindex={0} attribute is necessary to make the div focusable</p>
         </div>

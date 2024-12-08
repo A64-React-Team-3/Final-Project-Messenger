@@ -65,14 +65,6 @@ const FriendInviteTable: React.FC<FriendInviteTableProps> = ({ notifications }):
             </tr>
           ))}
         </tbody>
-        <tfoot>
-          <tr>
-            <th>To</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Remove</th>
-          </tr>
-        </tfoot>
       </table> : <div className="text-center text-lg">No friend invites</div>}
     </div>
   );

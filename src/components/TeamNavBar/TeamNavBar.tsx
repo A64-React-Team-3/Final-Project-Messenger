@@ -5,15 +5,18 @@ import CreateChannel from "../../Views/ModalViews/CreateChannel/CreateChannel";
 import ProfileButton from "../ProfileButton/ProfileButton";
 import { TeamAppContext } from "../../store/team.context";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
+import { NotificationModel } from "../../models/NotificationModel";
 
 type TeamNavBarProps = {
   channelName: string | undefined;
+  notifications: NotificationModel[];
   setIsUserSearchModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsUserNotificationModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const TeamNavBar: React.FC<TeamNavBarProps> = ({
   channelName,
+  notifications,
   setIsUserSearchModalOpen,
   setIsUserNotificationModalOpen
 }): JSX.Element => {
@@ -42,7 +45,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[100] mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-300 rounded-box z-[100] mt-3 w-52 p-2 shadow"
           >
             <li>
               <a>Team Settings</a>
@@ -64,8 +67,9 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
         </div>
       </div>
       <div className="flex-1 pl-3">{channelName}</div>
-      <button className="btn btn-circle flex-none gap-2 mr-3" onClick={() => setIsUserNotificationModalOpen(true)}>
-        <IoNotificationsCircleOutline className="text-2xl text-primary scale-125" />
+      <button className="btn btn-circle bg-transparent hover:bg-transparent shadow-none border-none flex-none gap-2 mr-3 relative" onClick={() => setIsUserNotificationModalOpen(true)}>
+        <IoNotificationsCircleOutline className="text-2xl text-primary scale-150" />
+        {notifications.length > 0 && <div className="badge badge-secondary absolute bottom-0 left-0 scale-75">{notifications.length}</div>}
       </button>
       <div className="flex-none gap-2">
         <div className="form-control">

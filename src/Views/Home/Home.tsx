@@ -39,7 +39,7 @@ const Home: React.FC = (): JSX.Element => {
           }
         });
 
-        return () => unsubscribe;
+        return () => unsubscribe();
       })
       .catch(error => {
         console.error("Error getting notifications", error);
