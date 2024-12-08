@@ -1,12 +1,26 @@
 import React from "react";
 import { NotificationModel } from "../../models/NotificationModel";
 import { transformDate } from "../../helper/helper";
+import { defaultUserAvatarPath } from "../../common/constants";
+import { removeNotificationFromSender } from "../../services/notification.service";
 
 type FriendInviteTableProps = {
   notifications: NotificationModel[];
 };
 
 const FriendInviteTable: React.FC<FriendInviteTableProps> = ({ notifications }): JSX.Element => {
+
+  const handleRemoveFriendRequestNotification = async (notificationId: string, senderUserName: string) => {
+    if (notificationId && senderUserName) {
+      const result = await removeNotificationFromSender(notificationId, senderUserName);
+      if (result) {
+        console.log('Notification removed');
+      } else {
+        console.error('Error removing notification');
+      }
+    }
+  }
+
   return (
     <div className="overflow-x-auto">
       {notifications.length > 0 ? <table className="table">
@@ -27,7 +41,7 @@ const FriendInviteTable: React.FC<FriendInviteTableProps> = ({ notifications }):
                     <div className="mask mask-squircle h-12 w-12">
                       <img
                         src={notification.friendRequest?.toAvatarUrl}
-                        alt="Avatar Tailwind CSS Component" />
+                        alt={defaultUserAvatarPath} />
                     </div>
                   </div>
                   <div>
@@ -42,7 +56,11 @@ const FriendInviteTable: React.FC<FriendInviteTableProps> = ({ notifications }):
                 <p className='text-sm'>{transformDate(notification.friendRequest?.createdOn ?? 0)}</p>
               </td>
               <td>
-                <button className="btn btn-sm btn-ghost">Remove</button>
+                <button className="btn btn-sm btn-ghost" onClick={() => {
+                  if (notification?.id && notification.friendRequest?.from) {
+                    handleRemoveFriendRequestNotification(notification.id, notification.friendRequest.from);
+                  }
+                }}>Remove</button>
               </td>
             </tr>
           ))}

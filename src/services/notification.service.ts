@@ -2,7 +2,7 @@ import { NotificationModel } from '../models/NotificationModel';
 import { NotificationStatus, NotificationType } from '../common/constants';
 import { FriendRequestModel } from '../models/FriendRequestModel';
 import { db } from '../config/firebase-config';
-import { ref, push, update, get, set } from 'firebase/database';
+import { ref, push, update, get, set, remove } from 'firebase/database';
 
 
 export const sendFriendRequest = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string, recipientAvatarUrl: string): Promise<boolean | null> => {
@@ -45,6 +45,27 @@ export const rejectFriendRequest = async (notificationId: string, senderUserName
     return true;
   } catch (error) {
     console.error('Error rejecting friend request', error);
+    return null;
+  }
+}
+
+export const removeNotificationFromRecipient = async (notificationId: string, recipientUserName: string): Promise<boolean | null> => {
+  try {
+    await remove(ref(db, `users/${recipientUserName}/notifications/${notificationId}`));
+    return true;
+  } catch (error) {
+    console.error('Error removing friend request', error);
+    return null;
+  }
+}
+
+export const removeNotificationFromSender = async (notificationId: string, senderUserName: string): Promise<boolean | null> => {
+  try {
+    await remove(ref(db, `notifications/${notificationId}`));
+    await remove(ref(db, `users/${senderUserName}/notifications/${notificationId}`));
+    return true;
+  } catch (error) {
+    console.error('Error removing friend request', error);
     return null;
   }
 }

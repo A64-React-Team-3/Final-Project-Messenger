@@ -1,6 +1,6 @@
 import { NotificationModel } from '../../models/NotificationModel';
-import { NotificationStatus } from '../../common/constants';
-import { rejectFriendRequest } from '../../services/notification.service';
+import { defaultUserAvatarPath, NotificationStatus } from '../../common/constants';
+import { rejectFriendRequest, removeNotificationFromRecipient } from '../../services/notification.service';
 import { transformDate } from '../../helper/helper';
 
 type FriendRequestTableProps = {
@@ -17,6 +17,17 @@ const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }
         console.log('Friend request rejected');
       } else {
         console.error('Error rejecting friend request');
+      }
+    };
+  }
+
+  const handleRemoveNotification = async (notificationId: string, recipientUserName: string) => {
+    if (notificationId && recipientUserName) {
+      const result = await removeNotificationFromRecipient(notificationId, recipientUserName);
+      if (result) {
+        console.log('Notification removed');
+      } else {
+        console.error('Error removing notification');
       }
     };
   }
@@ -42,7 +53,7 @@ const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }
                     <div className="mask mask-squircle h-12 w-12">
                       <img
                         src={notification.friendRequest?.fromAvatarUrl}
-                        alt="Avatar Tailwind CSS Component" />
+                        alt={defaultUserAvatarPath} />
                     </div>
                   </div>
                   <div>
@@ -70,7 +81,11 @@ const FriendRequestTable: React.FC<FriendRequestTableProps> = ({ notifications }
                 <p className='text-sm'>{transformDate(notification.friendRequest?.createdOn ?? 0)}</p>
               </td>
               <td>
-                <button className="btn btn-sm btn-ghost">Remove</button>
+                <button className="btn btn-sm btn-ghost" onClick={() => {
+                  if (notification?.id && notification.friendRequest?.to) {
+                    handleRemoveNotification(notification.id, notification.friendRequest.to);
+                  }
+                }}>Remove</button>
               </td>
             </tr>
           ))}
