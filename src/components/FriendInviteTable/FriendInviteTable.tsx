@@ -1,5 +1,6 @@
 import React from "react";
 import { NotificationModel } from "../../models/NotificationModel";
+import { transformDate } from "../../helper/helper";
 
 type FriendInviteTableProps = {
   notifications: NotificationModel[];
@@ -13,6 +14,7 @@ const FriendInviteTable: React.FC<FriendInviteTableProps> = ({ notifications }):
           <tr>
             <th>To</th>
             <th>Status</th>
+            <th>Date</th>
             <th>Remove</th>
           </tr>
         </thead>
@@ -37,6 +39,9 @@ const FriendInviteTable: React.FC<FriendInviteTableProps> = ({ notifications }):
                 <p className='text-lg'>{notification.friendRequest?.status}</p>
               </td>
               <td>
+                <p className='text-sm'>{transformDate(notification.friendRequest?.createdOn ?? 0)}</p>
+              </td>
+              <td>
                 <button className="btn btn-sm btn-ghost">Remove</button>
               </td>
             </tr>
@@ -46,6 +51,7 @@ const FriendInviteTable: React.FC<FriendInviteTableProps> = ({ notifications }):
           <tr>
             <th>To</th>
             <th>Status</th>
+            <th>Date</th>
             <th>Remove</th>
           </tr>
         </tfoot>
