@@ -5,6 +5,7 @@ import FriendRequestTable from "../../../components/FriendRequestTable/FriendReq
 import { useContext } from "react";
 import { UserAppContext } from "../../../store/user.context";
 import FriendInviteTable from "../../../components/FriendInviteTable/FriendInviteTable";
+import { TeamAppContext } from "../../../store/team.context";
 
 type UserNotificationProps = {
   setIsUserNotificationModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +20,7 @@ const UserNotification: React.FC<UserNotificationProps> = ({
   setNotifications }): JSX.Element => {
 
   const { user } = useContext(UserAppContext);
+  const { team } = useContext(TeamAppContext)
   const [friendRequests, setFriendRequests] = useState<NotificationModel[]>([]);
   const [friendInvites, setFriendInvites] = useState<NotificationModel[]>([]);
   const [teamInvites, setTeamInvites] = useState<NotificationModel[]>([]);

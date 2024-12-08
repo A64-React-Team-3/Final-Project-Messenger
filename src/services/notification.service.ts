@@ -4,6 +4,7 @@ import { FriendRequestModel } from '../models/FriendRequestModel';
 import { db } from '../config/firebase-config';
 import { ref, push, update, get, set, remove } from 'firebase/database';
 import { FriendModel } from '../models/User/FriendModel';
+import { TeamRequestModel } from '../models/TeamRequestModel';
 
 
 export const sendFriendRequest = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string, recipientAvatarUrl: string): Promise<boolean | null> => {
@@ -30,13 +31,13 @@ export const sendFriendRequest = async (senderUserName: string, senderAvatarUrl:
       return false;
     } else {
       return true;
-    }
+    };
 
   } catch (error) {
     console.error('Error sending friend request', error);
     return null;
-  }
-}
+  };
+};
 
 export const rejectFriendRequest = async (notificationId: string, senderUserName: string, recipientUserName: string): Promise<boolean | null> => {
   try {
@@ -47,8 +48,8 @@ export const rejectFriendRequest = async (notificationId: string, senderUserName
   } catch (error) {
     console.error('Error rejecting friend request', error);
     return null;
-  }
-}
+  };
+};
 
 export const acceptFriendRequest = async (
   notificationId: string,
@@ -61,12 +62,12 @@ export const acceptFriendRequest = async (
     const friendRecipient: FriendModel = {
       userName: recipientUserName,
       avatarUrl: recipientAvatarUrl,
-    }
+    };
 
     const friendSender: FriendModel = {
       userName: senderUserName,
       avatarUrl: senderAvatarUrl,
-    }
+    };
 
     await update(ref(db), { [`users/${recipientUserName}/friends/${senderUserName}`]: friendSender });
     await update(ref(db), { [`users/${senderUserName}/friends/${recipientUserName}`]: friendRecipient });
@@ -78,8 +79,8 @@ export const acceptFriendRequest = async (
   } catch (error) {
     console.error('Error accepting friend request', error);
     return null;
-  }
-}
+  };
+};
 
 export const removeNotificationFromRecipient = async (notificationId: string, recipientUserName: string): Promise<boolean | null> => {
   try {
@@ -88,8 +89,8 @@ export const removeNotificationFromRecipient = async (notificationId: string, re
   } catch (error) {
     console.error('Error removing friend request', error);
     return null;
-  }
-}
+  };
+};
 
 export const removeNotificationFromSender = async (notificationId: string, senderUserName: string): Promise<boolean | null> => {
   try {
@@ -99,5 +100,45 @@ export const removeNotificationFromSender = async (notificationId: string, sende
   } catch (error) {
     console.error('Error removing friend request', error);
     return null;
-  }
-}
+  };
+};
+
+export const sendTeamInvite = async (
+  senderUserName: string,
+  senderAvatarUrl: string,
+  recipientUserName: string,
+  teamId: string,
+  teamName: string,
+  teamAvatarUrl: string
+): Promise<boolean | null> => {
+  const teamInvite: NotificationModel = {
+    type: NotificationType.TEAM_INVITE,
+    teamInvite: {
+      from: senderUserName,
+      fromAvatarUrl: senderAvatarUrl,
+      to: recipientUserName,
+      teamId: teamId,
+      teamName: teamName,
+      teamAvatarUrl: teamAvatarUrl,
+      createdOn: Date.now(),
+      status: NotificationStatus.PENDING,
+    } as TeamRequestModel,
+  };
+
+  try {
+    const result = await push(ref(db, `notifications/`), teamInvite);
+    const id = result.key;
+    await update(ref(db), { [`notifications/${id}/id`]: id });
+    const dbTeamInvite = (await get(ref(db, `notifications/${id}`))).val();
+    await set(ref(db, `users/${senderUserName}/notifications/${id}`), dbTeamInvite);
+    await set(ref(db, `users/${recipientUserName}/notifications/${id}`), dbTeamInvite);
+    if (!id) {
+      return false;
+    } else {
+      return true;
+    };
+  } catch (error) {
+    console.error('Error sending team invite', error);
+    return null;
+  };
+};

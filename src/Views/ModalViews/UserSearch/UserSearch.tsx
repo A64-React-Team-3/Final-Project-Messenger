@@ -2,8 +2,10 @@ import { get } from "firebase/database";
 import React, { useContext, useEffect, useState } from "react";
 import { getAllUsers } from "../../../services/user.service";
 import { UserModel } from "../../../models/UserModel";
-import { sendFriendRequest } from "../../../services/notification.service";
+import { sendFriendRequest, sendTeamInvite } from "../../../services/notification.service";
 import { UserAppContext } from "../../../store/user.context";
+import { TeamAppContext } from "../../../store/team.context";
+import { toast } from "react-toastify";
 
 type UserSearchProps = {
   setIsUserSearchModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,14 +17,26 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
   const [allUsers, setAllUsers] = useState<UserModel[]>([]);
   const [searchedUsers, setSearchedUsers] = useState<UserModel[]>([]);
   const { user } = useContext(UserAppContext);
+  const { team } = useContext(TeamAppContext);
 
   const handleFriendRequest = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string, recipientAvatarUrl: string) => {
     if (senderUserName && recipientUserName && senderAvatarUrl && recipientAvatarUrl) {
       const result = await sendFriendRequest(senderUserName, senderAvatarUrl, recipientUserName, recipientAvatarUrl);
       if (result) {
-        console.log("Friend request sent");
+        toast.success("Friend request sent");
       } else {
-        console.error("Error sending friend request");
+        toast.error("Error sending friend request");
+      }
+    }
+  };
+
+  const handleTeamInvite = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string, teamId: string, teamName: string, recipientAvatarUrl: string) => {
+    if (senderUserName && recipientUserName && teamId && teamName && senderAvatarUrl && recipientAvatarUrl) {
+      const result = await sendTeamInvite(senderUserName, senderAvatarUrl, recipientUserName, teamId, teamName, recipientAvatarUrl);
+      if (result) {
+        toast.success("Team invite sent");
+      } else {
+        toast.error("Error sending team invite");
       }
     }
   };
@@ -76,7 +90,13 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
                   </div>
                 </td>
                 <td>
-                  <button className="btn btn-sm btn-primary">Team Invite</button>
+                  <button className="btn btn-sm btn-primary" onClick={() => {
+                    if (user?.username && user?.avatarUrl && userData.username && team?.teamId && team.name && userData.avatarUrl) {
+                      handleTeamInvite(user.username, user.avatarUrl, userData.username, team.teamId, team.name, userData.avatarUrl);
+                    }
+                  }}>
+                    Team Invite
+                  </button>
                 </td>
                 <td>
                   <button className="btn btn-sm btn-secondary" onClick={() => {
@@ -88,22 +108,8 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
               </tr>
             ))}
           </tbody>
-          {/* foot */}
-          <tfoot>
-            <tr>
-              <th>Name</th>
-              <th>Team invite</th>
-              <th>Friend invite</th>
-            </tr>
-          </tfoot>
         </table>
       </div>
-      <button
-        className="btn btn-primary btn-sm mt-4"
-        onClick={() => { setIsUserSearchModalOpen(false); setSearchUserTerm("") }}
-      >
-        Close
-      </button>
     </div>
   );
 };
