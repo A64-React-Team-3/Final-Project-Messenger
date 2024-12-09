@@ -1,26 +1,8 @@
-import {
-  equalTo,
-  get,
-  orderByChild,
-  push,
-  query,
-  ref,
-  update,
-} from "firebase/database";
-import { TeamModel } from "../models/Team/TeamModel";
+import { get, push, ref, update } from "firebase/database";
 import { db } from "../config/firebase-config";
-import { UserModel } from "../models/UserModel";
 import { MeetingParticipantModel } from "../models/MeetingParticipantModel";
-
-const apiString = `
-${import.meta.env.VITE_DYTE_ORG_ID}:${import.meta.env.VITE_DYTE_API_KEY}
-`;
-const encodedApiKey = btoa(apiString);
-export type createMeetingProps = {
-  meetingName: string;
-  teamId: string;
-  participant: MeetingParticipantModel;
-};
+import { encodedApiKey } from "../common/constants";
+import { MeetingModel } from "../models/MeetingModel";
 
 const checkForActiveMeeting = async (teamId: string): Promise<boolean> => {
   const teamActiveMeetingRef = ref(db, `teams/${teamId}/activeMeeting`);
@@ -39,16 +21,19 @@ const checkForActiveMeeting = async (teamId: string): Promise<boolean> => {
     return false;
   }
 };
-
+export type createMeetingProps = {
+  meetingName: string;
+  teamId: string;
+  participant: MeetingParticipantModel;
+};
 export const createMeeting = async ({
   meetingName,
   teamId,
   participant,
-}: createMeetingProps): Promise<void> => {
+}: createMeetingProps): Promise<string | null> => {
   const url = "https://api.dyte.io/v2/meetings";
   console.log("encodedApiKey", encodedApiKey);
   console.log("meetingName", meetingName);
-  // const teamActiveMeetingRef = ref(db, `teams/${teamId}/activeMeeting`) || null;
   const check = await checkForActiveMeeting(teamId);
   console.log("check", check);
 
@@ -121,7 +106,8 @@ export const createMeeting = async ({
       });
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
+        console.error(`Error: ${response.status} ${response.statusText}`);
+        return null;
       }
 
       const data = await response.json();
@@ -146,7 +132,11 @@ export const createMeeting = async ({
           [`teams/${teamId}/activeMeeting`]: activeTeamMeeting,
         });
         try {
-          await addParticipant(id, data.data.id, participant);
+          const authTokenRes = await addParticipant(
+            id,
+            data.data.id,
+            participant
+          );
           //add to team activeMeeting
           const updatedParticipant = await get(
             ref(db, `meetings/${id}/participants/${participant.username}`)
@@ -156,40 +146,37 @@ export const createMeeting = async ({
             [`teams/${teamId}/activeMeeting/participants`]:
               updatedParticipant.val(),
           });
+          return authTokenRes;
         } catch (error) {
           console.error("Failed to add participant to meeting:", error);
+          return null;
         }
       } catch (error) {
         console.error("Error adding meeting to database", error);
+        return null;
       }
     } catch (error) {
       console.error("Failed to create meeting:", error);
+      return null;
     }
   } else {
     console.log("Active meeting already exists in", meetingName);
     const teamActiveMeetingRef = ref(db, `teams/${teamId}/activeMeeting`);
     const meeting = await get(teamActiveMeetingRef);
-
-    const teamMeetingParticipantRef =
-      ref(
-        db,
-        `meetings/${meeting.val().id}/participants/${participant.username}`
-      ) || null;
-    if (teamMeetingParticipantRef) {
-      console.log(participant.username, "is already in the meeting!");
-      return;
-    }
     try {
       if (meeting) {
-        await addParticipant(
+        const authTokenRes = await addParticipant(
           meeting.val().id,
           meeting.val().meetingId,
           participant
         );
+        return authTokenRes;
+      } else {
+        return null;
       }
-      //add to team activeMeeting
     } catch (error) {
       console.error("Failed to add participant to meeting:", error);
+      return null;
     }
   }
 };
@@ -197,7 +184,7 @@ const addParticipant = async (
   meetingId: string,
   dyteMeetingId: string,
   participant: MeetingParticipantModel
-): Promise<void> => {
+): Promise<string | null> => {
   const url = `https://api.dyte.io/v2/meetings/${dyteMeetingId}/participants`;
   const body = {
     name: participant.name,
@@ -234,11 +221,25 @@ const addParticipant = async (
         ref(db, `meetings/${meetingId}/participants/${participant.username}`),
         transformedData
       );
-      // await update(ref(db), { [`meetings/${meetingId}/participants/id`]: id });
+      return participantData.data.token;
     } catch (error) {
       console.error("Error adding participant to meeting in database", error);
+      return null;
     }
   } catch (error) {
     console.error(error);
+    return null;
+  }
+};
+
+export const getMeetingById = async (
+  id: string
+): Promise<MeetingModel | null> => {
+  try {
+    const result = await get(ref(db, `meetings/${id}`));
+    return result.val() as MeetingModel;
+  } catch (error) {
+    console.error("Error getting meeting: ", error);
+    return null;
   }
 };

@@ -10,6 +10,7 @@ import { getTeams } from "../../services/team.service";
 import { transformTeams } from "../../helper/helper";
 import { TeamModel } from "../../models/Team/TeamModel";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { DyteAppContext } from "../../store/Dyte/dyte.context";
 const HomeSideBar: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -17,6 +18,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
   const [loadingTeamsData, setLoadingTeamsData] = useState<boolean>(false);
   const [teams, setTeams] = useState<TeamModel[] | null>(null);
   const { team, setTeam } = useContext(TeamAppContext);
+  const { setAuthToken } = useContext(DyteAppContext);
 
   const handleToPersonal = () => {
     setTeam(null);
@@ -26,6 +28,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
     navigate("/home");
     try {
       setTeam(team);
+      // setAuthToken("");
     } catch (error) {
       console.log("Error navigating to team view: ", error);
     }
