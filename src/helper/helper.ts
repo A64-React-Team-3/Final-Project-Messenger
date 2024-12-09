@@ -16,7 +16,9 @@ import { defaultUserAvatarPath } from "../common/constants";
 export const transformUser = (
   user: import("firebase/database").DataSnapshot
 ): UserModel => {
+  console.log("user", user.val());
   const userData = user.val()[Object.keys(user.val())[0]];
+  console.log("userData", userData);
   return {
     username: userData.username,
     uid: userData.uid,
@@ -53,6 +55,26 @@ export const transformUserFromSnapshotVal = (users: import("firebase/database").
 
   return tUsers;
 };
+
+export const transformUserFromSnapshot = (user: import("firebase/database").DataSnapshot): UserModel => {
+  const userData = user.val();
+  return {
+    username: userData.username,
+    uid: userData.uid,
+    email: userData.email,
+    displayName: userData.displayName,
+    phoneNumber: userData.phoneNumber || null,
+    avatarUrl: userData.avatarUrl || defaultUserAvatarPath,
+    status: userData.status || null,
+    teams: userData.teams ? Object.values(userData.teams) : null,
+    channels: userData.channels ? Object.values(userData.channels) : null,
+    friends: userData.friends ? Object.values(userData.friends) : null,
+    blocked: userData.blocked ? Object.values(userData.blocked) : null,
+    createdOn: userData.createdOn,
+  } as UserModel;
+}
+
+
 
 
 export const transformChannelsFromSnapshot = (

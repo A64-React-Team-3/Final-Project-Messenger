@@ -1,27 +1,49 @@
 import { useContext, useEffect, useState } from "react";
 import { TeamAppContext } from "../../store/team.context";
 import { UserModel } from "../../models/UserModel";
+import { db } from "../../config/firebase-config";
+import { ref, get, onValue } from "firebase/database";
 import { getByUserName, getUserByHandle } from "../../services/user.service";
+import { transformUserFromSnapshot } from "../../helper/helper";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import UserMini from "../UserMini/UserMini";
 
 const ChannelSideBar: React.FC = (): JSX.Element => {
   const { team } = useContext(TeamAppContext);
+  const [loadingTeamMember, setLoadingTeamMember] = useState<boolean>(false);
   const [teamMembers, setTeamMembers] = useState<UserModel[]>([]);
-  // useEffect(() => {
-  //   try {
-  //     const result: UserModel[] = [];
-  //     team?.members.forEach(member => {
-  //       getByUserName(member).then(snapshot => {
-  //         if (snapshot) {
-  //           result.push(snapshot);
-  //         }
-  //       });
-  //     });
-  //     setTeamMembers(result);
-  //     console.log("teamMembers", teamMembers);
-  //   } catch (error) {
-  //     console.error("Error getting team members: ", error);
-  //   }
-  // }, [team]);
+
+  useEffect(() => {
+    if (team) {
+      setLoadingTeamMember(true);
+      setTeamMembers([]);
+      const teamMembersRef = ref(db, `teams/${team?.teamId}/members`);
+      get(teamMembersRef).then(_snapshot => {
+        // const result: UserModel[] = [];
+        const unsubscribe = onValue(teamMembersRef, snapshot => {
+          if (snapshot.exists()) {
+            const membersData = Object.keys(snapshot.val());
+            membersData.map(member => {
+              getUserByHandle(member).then(user => {
+                const transformedUser = transformUserFromSnapshot(user);
+                setTeamMembers(prevState => [...prevState, transformedUser]);
+              });
+            });
+          }
+        });
+        // setTeamMembers(result);
+        return () => unsubscribe();
+      }).catch(error => {
+        console.error("Error getting team members", error);
+      }).finally(() => setLoadingTeamMember(false));
+    }
+  }, [team]);
+
+  useEffect(() => {
+    console.log("teamMembers", teamMembers);
+
+  }, [teamMembers]);
+
   return (
     <div className="bg-base-200 w-60">
       <div className="teamMembers">
@@ -29,23 +51,10 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
           <input type="checkbox" />
           <div className="collapse-title text-xl font-medium">Team Members</div>
           <div className="collapse-content">
-            <div className="max-h-36 overflow-y-auto scrollbar-hide">
-              {teamMembers.length > 0 &&
-                teamMembers.map((teamMember, index) => (
-                  <div
-                    key={index}
-                    className="avatar w-full flex justify-evenly align-middle mb-2"
-                  >
-                    <div className="w-10 rounded-full avatar">
-                      <img
-                        alt={`${teamMember.username} avatar`}
-                        src={teamMember.avatarUrl}
-                      />
-                    </div>
-                    <p className="text-center">{teamMember.displayName}</p>
-                  </div>
-                ))}
-            </div>
+            {loadingTeamMember && <LoadingSpinner />}
+            {teamMembers.map((member, idx) => (
+              <UserMini key={idx} user={member} />
+            ))}
           </div>
         </div>
       </div>

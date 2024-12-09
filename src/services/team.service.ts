@@ -5,6 +5,7 @@ import { TeamModel } from "../models/Team/TeamModel";
 import { toast } from "react-toastify";
 import { TeamMemberModel } from "../models/Team/TeamMemberModel";
 import { UserTeam } from "../models/User/UserTeam";
+import { createTeamChannel } from "./channel.service";
 
 export const createTeam = async (
   user: UserModel,
@@ -32,6 +33,7 @@ export const createTeam = async (
     createdOn: Date.now(),
   };
 
+
   try {
     const result = await push(ref(db, `teams/`), team);
     const id = result.key;
@@ -44,6 +46,9 @@ export const createTeam = async (
 
     await update(ref(db), { [`teams/${id}/id`]: id });
     await update(ref(db), { [`users/${user.username}/teams/${id}`]: userTeam });
+    if (id) {
+      await createTeamChannel(user, "General", false, id);
+    }
   } catch (error) {
     console.error("Error creating team (service fn): ", error);
     toast.error("Error creating team");
