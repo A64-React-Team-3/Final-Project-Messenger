@@ -153,7 +153,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
           </div>
         </div>
       )}
-      {authToken && (
+      {/* {authToken && (
         <div className="absolute bottom-0 right-0 w-full flex justify-center items-center gap-4 p-4 bg-base-200 rounded-lg shadow-lg">
           <div>
             <button
@@ -189,7 +189,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
             </button>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

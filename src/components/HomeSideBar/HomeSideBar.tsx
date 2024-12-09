@@ -22,6 +22,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
 
   const handleToPersonal = () => {
     setTeam(null);
+    setAuthToken("");
     navigate("/dms");
   };
   const handleToTeam = async (team: TeamModel) => {

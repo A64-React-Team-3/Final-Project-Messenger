@@ -119,6 +119,15 @@ const Team: React.FC = (): JSX.Element => {
 
   return (
     <>
+      {showVoiceChannel && activeMeeting?.participants && (
+        <DyteProvider value={meeting}>
+          <MeetingRoom
+            meetName={activeMeeting?.name}
+            token={authToken}
+            participants={activeMeeting?.participants}
+          ></MeetingRoom>
+        </DyteProvider>
+      )}
       <div className="border-base-200 bg-base-300 flex-col justify-center w-full ">
         <TeamNavBar channelName={currentChannel?.name} />
 
@@ -131,16 +140,6 @@ const Team: React.FC = (): JSX.Element => {
             setIsChannelDeleteModalOpen={setIsChannelDeleteModalOpen}
           />
 
-          {showVoiceChannel && activeMeeting?.participants && (
-            <DyteProvider value={meeting}>
-              \
-              <MeetingRoom
-                meetName={activeMeeting?.name}
-                token={authToken}
-                participants={activeMeeting?.participants}
-              ></MeetingRoom>
-            </DyteProvider>
-          )}
           <Channel channel={currentChannel} />
         </div>
         <Modal

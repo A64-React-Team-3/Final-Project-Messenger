@@ -39,7 +39,17 @@ const Meeting: React.FC<MeetingProps> = ({
   //   }, [authToken]);
   return (
     <>
-      <div style={{ height: "720px", position: "absolute" }}>
+      <div
+        style={{
+          height: "720px",
+          width: "480px",
+          position: "absolute",
+          bottom: "-4rem",
+          right: "-3rem",
+          transform: "scale(60%)",
+          zIndex: "999",
+        }}
+      >
         <DyteMeeting mode="fill" meeting={meeting} />
       </div>
     </>
