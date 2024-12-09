@@ -1,5 +1,5 @@
 export type UserTeam = {
-  teamId: string;
+  teamId: string | null;
   teamName: string;
-  teamAvatarUrl: string;
+  teamAvatarUrl: string | null;
 };

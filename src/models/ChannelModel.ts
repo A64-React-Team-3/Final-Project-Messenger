@@ -1,3 +1,4 @@
+import { ChannelType } from '../common/constants';
 import { MessageModel } from './MessageModel';
 
 
@@ -8,6 +9,7 @@ export type ChannelModel = {
   messages?: MessageModel[] | null;
   creator: string;
   createdOn: number;
-  teamId: string;
+  type: ChannelType;
+  teamId?: string;
   private: boolean | null;
 };

@@ -23,6 +23,11 @@ export const defaultTeamImgUrl =
 
 export const reactionEmoji = ["👍", "❤️", "😂", "😢", "😲"];
 
+export enum ChannelType {
+  TEAM = "team",
+  PERSONAL = "personal",
+}
+
 export enum NotificationType {
   FRIEND_REQUEST = "friendRequest",
   TEAM_REQUEST = "teamRequest",

@@ -76,6 +76,24 @@ const Personal: React.FC = (): JSX.Element => {
       <HomeSideBar />
       <div className="border-base-300 flex-col justify-center h-full w-60   ">
         <div className="overflow-y-auto min-h-[50vh] max-h-[66vh] scrollbar-hide">
+          <div className="dropdown dropdown-end h-full w-60">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-neutral bg-base-100 border-none hover:bg-base-300 w-full h-full rounded-none flex flex-col justify-center items-center gap-2 p-4"
+            >
+              <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 text-primary overflow-hidden">
+                {user?.username}
+              </h2>
+              {user?.avatarUrl && (
+                <img
+                  src={user?.avatarUrl}
+                  alt="team image"
+                  className="w-12 h-12 rounded-full"
+                />
+              )}
+            </div>
+          </div>
           <div className="collapse collapse-arrow ">
             <input type="checkbox" />
             <div className="collapse-title z-0 text-xl font-medium">

@@ -3,6 +3,8 @@ import { UserModel } from "../models/UserModel";
 import { db } from "../config/firebase-config";
 import { TeamModel } from "../models/Team/TeamModel";
 import { toast } from "react-toastify";
+import { TeamMemberModel } from "../models/Team/TeamMemberModel";
+import { UserTeam } from "../models/User/UserTeam";
 
 export const createTeam = async (
   user: UserModel,
@@ -15,24 +17,33 @@ export const createTeam = async (
     toast.error("User is not authenticated");
     return;
   }
-  console.log("user", user);
-  console.log("teamName", teamName);
-  console.log("privacy", privacy);
-  console.log("avatarUrl", avatarUrl);
+
+  const teamMember: TeamMemberModel = {
+    username: user.username,
+    role: "owner",
+  };
 
   const team = {
     name: teamName,
     privacy: privacy,
     avatarUrl: avatarUrl || null,
     creator: { id: user.uid, username: user.username },
-    members: { [user.username]: "owner" },
+    members: { [user.username]: teamMember },
     createdOn: Date.now(),
   };
-  console.log("team", team);
+
   try {
     const result = await push(ref(db, `teams/`), team);
     const id = result.key;
+
+    const userTeam: UserTeam = {
+      teamId: id,
+      teamName: teamName,
+      teamAvatarUrl: avatarUrl || null,
+    }
+
     await update(ref(db), { [`teams/${id}/id`]: id });
+    await update(ref(db), { [`users/${user.username}/teams/${id}`]: userTeam });
   } catch (error) {
     console.error("Error creating team (service fn): ", error);
     toast.error("Error creating team");

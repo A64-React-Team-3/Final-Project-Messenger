@@ -12,8 +12,11 @@ import {
 import { db } from "../config/firebase-config";
 import { UserModel } from "../models/UserModel";
 import { toast } from "react-toastify";
+import { ChannelModel } from "../models/ChannelModel";
+import { ChannelType } from "../common/constants";
+import { UserChannel } from "../models/User/UserChannel";
 
-export const createChannel = async (
+export const createTeamChannel = async (
   user: UserModel | null,
   channelName: string,
   isPrivate: boolean,
@@ -25,20 +28,66 @@ export const createChannel = async (
     return;
   }
 
-  const channel = {
+  const channel: ChannelModel = {
+    id: "",
     name: channelName,
-    members: { [user && user.uid ? user.uid : ""]: true },
-    creator: { id: user?.uid, username: user?.username },
-    private: isPrivate,
-    teamId: teamId ? teamId : user.uid,
+    members: [user.uid],
+    creator: user.uid,
     createdOn: Date.now(),
-  };
+    type: ChannelType.TEAM,
+    private: isPrivate,
+  }
+
+
 
   try {
     const result = await push(ref(db, `channels/`), channel);
     const id = result.key;
+
+    const userChannel: UserChannel = {
+      channelId: id,
+      type: ChannelType.TEAM,
+    };
+
     await update(ref(db), { [`channels/${id}/id`]: id });
-    await update(ref(db), { [`teams/${teamId}/channels/${id}`]: true });
+    await update(ref(db), { [`teams/${teamId}/channels/${id}`]: userChannel });
+
+  } catch (error) {
+    console.error("Error creating channel", error);
+    toast.error("Error creating channel");
+  }
+};
+
+export const createPersonalChannel = async (
+  userName: string,
+  recipientName: string
+): Promise<void> => {
+
+  const channel: ChannelModel = {
+    id: "",
+    name: `${userName}-${recipientName}`,
+    members: [userName, recipientName],
+    creator: userName,
+    createdOn: Date.now(),
+    type: ChannelType.PERSONAL,
+    private: true,
+  }
+
+
+
+  try {
+    const result = await push(ref(db, `channels/`), channel);
+    const id = result.key;
+
+    const userChannel: UserChannel = {
+      channelId: id,
+      type: ChannelType.PERSONAL,
+    };
+
+    await update(ref(db), { [`channels/${id}/id`]: id });
+    await update(ref(db), { [`users/${userName}/channels/${id}`]: userChannel });
+    await update(ref(db), { [`users/${recipientName}/channels/${id}`]: userChannel });
+
   } catch (error) {
     console.error("Error creating channel", error);
     toast.error("Error creating channel");
