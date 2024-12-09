@@ -240,7 +240,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             </div>
           </div>
         </div>
-        {team && <ChannelSideBar />}
+        <ChannelSideBar />
       </div>
     </>
   );

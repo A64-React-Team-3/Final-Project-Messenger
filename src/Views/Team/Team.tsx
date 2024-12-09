@@ -58,7 +58,7 @@ const Team: React.FC<TeamProps> = ({ notifications, setNotifications }): JSX.Ele
           }
         });
 
-        return () => unsubscribe;
+        return () => unsubscribe();
       })
       .catch(error => {
         console.error("Error getting channels", error);
