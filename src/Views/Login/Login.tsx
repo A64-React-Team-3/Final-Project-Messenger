@@ -4,7 +4,6 @@ import { UserAppContext } from "../../store/user.context";
 import { useState } from "react";
 import { loginUser, signOutUser } from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
-import { setUserStatusOnline } from "../../services/user.service";
 
 export default function Login({
   handleShowRegister,

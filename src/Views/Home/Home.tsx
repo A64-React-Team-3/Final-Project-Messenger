@@ -12,6 +12,7 @@ import { db } from "../../config/firebase-config";
 import { ref, get, onValue } from "firebase/database";
 import { toast } from "react-toastify";
 import { UserAppContext } from "../../store/user.context";
+import { setUserStatusOnline } from "../../services/user.service";
 
 /**
  * Home Component
@@ -46,6 +47,12 @@ const Home: React.FC = (): JSX.Element => {
         console.error("Error getting notifications", error);
         toast.error("Error getting notifications");
       });
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      setUserStatusOnline(user.username)
+    }
   }, [user]);
 
   return (

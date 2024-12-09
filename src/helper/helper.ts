@@ -16,9 +16,7 @@ import { defaultUserAvatarPath } from "../common/constants";
 export const transformUser = (
   user: import("firebase/database").DataSnapshot
 ): UserModel => {
-  console.log("user", user.val());
   const userData = user.val()[Object.keys(user.val())[0]];
-  console.log("userData", userData);
   return {
     username: userData.username,
     uid: userData.uid,

@@ -73,11 +73,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
       .finally(() => setLoadingTeamsData(false));
   }, [user]);
 
-  useEffect(() => {
-    if (user) {
-      setUserStatusOnline(user.username).then(() => console.log("User status updated"));
-    }
-  }, [user]);
+
 
 
   return (
