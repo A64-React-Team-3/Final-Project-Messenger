@@ -28,7 +28,7 @@ export default function Login({
   const handleLogin = async () => {
     try {
       await loginUser(form.email, form.password);
-      navigate("/home", { replace: true });
+      navigate("/", { replace: true });
     } catch (err: any) {
       console.log(err);
     }

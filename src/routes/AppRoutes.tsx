@@ -7,6 +7,7 @@ import SettingsPage from "../Views/Settings/SettingsPage/SettingsPage";
 import Personal from "../Views/Personal/Personal";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase-config";
+// import { DyteAppProvider } from "../store/Dyte/DyteAppProvider";
 
 /**
  * Renders application routes.
@@ -19,14 +20,16 @@ export const AppRoutes: React.FC = (): JSX.Element => {
       <Route
         path="/"
         element={
-          <>{authUser ? <Navigate to="/home" replace /> : <Anonymous />}</>
+          <>{authUser ? <Navigate to="/dms" replace /> : <Anonymous />}</>
         }
       />
       <Route
         path="/home"
         element={
           <Authenticated>
+            {/* <DyteAppProvider> */}
             <Home />
+            {/* </DyteAppProvider> */}
           </Authenticated>
         }
       />
@@ -46,7 +49,14 @@ export const AppRoutes: React.FC = (): JSX.Element => {
           </Authenticated>
         }
       />
-      {/* <Route path="*" element={<></>} /> */}
+      <Route
+        path="*"
+        element={
+          <>
+            <h2>Page not found!</h2>
+          </>
+        }
+      />
     </Routes>
   );
 };

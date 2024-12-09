@@ -1,3 +1,4 @@
+import { ActiveTeamMeetingModel } from "../ActiveTeamMeetingModel";
 import { TeamChannelModel } from "./TeamChannelModel";
 import { TeamJoinRequestModel } from "./TeamJoinRequestModel";
 import { TeamMemberModel } from "./TeamMemberModel";
@@ -11,4 +12,5 @@ export type TeamModel = {
   members: string[];
   channels?: string[];
   avatarUrl?: string;
+  activeMeeting?: ActiveTeamMeetingModel;
 };

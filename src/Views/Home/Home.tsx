@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Home.css";
 import HomeSideBar from "../../components/HomeSideBar/HomeSideBar";
 import Team from "../Team/Team";
+import { TeamAppContext } from "../../store/team.context";
+import ProfileButton from "../../components/ProfileButton/ProfileButton";
+import { Navigate } from "react-router-dom";
 import { useState } from "react";
 import { NotificationModel } from "../../models/NotificationModel";
 import { useEffect } from "react";
@@ -21,9 +24,10 @@ import { UserAppContext } from "../../store/user.context";
  * @returns {JSX.Element} The rendered `Home` component.
  */
 const Home: React.FC = (): JSX.Element => {
+
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
   const { user } = useContext(UserAppContext);
-
+  const { team } = useContext(TeamAppContext);
   useEffect(() => {
     const notificationsRef = ref(db, `users/${user?.username}/notifications`);
     get(notificationsRef)
@@ -50,7 +54,7 @@ const Home: React.FC = (): JSX.Element => {
   return (
     <div className="window border-base-300 flex h-screen">
       <HomeSideBar />
-      <Team notifications={notifications} setNotifications={setNotifications} />
+   {team ?    <Team notifications={notifications} setNotifications={setNotifications} /> : <Navigate to={"/dms"} />}
     </div>
   );
 };
