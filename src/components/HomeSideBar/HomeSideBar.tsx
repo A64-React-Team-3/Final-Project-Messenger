@@ -11,6 +11,8 @@ import { transformTeams } from "../../helper/helper";
 import { TeamModel } from "../../models/Team/TeamModel";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { toast } from "react-toastify";
+import { UserAppContext } from "../../store/user.context";
+
 const HomeSideBar: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -18,6 +20,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
   const [loadingTeamsData, setLoadingTeamsData] = useState<boolean>(false);
   const [teams, setTeams] = useState<TeamModel[] | null>(null);
   const { team, setTeam } = useContext(TeamAppContext);
+  const { user } = useContext(UserAppContext);
 
   const handleToPersonal = () => {
     setTeam(null);
@@ -43,7 +46,14 @@ const HomeSideBar: React.FC = (): JSX.Element => {
           if (snapshot) {
             const unsubscribe = onValue(teamsRef, snapshot => {
               const teamsData = transformTeams(snapshot);
-              setTeams(teamsData);
+              const filteredTeams = teamsData.filter(
+                team => {
+                  if (user?.username) {
+                    return team.members?.includes(user.username);
+                  }
+                }
+              )
+              setTeams(filteredTeams);
             });
             return () => unsubscribe();
           }
@@ -54,7 +64,9 @@ const HomeSideBar: React.FC = (): JSX.Element => {
         })
         .finally(() => setLoadingTeamsData(false));
     }
-  }, []);
+  }, [user]);
+
+
   return (
     <>
       <div className="border-base-300 bg-base-200 flex flex-col  items-center w-20 z-20">
@@ -79,10 +91,9 @@ const HomeSideBar: React.FC = (): JSX.Element => {
                 <span
                   key={index}
                   onClick={() => handleToTeam(teamData)}
-                  className={`transition-transform duration-200 mb-2 ${
-                    team?.teamId === teamData.teamId &&
+                  className={`transition-transform duration-200 mb-2 ${team?.teamId === teamData.teamId &&
                     `bg-gradient-to-r from-primary to-secondary rounded-full transition animate-[spin_1s]`
-                  }`}
+                    }`}
                 >
                   <TeamAvatarButton teamData={teamData} />
                 </span>

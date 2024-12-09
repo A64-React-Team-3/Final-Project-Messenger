@@ -8,7 +8,7 @@ export type TeamModel = {
   creator: string;
   createdOn: number;
   private: boolean;
-  members: TeamMemberModel[];
+  members: string[];
   channels?: string[];
   avatarUrl?: string;
 };
