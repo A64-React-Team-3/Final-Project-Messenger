@@ -1,6 +1,6 @@
-import { get, set, ref, query, equalTo, orderByChild } from "firebase/database";
+import { get, set, ref, query, equalTo, orderByChild, update } from "firebase/database";
 import { db } from "../config/firebase-config";
-import { transformUser, transformUserFromSnapshotVal } from "../helper/helper";
+import { transformUser, transformUserFromSnapshot, transformUserFromSnapshotVal } from "../helper/helper";
 import { UserModel } from "../models/UserModel";
 import { FriendModel } from "../models/User/FriendModel";
 import { Status } from "../common/constants";
@@ -132,4 +132,23 @@ export const serchUser = async (search: string): Promise<UserModel[]> => {
   const users = snapshot.val();
   return users;
 };
+
+export const setUserStatusOffline = async (userName: string): Promise<void> => {
+  try {
+    await set(ref(db, `users/${userName}/status`), Status.OFFLINE);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw new Error("Failed to update user");
+  }
+}
+
+export const setUserStatusOnline = async (userName: string): Promise<void> => {
+  console.log("setUserStatusOnline", userName);
+  try {
+    await set(ref(db, `users/${userName}/status`), Status.ONLINE);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw new Error("Failed to update user");
+  }
+}
 

@@ -19,19 +19,21 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
       setTeamMembers([]);
       const teamMembersRef = ref(db, `teams/${team?.teamId}/members`);
       get(teamMembersRef).then(_snapshot => {
-        // const result: UserModel[] = [];
+        const result: UserModel[] = [];
         const unsubscribe = onValue(teamMembersRef, snapshot => {
           if (snapshot.exists()) {
             const membersData = Object.keys(snapshot.val());
             membersData.map(member => {
               getUserByHandle(member).then(user => {
                 const transformedUser = transformUserFromSnapshot(user);
-                setTeamMembers(prevState => [...prevState, transformedUser]);
+                if (transformedUser) {
+                  result.push(transformedUser);
+                }
               });
             });
           }
         });
-        // setTeamMembers(result);
+        setTeamMembers(result);
         return () => unsubscribe();
       }).catch(error => {
         console.error("Error getting team members", error);

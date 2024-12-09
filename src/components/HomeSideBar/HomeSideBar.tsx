@@ -13,6 +13,7 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { DyteAppContext } from "../../store/Dyte/dyte.context";
 import { toast } from "react-toastify";
 import { UserAppContext } from "../../store/user.context";
+import { setUserStatusOnline } from "../../services/user.service";
 
 const HomeSideBar: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -42,14 +43,14 @@ const HomeSideBar: React.FC = (): JSX.Element => {
     setOpenModal(prevValue => !prevValue);
   };
   useEffect(() => {
-    if (!teams) {
-      const teamsRef = ref(db, "teams/");
-      setLoadingTeamsData(true);
-      getTeams()
-        .then(snapshot => {
-          if (snapshot) {
-            const unsubscribe = onValue(teamsRef, snapshot => {
-              const teamsData = transformTeams(snapshot);
+    const teamsRef = ref(db, "teams/");
+    setLoadingTeamsData(true);
+    getTeams()
+      .then(snapshot => {
+        if (snapshot) {
+          const unsubscribe = onValue(teamsRef, snapshot => {
+            const teamsData = transformTeams(snapshot);
+            if (teamsData) {
               const filteredTeams = teamsData.filter(
                 team => {
                   if (user?.username) {
@@ -58,15 +59,23 @@ const HomeSideBar: React.FC = (): JSX.Element => {
                 }
               )
               setTeams(filteredTeams);
-            });
-            return () => unsubscribe();
-          }
-        })
-        .catch(error => {
-          console.error("Error getting channels", error);
-          toast.error("Error getting channels");
-        })
-        .finally(() => setLoadingTeamsData(false));
+            }
+          });
+          return () => unsubscribe();
+        } else {
+          setTeams([]);
+        }
+      })
+      .catch(error => {
+        console.error("Error getting channels", error);
+        toast.error("Error getting channels");
+      })
+      .finally(() => setLoadingTeamsData(false));
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      setUserStatusOnline(user.username).then(() => console.log("User status updated"));
     }
   }, [user]);
 

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserAppContext } from "../../store/user.context.ts";
 import { defaultUserAvatarPath } from "../../common/constants.ts";
+import { setUserStatusOffline } from "../../services/user.service.ts";
 
 const ProfileButton: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const ProfileButton: React.FC = (): JSX.Element => {
   const handleLogout = async () => {
     try {
       await signOutUser();
+      await setUserStatusOffline(user!.username);
       setUser(null);
       navigate("/", { replace: true });
     } catch (err: any) {
