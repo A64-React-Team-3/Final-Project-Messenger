@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Home.css";
 import HomeSideBar from "../../components/HomeSideBar/HomeSideBar";
 import Team from "../Team/Team";
+import { TeamAppContext } from "../../store/team.context";
 
 /**
  * Home Component
@@ -12,10 +13,11 @@ import Team from "../Team/Team";
  * @returns {JSX.Element} The rendered `Home` component.
  */
 const Home: React.FC = (): JSX.Element => {
+  const { team } = useContext(TeamAppContext);
   return (
     <div className="window border-base-300 flex h-screen">
       <HomeSideBar />
-      <Team />
+      {team && <Team />}
     </div>
   );
 };

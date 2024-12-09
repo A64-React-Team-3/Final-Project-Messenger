@@ -20,7 +20,7 @@ export const AppRoutes: React.FC = (): JSX.Element => {
       <Route
         path="/"
         element={
-          <>{authUser ? <Navigate to="/home" replace /> : <Anonymous />}</>
+          <>{authUser ? <Navigate to="/dms" replace /> : <Anonymous />}</>
         }
       />
       <Route
@@ -49,7 +49,14 @@ export const AppRoutes: React.FC = (): JSX.Element => {
           </Authenticated>
         }
       />
-      {/* <Route path="*" element={<></>} /> */}
+      <Route
+        path="*"
+        element={
+          <>
+            <h2>Page not found!</h2>
+          </>
+        }
+      />
     </Routes>
   );
 };
