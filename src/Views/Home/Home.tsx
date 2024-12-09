@@ -11,9 +11,7 @@ import { useEffect } from "react";
 import { db } from "../../config/firebase-config";
 import { ref, get, onValue } from "firebase/database";
 import { toast } from "react-toastify";
-import { useContext } from "react";
 import { UserAppContext } from "../../store/user.context";
-
 
 /**
  * Home Component
@@ -24,7 +22,6 @@ import { UserAppContext } from "../../store/user.context";
  * @returns {JSX.Element} The rendered `Home` component.
  */
 const Home: React.FC = (): JSX.Element => {
-
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
   const { user } = useContext(UserAppContext);
   const { team } = useContext(TeamAppContext);
@@ -54,7 +51,14 @@ const Home: React.FC = (): JSX.Element => {
   return (
     <div className="window border-base-300 flex h-screen">
       <HomeSideBar />
-   {team ?    <Team notifications={notifications} setNotifications={setNotifications} /> : <Navigate to={"/dms"} />}
+      {team ? (
+        <Team
+          notifications={notifications}
+          setNotifications={setNotifications}
+        />
+      ) : (
+        <Navigate to={"/dms"} />
+      )}
     </div>
   );
 };
