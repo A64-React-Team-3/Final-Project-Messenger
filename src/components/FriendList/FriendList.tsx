@@ -11,6 +11,7 @@ import { defaultTeamImgUrl } from "../../common/constants";
 import { transformTeams } from "../../helper/helper";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { FriendModel } from "../../models/User/FriendModel";
 
 const FriendList: React.FC = (): JSX.Element => {
   const [friendSettings, setFriendSettings] = useState<string | null>(null);
@@ -60,12 +61,13 @@ const FriendList: React.FC = (): JSX.Element => {
             });
             return () => unsubscribe();
           } else {
-            console.log("failed to get friends");
+            toast.error("failed to get friends");
             return null;
           }
         })
         .catch(error => {
           console.error("Error getting friends", error);
+          toast.error("Error getting friends");
         })
         .finally(() => setLoadingFriends(false));
     }
@@ -91,8 +93,9 @@ const FriendList: React.FC = (): JSX.Element => {
       }
     }
   }, [pickFriend]);
-  const handleUnfriend = (friendId: string) => {
-    console.log("unfriend: ", friendId);
+  const handleUnfriend = (friend: UserModel) => {
+    console.log("unfriend: ", friend.displayName);
+    toast.error(`${friend.displayName} was removed from friends!`);
     setUnfriendConfirm(null);
     setFriendSettings(null);
   };
@@ -115,8 +118,12 @@ const FriendList: React.FC = (): JSX.Element => {
       console.log("Invite ", pickFriend?.displayName, "to team ", pickTeam);
       try {
         await inviteToTeam(pickFriend.username, pickTeam);
+        toast.success(
+          `Invited ${pickFriend.displayName} to team ${pickedTeamName}!`
+        );
       } catch (error) {
         console.error("Error inviting user to team: ", error);
+        toast.error("Error inviting user to team!");
       }
       setPickFriend(null);
       setPickTeam(null);
@@ -194,7 +201,7 @@ const FriendList: React.FC = (): JSX.Element => {
                       <div className="modal-action justify-center space-x-4">
                         <button
                           className="btn btn-error btn-outline font-semibold rounded-full shadow-md  hover:scale-105 transition-all"
-                          onClick={() => handleUnfriend(friend.uid)}
+                          onClick={() => handleUnfriend(friend)}
                         >
                           Yes, Unfriend
                         </button>

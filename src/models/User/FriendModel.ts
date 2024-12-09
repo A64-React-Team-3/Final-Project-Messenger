@@ -1,5 +1,4 @@
 export type FriendModel = {
-  userId: string;
-  username: string;
+  userName: string;
   avatarUrl: string | null;
 };

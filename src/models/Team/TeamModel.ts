@@ -9,9 +9,8 @@ export type TeamModel = {
   creator: string;
   createdOn: number;
   private: boolean;
-  members: Partial<TeamMemberModel>[];
+  members: string[];
   channels?: string[];
-  joinRequests?: TeamJoinRequestModel[];
   avatarUrl?: string;
   activeMeeting?: ActiveTeamMeetingModel;
 };

@@ -4,6 +4,7 @@ import { MeetingParticipantModel } from "../models/MeetingParticipantModel";
 import { MessageModel } from "../models/MessageModel";
 import { TeamModel } from "../models/Team/TeamModel";
 import { UserModel } from "../models/UserModel";
+import { defaultUserAvatarPath } from "../common/constants";
 
 /**
  * Transforms a Firebase DataSnapshot into a User object.
@@ -14,10 +15,45 @@ import { UserModel } from "../models/UserModel";
  */
 export const transformUser = (
   user: import("firebase/database").DataSnapshot
-): Promise<UserModel | null> => {
+): UserModel => {
   const userData = user.val()[Object.keys(user.val())[0]];
-  return userData;
+  return {
+    username: userData.username,
+    uid: userData.uid,
+    email: userData.email,
+    displayName: userData.displayName,
+    phoneNumber: userData.phoneNumber || null,
+    avatarUrl: userData.avatarUrl || defaultUserAvatarPath,
+    status: userData.status || null,
+    teams: userData.teams ? Object.values(userData.teams) : null,
+    channels: userData.channels ? Object.values(userData.channels) : null,
+    friends: userData.friends ? Object.values(userData.friends) : null,
+    blocked: userData.blocked ? Object.values(userData.blocked) : null,
+    createdOn: userData.createdOn,
+  } as UserModel;
 };
+
+export const transformUserFromSnapshotVal = (users: import("firebase/database").DataSnapshot): UserModel[] => {
+  const tUsers = Object.values(users).map((user: any): UserModel => {
+    return {
+      username: user.username,
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      phoneNumber: user.phoneNumber || null,
+      avatarUrl: user.avatarUrl || defaultUserAvatarPath,
+      status: user.status || null,
+      teams: user.teams ? Object.values(user.teams) : null,
+      channels: user.channels ? Object.values(user.channels) : null,
+      friends: user.friends ? Object.values(user.friends) : null,
+      blocked: user.blocked ? Object.values(user.blocked) : null,
+      createdOn: user.createdOn,
+    } as UserModel;
+  });
+
+  return tUsers;
+};
+
 
 export const transformChannelsFromSnapshot = (
   channels: import("firebase/database").DataSnapshot
@@ -113,8 +149,8 @@ export const transformDate = (timestamp: number): string => {
     daysAgo === 0
       ? "Today"
       : daysAgo === 1
-      ? "Yesterday"
-      : date.toLocaleDateString();
+        ? "Yesterday"
+        : date.toLocaleDateString();
 
   return `${day} ${date.toLocaleTimeString("en-US", {
     hour: "2-digit",

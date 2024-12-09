@@ -1,4 +1,6 @@
+import { ChannelType } from "../../common/constants";
+
 export type UserChannel = {
-  channelId: string;
-  // lastSeenMsg: string | null;
+  channelId: string | null;
+  type: ChannelType;
 };

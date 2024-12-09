@@ -1,20 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserAppContext } from "../../../store/user.context.ts";
-import { createChannel } from "../../../services/channel.service";
+import { createTeamChannel } from "../../../services/channel.service";
 import { TeamAppContext } from "../../../store/team.context";
 import { TeamModel } from "../../../models/Team/TeamModel";
+import { toast } from "react-toastify";
 
 type CreateChannelProps = {
   team: TeamModel | null;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-
-const CreateChannel: React.FC<CreateChannelProps> = ({ team, setIsModalOpen }): JSX.Element => {
+const CreateChannel: React.FC<CreateChannelProps> = ({
+  team,
+  setIsModalOpen,
+}): JSX.Element => {
   const [isChannelPrivate, setIsChannelPrivate] = useState(false);
   const [channelName, setChannelName] = useState("");
   const { user } = useContext(UserAppContext);
-
 
   const updateChannelName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChannelName(event.target.value);
@@ -31,17 +33,17 @@ const CreateChannel: React.FC<CreateChannelProps> = ({ team, setIsModalOpen }): 
     }
     try {
       if (team?.teamId) {
-        await createChannel(user, channelName, isChannelPrivate, team?.teamId);
+        await createTeamChannel(user, channelName, isChannelPrivate, team?.teamId);
         setIsModalOpen(false);
+        toast.success("Channel created successfully");
       } else {
-        alert("Please select a team");
+        toast.error("Team is not available");
       }
-
     } catch (error) {
       console.error("Error creating channel", error);
+      toast.error("Error creating channel");
     }
   };
-
 
   return (
     <div>

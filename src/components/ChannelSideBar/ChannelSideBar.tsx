@@ -6,22 +6,22 @@ import { getByUserName, getUserByHandle } from "../../services/user.service";
 const ChannelSideBar: React.FC = (): JSX.Element => {
   const { team } = useContext(TeamAppContext);
   const [teamMembers, setTeamMembers] = useState<UserModel[]>([]);
-  useEffect(() => {
-    try {
-      const result: UserModel[] = [];
-      team?.members.forEach(member => {
-        getByUserName(member).then(snapshot => {
-          if (snapshot) {
-            result.push(snapshot);
-          }
-        });
-      });
-      setTeamMembers(result);
-      console.log("teamMembers", teamMembers);
-    } catch (error) {
-      console.error("Error getting team members: ", error);
-    }
-  }, [team]);
+  // useEffect(() => {
+  //   try {
+  //     const result: UserModel[] = [];
+  //     team?.members.forEach(member => {
+  //       getByUserName(member).then(snapshot => {
+  //         if (snapshot) {
+  //           result.push(snapshot);
+  //         }
+  //       });
+  //     });
+  //     setTeamMembers(result);
+  //     console.log("teamMembers", teamMembers);
+  //   } catch (error) {
+  //     console.error("Error getting team members: ", error);
+  //   }
+  // }, [team]);
   return (
     <div className="bg-base-200 w-60">
       <div className="teamMembers">

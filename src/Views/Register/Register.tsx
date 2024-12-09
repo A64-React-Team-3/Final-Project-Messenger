@@ -112,7 +112,7 @@ export default function Register({ handleShowLogin }: { handleShowLogin: () => v
 
 
   return (
-    <div className="card backdrop-opacity backdrop-invert bg-white/40 shadow-2xl shadow-blue-100/50 w-96">
+    <div className="card backdrop-opacity backdrop-invert bg-primary/40 shadow-2xl shadow-primary-100/50 w-96">
       <div className="card-body">
         <h2 className="card-title">Register</h2>
         <label className="input input-bordered flex items-center gap-2">
@@ -170,8 +170,8 @@ export default function Register({ handleShowLogin }: { handleShowLogin: () => v
         </label>
         {!isPasswordMatch && hasStartedTyping && <p className="text-red-500 text-xs">Passwords do not match</p>}
         <div className="card-actions justify-end">
-          <button className="btn btn-info opacity-50" onClick={handleRegister}>Register</button>
-          <button className="btn btn-accent opacity-50" onClick={handleShowLogin}>Back to Login</button>
+          <button className="btn btn-info" onClick={handleRegister}>Register</button>
+          <button className="btn btn-accent" onClick={handleShowLogin}>Back to Login</button>
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@ const Settings: React.FC<SettingsProps> = ({
     settingsItems.find(item => item.key === activeKey)?.component ?? null;
 
   return (
-    <div className="mockup-window pr-7 pb-5 pl-0 border-4 border-gray-600 w-[75vw] h-[75vh] gap-4 flex  lg:flex-row shadow-xl ">
+    <div className="mockup-window pr-7 pb-5 pl-0 border-4 border-base-200 w-[75vw] h-[75vh] gap-4 flex  lg:flex-row shadow-xl ">
       <div className="bg-base-200 w-1/4 p-4 rounded-box">
         <SettingsMenu
           items={settingsItems}
