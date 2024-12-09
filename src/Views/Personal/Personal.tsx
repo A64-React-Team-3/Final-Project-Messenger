@@ -55,9 +55,7 @@ const Personal: React.FC = (): JSX.Element => {
           if (snapshot.exists()) {
             const notificationsData = snapshot.val();
             setNotifications(Object.values(notificationsData));
-            console.log("Notifications", notifications);
           } else {
-            console.log("No notifications available");
             setNotifications([]);
           }
         });

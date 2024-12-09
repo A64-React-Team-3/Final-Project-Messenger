@@ -19,8 +19,15 @@ import { toast } from "react-toastify";
 export const getUserByHandle = async (
   handle: string
 ): Promise<import("firebase/database").DataSnapshot> => {
-  console.log("getUserByHandle", handle);
-  return get(ref(db, `users/${handle}`));
+  try {
+    const userRef = ref(db, `users/${handle}`);
+    const userSnapshot = await get(userRef);
+    return userSnapshot;
+
+  } catch (error) {
+    console.error("Error getting user by handle:", error);
+    throw new Error("Failed to get user by handle");
+  }
 };
 
 /**

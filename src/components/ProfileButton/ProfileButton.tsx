@@ -21,7 +21,7 @@ const ProfileButton: React.FC = (): JSX.Element => {
     navigate("/settings");
   };
   return (
-    <div className="dropdown dropdown-end ">
+    <div className="dropdown dropdown-end !overflow-visible">
       <div
         tabIndex={0}
         role="button"
