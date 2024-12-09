@@ -79,7 +79,7 @@ const Team: React.FC = (): JSX.Element => {
           }
         });
 
-        return () => unsubscribe;
+        return () => unsubscribe();
       })
       .catch(error => {
         console.error("Error getting channels", error);
