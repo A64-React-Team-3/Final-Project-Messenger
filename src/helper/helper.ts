@@ -83,12 +83,13 @@ export const transformChannelsFromSnapshot = (
       return {
         id: channel.id,
         name: channel.name,
-        members: Object.keys(channel.members || {}),
+        members: Object.values(channel.members || {}),
         messages: channel.messages ? Object.values(channel.messages) : null,
         creator: channel.creator,
         teamId: channel.teamId,
         private: channel.private,
         createdOn: channel.createdOn,
+        type: channel.type,
       } as ChannelModel;
     }
   );

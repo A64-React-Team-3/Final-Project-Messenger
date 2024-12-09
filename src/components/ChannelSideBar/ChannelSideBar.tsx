@@ -55,7 +55,7 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
           <div className="collapse-content">
             {loadingTeamMember && <LoadingSpinner />}
             {teamMembers.map((member, idx) => (
-              <UserMini key={idx} user={member} />
+              <UserMini key={idx} member={member} />
             ))}
           </div>
         </div>

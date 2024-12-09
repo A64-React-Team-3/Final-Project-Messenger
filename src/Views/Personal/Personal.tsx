@@ -17,15 +17,36 @@ import { NotificationModel } from "../../models/NotificationModel";
 import { useContext } from "react";
 import { UserAppContext } from "../../store/user.context";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
+import { ChannelType } from "../../common/constants";
 
 const Personal: React.FC = (): JSX.Element => {
-  const [channels, setChannels] = useState<ChannelModel[]>([]);
+  const [personalChannels, setPersonalChannels] = useState<ChannelModel[]>([]);
   const [channel, setChannel] = useState<ChannelModel | null>(null);
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
   const userNotification = useRef<HTMLDialogElement>(null);
   const { user } = useContext(UserAppContext);
   const [isUserNotificationModalOpen, setIsUserNotificationModalOpen] = useState<boolean>(false);
 
+  // useEffect(() => {
+  //   const channelsRef = ref(db, "channels/");
+  //   get(channelsRef)
+  //     .then(channelsSnapshot => {
+  //       if (channelsSnapshot.exists()) {
+  //         const unsubscribe = onValue(channelsRef, snapshot => {
+  //           const transformedData = transformChannelsFromSnapshot(snapshot);
+  //           if (transformedData) {
+  //             setChannels(transformedData);
+  //           }
+  //         });
+
+  //         return () => unsubscribe();
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error("Error getting channels", error);
+  //       toast.error("Error getting channels");
+  //     });
+  // }, []);
   useEffect(() => {
     const channelsRef = ref(db, "channels/");
     get(channelsRef)
@@ -34,7 +55,15 @@ const Personal: React.FC = (): JSX.Element => {
           const unsubscribe = onValue(channelsRef, snapshot => {
             const transformedData = transformChannelsFromSnapshot(snapshot);
             if (transformedData) {
-              setChannels(transformedData);
+              console.log("Transformed Data", transformedData);
+              const personalChannels = transformedData.filter(channel => {
+                if (user && channel.type === ChannelType.PERSONAL && channel.members.includes(user?.username)) {
+                  console.log("user", user);
+                  return channel;
+                }
+              });
+              setPersonalChannels(personalChannels);
+
             }
           });
 
@@ -45,7 +74,7 @@ const Personal: React.FC = (): JSX.Element => {
         console.error("Error getting channels", error);
         toast.error("Error getting channels");
       });
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const notificationsRef = ref(db, `users/${user?.username}/notifications`);
@@ -99,7 +128,7 @@ const Personal: React.FC = (): JSX.Element => {
             </div>
             <div className="collapse-content ">
               <div className="h-64 overflow-y-auto scrollbar-hide">
-                {channels.map(channel => (
+                {personalChannels.map(channel => (
                   <div className="mb-3" key={channel.id}>
                     <button
                       onClick={() => setChannel(channel)}

@@ -73,13 +73,12 @@ export const createPersonalChannel = async (
     private: true,
   }
 
-
-
   try {
     const result = await push(ref(db, `channels/`), channel);
     const id = result.key;
 
     const userChannel: UserChannel = {
+      members: [userName, recipientName],
       channelId: id,
       type: ChannelType.PERSONAL,
     };
