@@ -13,5 +13,5 @@ export type TeamModel = {
   channels?: string[];
   joinRequests?: TeamJoinRequestModel[];
   avatarUrl?: string;
-  activeMeetingId?: ActiveTeamMeetingModel[];
+  activeMeeting?: ActiveTeamMeetingModel;
 };

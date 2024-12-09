@@ -30,3 +30,7 @@ export enum MeetingStatus {
   active = "ACTIVE",
   inactive = "INACTIVE ",
 }
+const apiString = `
+${import.meta.env.VITE_DYTE_ORG_ID}:${import.meta.env.VITE_DYTE_API_KEY}
+`;
+export const encodedApiKey = btoa(apiString);
