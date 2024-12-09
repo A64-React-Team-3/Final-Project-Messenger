@@ -2,6 +2,9 @@ import { get, push, ref, update } from "firebase/database";
 import { UserModel } from "../models/UserModel";
 import { db } from "../config/firebase-config";
 import { TeamModel } from "../models/Team/TeamModel";
+import { toast } from "react-toastify";
+import { TeamMemberModel } from "../models/Team/TeamMemberModel";
+import { UserTeam } from "../models/User/UserTeam";
 
 export const createTeam = async (
   user: UserModel,
@@ -11,28 +14,39 @@ export const createTeam = async (
 ): Promise<void> => {
   if (!user) {
     console.error("User is not authenticated");
+    toast.error("User is not authenticated");
     return;
   }
-  console.log("user", user);
-  console.log("teamName", teamName);
-  console.log("privacy", privacy);
-  console.log("avatarUrl", avatarUrl);
+
+  const teamMember: TeamMemberModel = {
+    username: user.username,
+    role: "owner",
+  };
 
   const team = {
     name: teamName,
     privacy: privacy,
     avatarUrl: avatarUrl || null,
     creator: { id: user.uid, username: user.username },
-    members: { [user.username]: "owner" },
+    members: { [user.username]: teamMember },
     createdOn: Date.now(),
   };
-  console.log("team", team);
+
   try {
     const result = await push(ref(db, `teams/`), team);
     const id = result.key;
+
+    const userTeam: UserTeam = {
+      teamId: id,
+      teamName: teamName,
+      teamAvatarUrl: avatarUrl || null,
+    }
+
     await update(ref(db), { [`teams/${id}/id`]: id });
+    await update(ref(db), { [`users/${user.username}/teams/${id}`]: userTeam });
   } catch (error) {
     console.error("Error creating team (service fn): ", error);
+    toast.error("Error creating team");
   }
 };
 
@@ -48,6 +62,7 @@ export const getTeams = async (): Promise<TeamModel[] | null> => {
     }
   } catch (error) {
     console.error("Error getting teams: ", error);
+    toast.error("Error getting teams ");
     return null;
   }
 };
@@ -65,6 +80,7 @@ export const getTeamById = async (
     }
   } catch (error) {
     console.error("Error getting team: ", error);
+    toast.error("Error getting team");
     return null;
   }
 };
@@ -79,6 +95,7 @@ export const inviteToTeam = async (
     });
   } catch (error) {
     console.error("Error inviting the user to team", error);
+    toast.error("Error inviting the user to team");
   }
   try {
     await update(ref(db), {
@@ -86,5 +103,6 @@ export const inviteToTeam = async (
     });
   } catch (error) {
     console.error("Error inviting the user to team", error);
+    toast.error("Error inviting the user to team");
   }
 };

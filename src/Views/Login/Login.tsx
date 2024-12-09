@@ -44,7 +44,7 @@ export default function Login({
   };
 
   return (
-    <div className="card backdrop-opacity backdrop-invert bg-white/40 shadow-2xl shadow-blue-100/50 w-96">
+    <div className="card backdrop-opacity backdrop-invert bg-primary/40 shadow-2xl shadow-primary-100/50 w-96">
       <div className="card-body">
         <h2 className="card-title">Login</h2>
         <label className="input input-bordered flex items-center gap-2">
@@ -87,18 +87,18 @@ export default function Login({
           />
         </label>
         <div className="card-actions justify-end">
-          <button className="btn btn-accent opacity-50" onClick={handleLogin}>
+          <button className="btn btn-accent" onClick={handleLogin}>
             Login
           </button>
           <button
-            className="btn btn-info opacity-50"
+            className="btn btn-info"
             onClick={handleShowRegister}
           >
             To Register
           </button>
           {user && (
             <button
-              className="btn btn-success opacity-50"
+              className="btn btn-success"
               onClick={handleLogout}
             >
               Logout

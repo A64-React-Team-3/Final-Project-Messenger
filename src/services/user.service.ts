@@ -1,10 +1,11 @@
 import { get, set, ref, query, equalTo, orderByChild } from "firebase/database";
 import { db } from "../config/firebase-config";
-import { transformUser } from "../helper/helper";
+import { transformUser, transformUserFromSnapshotVal } from "../helper/helper";
 import { UserModel } from "../models/UserModel";
 import { FriendModel } from "../models/User/FriendModel";
 import { Status } from "../common/constants";
 import { TeamMemberModel } from "../models/Team/TeamMemberModel";
+import { toast } from "react-toastify";
 
 /**
  * Retrieves a user by their handle.
@@ -62,11 +63,16 @@ export const createUser = async (
  * @throws {import('firebase/database').DatabaseError} If retrieval fails.
  */
 export const getUser = async (uid: string): Promise<UserModel | null> => {
-  const userSnapshot = await get(
-    query(ref(db, "users"), orderByChild("uid"), equalTo(uid))
-  );
-  const user = transformUser(userSnapshot);
-  return user;
+  try {
+    const userSnapshot = await get(
+      query(ref(db, "users"), orderByChild("uid"), equalTo(uid))
+    );
+    const user = transformUser(userSnapshot);
+    return user;
+  } catch (error) {
+    console.error("Error getting user:", error);
+    throw new Error("Failed to get user");
+  }
 };
 
 export const getByUserName = async (
@@ -75,6 +81,7 @@ export const getByUserName = async (
   const userSnapshot = await get(query(ref(db, `users/${username}`)));
   if (!userSnapshot.exists()) {
     console.error(`No user found with username: ${username}`);
+    toast.error(`No user found with username: ${username}`);
     return null;
   } else {
     const user = userSnapshot.val() as UserModel;
@@ -84,9 +91,10 @@ export const getByUserName = async (
 
 export const getAllUsers = async (): Promise<UserModel[]> => {
   const snapshot = await get(query(ref(db, "users")));
-  const users = snapshot.val();
+  const users = transformUserFromSnapshotVal(snapshot.val());
   return users;
 };
+
 export const getAllFriends = async (
   username: string
 ): Promise<FriendModel[]> => {
@@ -94,3 +102,27 @@ export const getAllFriends = async (
   const friends = snapshot.val();
   return friends;
 };
+
+export const updateUser = async (userId: string, displayName: string, phoneNumber: string, avatarUrl?: string): Promise<void> => {
+  try {
+    const userRef = query(ref(db, "users"), orderByChild("uid"), equalTo(userId));
+    const userSnapshot = await get(userRef);
+    const user = transformUser(userSnapshot);
+    user.displayName = displayName;
+    user.phoneNumber = phoneNumber;
+    if (avatarUrl) {
+      user.avatarUrl = avatarUrl;
+    }
+    await set(ref(db, `users/${user.username}`), user);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw new Error("Failed to update user");
+  }
+};
+
+export const serchUser = async (search: string): Promise<UserModel[]> => {
+  const snapshot = await get(query(ref(db, "users"), orderByChild("username"),));
+  const users = snapshot.val();
+  return users;
+};
+

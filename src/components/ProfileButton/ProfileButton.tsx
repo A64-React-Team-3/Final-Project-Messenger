@@ -2,6 +2,7 @@ import { signOutUser } from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserAppContext } from "../../store/user.context.ts";
+import { defaultUserAvatarPath } from "../../common/constants.ts";
 
 const ProfileButton: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -28,8 +29,8 @@ const ProfileButton: React.FC = (): JSX.Element => {
       >
         <div className="w-10 rounded-full">
           <img
-            alt="Tailwind CSS Navbar component"
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+            alt={defaultUserAvatarPath}
+            src={user?.avatarUrl || defaultUserAvatarPath}
           />
         </div>
       </div>
@@ -37,12 +38,6 @@ const ProfileButton: React.FC = (): JSX.Element => {
         tabIndex={0}
         className="menu menu-sm dropdown-content bg-base-300 rounded-box mt-3 w-52 p-2 shadow !z-50"
       >
-        <li>
-          <a className="justify-between">
-            Profile
-            <span className="badge">New</span>
-          </a>
-        </li>
         <li>
           <a onClick={handleToSettings}>Settings</a>
         </li>

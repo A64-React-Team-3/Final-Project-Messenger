@@ -33,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({ modalRef, children, isModalOpen, setIsMod
 
   return (
     <dialog ref={modalRef} className="modal">
-      <div className="modal-box bg-base-300">
+      <div className="modal-box bg-base-300 max-w-[60rem]">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button onClick={() => setIsModalOpen((prevValue) => !prevValue)} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 ">✕</button>

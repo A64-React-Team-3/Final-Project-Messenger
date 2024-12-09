@@ -77,9 +77,9 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
               <div className="flex justify-between w-full items-center">
                 <button
                   onClick={() => setChannel(channel)}
-                  className="btn btn-ghost btn-sm w-36"
+                  className="btn btn-sm btn-outline btn-primary text-sm hover:bg-gray-700 mb-3"
                 >
-                  <span className="icon">
+                  <span className="icon text-secondary">
                     <FaRocketchat />
                   </span>
                   <span className="break-words truncate max-w-24">
@@ -153,43 +153,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
           </div>
         </div>
       )}
-      {/* {authToken && (
-        <div className="absolute bottom-0 right-0 w-full flex justify-center items-center gap-4 p-4 bg-base-200 rounded-lg shadow-lg">
-          <div>
-            <button
-              className=" btn-sm btn-outline  btn-primary flex items-center gap-2 my-2 rounded"
-              aria-label="Mute/Unmute"
-            >
-              <PiSpeakerSimpleSlashLight />
-              Mute
-            </button>
-            <button
-              className="btn-sm btn-outline  btn-secondary flex items-center gap-2 my-2 rounded"
-              aria-label="Enable/Disable Video"
-            >
-              <CiVideoOn />
-              Video
-            </button>
-          </div>
-          <div>
-            <button
-              className="btn-sm btn-outline  btn-info flex items-center gap-2 my-2 rounded"
-              aria-label="Share Screen"
-            >
-              <LuScreenShare />
-              Share
-            </button>
-
-            <button
-              className="btn-sm btn-outline  btn-error flex items-center gap-2 my-2 rounded"
-              aria-label="Leave Chat"
-            >
-              <IoMdExit />
-              Leave
-            </button>
-          </div>
-        </div>
-      )} */}
+    
     </div>
   );
 };
