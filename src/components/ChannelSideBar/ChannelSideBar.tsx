@@ -67,25 +67,6 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
             Channel Members
           </div>
           <div className="collapse-content">
-            <div className="max-h-36 overflow-y-auto scrollbar-hide">
-              {/* {friendRequests.map(friend => (
-            <div
-              key={friend.id}
-              className="avatar w-full flex justify-evenly align-middle mb-2"
-            >
-              <div className="w-10 rounded-full avatar">
-                <img alt={`${friend.name} avatar`} src={friend.avatarUrl} />
-              </div>
-              <p className="text-center">{friend.name}</p>
-              <button className="btn btn-xs btn-success btn-outline">
-                Accept
-              </button>
-              <button className="btn btn-xs btn-error btn-outline">
-                Decline
-              </button>
-            </div>
-          ))} */}
-            </div>
           </div>
         </div>
       </div>
