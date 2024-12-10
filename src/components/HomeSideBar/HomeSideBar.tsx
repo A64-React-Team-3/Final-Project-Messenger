@@ -72,27 +72,6 @@ const HomeSideBar: React.FC = (): JSX.Element => {
         toast.error("Error getting channels");
       })
       .finally(() => setLoadingTeamsData(false));
-    // const userTeams = user?.teams?.map(team => team.teamId);
-
-    // const teamsRef = ref(db, "teams/");
-    // setLoadingTeamsData(true);
-    // const unsubscribe = onValue(teamsRef, snapshot => {
-    //   const teamsData = transformTeams(snapshot);
-    //   if (teamsData) {
-    //     const filteredTeams = teamsData.filter(
-    //       team => userTeams?.includes(team.teamId)
-    //     );
-    //     setTeams(filteredTeams);
-    //     setLoadingTeamsData(false);
-    //     console.log("user", userTeams);
-
-    //   } else {
-    //     setTeams([]);
-    //     setLoadingTeamsData(false);
-    //   }
-    // });
-    // return () => unsubscribe();
-
 
   }, [user]);
 

@@ -16,6 +16,7 @@ type ChannelSidBarProps = {
 
 const ChannelSideBar: React.FC<ChannelSidBarProps> = ({ users, usersType }): JSX.Element => {
   const { user } = useContext(UserAppContext);
+  const { team } = useContext(TeamAppContext);
   const [loadingTeamMember, setLoadingTeamMember] = useState<boolean>(false);
   const [listOfUsers, setListOfUsers] = useState<UserModel[]>([]);
 
@@ -50,13 +51,13 @@ const ChannelSideBar: React.FC<ChannelSidBarProps> = ({ users, usersType }): JSX
         console.error("Error getting friends", error);
       });
     } else if (usersType === "teamMembers") {
-      const teamMembersRef = ref(db, `users/`);
+      const teamMembersRef = ref(db, `teams/${team?.teamId}/members`);
       get(teamMembersRef).then(_snapshot => {
         const unsubscribe = onValue(teamMembersRef, async snapshot => {
           if (snapshot.exists()) {
-            const membersData = Object.keys(snapshot.val());
+            const membersData = team?.members;
             const result: UserModel[] = [];
-            const memberPromises = membersData.map(member =>
+            const memberPromises = membersData?.map(member =>
               getUserByHandle(member).then(user => {
                 const transformedUser = transformUserFromSnapshot(user);
                 if (transformedUser) {
@@ -64,7 +65,7 @@ const ChannelSideBar: React.FC<ChannelSidBarProps> = ({ users, usersType }): JSX
                 }
               })
             );
-            await Promise.all(memberPromises);
+            await Promise.all(memberPromises ?? []);
             setListOfUsers(result);
           }
         });
@@ -73,7 +74,7 @@ const ChannelSideBar: React.FC<ChannelSidBarProps> = ({ users, usersType }): JSX
         console.error("Error getting team members", error);
       });
     }
-  }, [user, usersType]);
+  }, [user, usersType, team]);
 
 
   return (
