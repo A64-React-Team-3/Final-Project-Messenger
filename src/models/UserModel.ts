@@ -15,7 +15,7 @@ export type UserModel = {
   channels?: UserChannel[];
   friends?: FriendModel[];
   blocked?: FriendModel[];
-  avatarUrl?: string;
+  avatarUrl: string;
   notifications?: NotificationModel[];
   status: Status;
 };

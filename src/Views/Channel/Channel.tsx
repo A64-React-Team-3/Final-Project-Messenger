@@ -40,6 +40,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
 
   const handleSendMessage = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
+      console.log(user?.avatarUrl);
       e.preventDefault();
       if (imageFiles.length > 0) {
         uploadMessageImage(imageFiles)
@@ -66,7 +67,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             toast.error("Error uploading image");
           });
       } else if (messageToSend.trim() !== "" && channel) {
-        sendMessage(channel.id, user?.uid, user?.displayName, messageToSend);
+        sendMessage(channel.id, user?.uid, user?.displayName, messageToSend, [], user?.avatarUrl);
         setMessageToSend("");
       }
     }

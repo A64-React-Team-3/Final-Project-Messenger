@@ -39,7 +39,6 @@ const Personal: React.FC = (): JSX.Element => {
           const unsubscribe = onValue(channelsRef, snapshot => {
             const transformedData = transformChannelsFromSnapshot(snapshot);
             if (transformedData) {
-              console.log("Transformed Data", transformedData);
               const personalChannels = transformedData.filter(channel => {
                 if (
                   user &&

@@ -197,6 +197,8 @@ export const sendMessage = async (
   imageUrl?: object | null,
   senderAvatarUrl?: string | null
 ): Promise<void> => {
+  console.log("senderAvatarUrl", senderAvatarUrl);
+  console.log("message", message);
   const messageObj = {
     message,
     sender: userId,

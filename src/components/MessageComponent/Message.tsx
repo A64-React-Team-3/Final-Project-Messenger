@@ -1,6 +1,6 @@
 import { transformDate } from "../../helper/helper";
 import { MessageModel } from "../../models/MessageModel";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MdAddReaction, MdDelete } from "react-icons/md";
 import { UserAppContext } from "../../store/user.context";
 import EmojiPicker from "emoji-picker-react";
@@ -46,6 +46,10 @@ const Message: React.FC<MessageProps> = ({
       sendReaction(message.channelId, message.id, emoji, user.uid);
     }
   };
+
+  // useEffect(() => {
+  //   console.log("Message", message);
+  // }, [message]);
 
   return (
     <>
