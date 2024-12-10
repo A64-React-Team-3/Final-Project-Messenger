@@ -78,7 +78,7 @@ const HomeSideBar: React.FC = (): JSX.Element => {
 
   return (
     <>
-      <div className="border-base-300 bg-base-200 flex flex-col  items-center w-20 z-20">
+      <div className="border-base-300 bg-base-200 flex flex-col items-center w-24 z-20">
         <div className=" flex flex-col p-2 gap-2 personal-team  ">
           <div
             className="avatar placeholder border-b border-b-primary pb-2"

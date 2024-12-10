@@ -50,9 +50,8 @@ const Message: React.FC<MessageProps> = ({
   return (
     <>
       <div
-        className={`chat ${
-          message.sender === user!.uid ? "chat-end" : "chat-start"
-        } mt-5 p-2 relative rounded-2xl hover:bg-base-200`}
+        className={`chat ${message.sender === user!.uid ? "chat-end" : "chat-start"
+          } mt-5 p-2 relative rounded-2xl hover:bg-base-200`}
         onMouseEnter={() => setShowMessageOptions(true)}
         onMouseLeave={() => setShowMessageOptions(false)}
       >
@@ -64,20 +63,18 @@ const Message: React.FC<MessageProps> = ({
           </div>
         </div>
         <div
-          className={`chat-header flex gap-1 items-center ${
-            message.sender === user!.uid ? "flex-row-reverse" : ""
-          }`}
+          className={`chat-header flex gap-1 items-center ${message.sender === user!.uid ? "flex-row-reverse" : ""
+            }`}
         >
-          <span>{message.senderName}</span>
+          <span className="font-semibold">{message.senderName}</span>
           <time className="text-xs opacity-50">
             {" "}
             {transformDate(message.timestamp)}
           </time>
         </div>
         <div
-          className={`chat-bubble ${
-            message.sender === user!.uid ? "chat-bubble-primary" : ""
-          } break-words max-w-full`}
+          className={`chat-bubble ${message.sender === user!.uid ? "chat-bubble-primary" : ""
+            } break-words max-w-full`}
         >
           {message.imageUrl && (
             <div className="flex flex-row gap-2">
@@ -88,20 +85,18 @@ const Message: React.FC<MessageProps> = ({
               ))}
             </div>
           )}
-          <p className="break-words">{message.message}</p>
+          <p className="break-words font-semibold">{message.message}</p>
         </div>
         {showMessageOptions && (
           <div
-            className={`message-options flex absolute top-0 rounded-2xl items-center p-1 ${
-              message.sender === user!.uid
-                ? "left-0 flex-row-reverse"
-                : "right-0"
-            }`}
+            className={`message-options flex absolute top-0 rounded-2xl items-center p-1 ${message.sender === user!.uid
+              ? "left-0 flex-row-reverse"
+              : "right-0"
+              }`}
           >
             <div
-              className={`message-reactions flex gap-2 px-1 ${
-                message.sender === user!.uid ? "flex-row-reverse" : ""
-              }`}
+              className={`message-reactions flex gap-2 px-1 ${message.sender === user!.uid ? "flex-row-reverse" : ""
+                }`}
             >
               {reactionEmoji.map((emoji, index) => (
                 <button
@@ -120,11 +115,10 @@ const Message: React.FC<MessageProps> = ({
               </button>
               {showPicker && (
                 <div
-                  className={`absolute z-10 h-96 ${
-                    message.sender === user!.uid
-                      ? "left-[6rem]"
-                      : "right-[6rem]"
-                  }`}
+                  className={`absolute z-10 h-96 ${message.sender === user!.uid
+                    ? "left-[6rem]"
+                    : "right-[6rem]"
+                    }`}
                 >
                   <EmojiPicker
                     onEmojiClick={handleEmojiReactionClick}
@@ -139,9 +133,8 @@ const Message: React.FC<MessageProps> = ({
               <>
                 <div className="mx-1">|</div>
                 <div
-                  className={`message-buttons flex gap-2 px-1 ${
-                    message.sender === user!.uid ? "flex-row-reverse" : ""
-                  }`}
+                  className={`message-buttons flex gap-2 px-1 ${message.sender === user!.uid ? "flex-row-reverse" : ""
+                    }`}
                 >
                   <button
                     className="flex items-center rounded-full scale-[1.35] hover:scale-150"
@@ -162,11 +155,10 @@ const Message: React.FC<MessageProps> = ({
         )}
       </div>
       <div
-        className={`flex gap-2 z-10 flex-wrap ${
-          message.sender === user!.uid
-            ? "left-[70rem] flex-row-reverse"
-            : "right-[70rem]"
-        }`}
+        className={`flex gap-2 z-10 flex-wrap ${message.sender === user!.uid
+          ? "left-[70rem] flex-row-reverse"
+          : "right-[70rem]"
+          }`}
       >
         <div className="mx-12">
           {message.reactions?.map((reaction, index) => (

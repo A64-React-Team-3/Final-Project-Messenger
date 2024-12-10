@@ -77,7 +77,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
               <div className="flex justify-between w-full items-center">
                 <button
                   onClick={() => setChannel(channel)}
-                  className="btn btn-sm btn-outline btn-primary text-sm hover:bg-gray-700 mb-3"
+                  className="btn btn-sm btn-outline btn-primary text-sm "
                 >
                   <span className="icon text-secondary">
                     <FaRocketchat />
@@ -90,7 +90,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
                   <div
                     tabIndex={0}
                     role="button"
-                    className="btn btn-sm m-1"
+                    className="btn btn-sm m-1 bg-transparent border-none hover:bg-transparent hover:border-none shadow-none"
                     onClick={() => setChannel(channel)}
                   >
                     <IoMdSettings />
@@ -107,11 +107,6 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
                         }}
                       >
                         Name & privacy
-                      </button>
-                    </li>
-                    <li>
-                      <button className="btn btn-ghost btn-sm w-full">
-                        Members
                       </button>
                     </li>
                     <li>
@@ -153,7 +148,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
           </div>
         </div>
       )}
-    
+
     </div>
   );
 };

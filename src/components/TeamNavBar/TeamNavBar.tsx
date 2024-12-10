@@ -68,13 +68,15 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
           </ul>
         </div>
       </div>
-      <div className="flex-1 pl-3">{channelName}</div>
-      <button className="btn btn-circle bg-transparent hover:bg-transparent shadow-none border-none flex-none gap-2 mr-3 relative" onClick={() => setIsUserNotificationModalOpen(true)}>
+      <div className="flex-1 pl-3">
+        <span className="text-lg font-bold">{channelName}</span>
+      </div>
+      <button className="btn btn-circle bg-transparent hover:bg-transparent hover:scale-125 shadow-none border-none flex-none gap-2 mr-3 relative" onClick={() => setIsUserNotificationModalOpen(true)}>
         <IoNotificationsCircleOutline className="text-2xl text-primary scale-150" />
         {notifications.length > 0 && <div className="badge badge-secondary absolute bottom-0 left-0 scale-75">{notifications.length}</div>}
       </button>
       <div className="flex-none gap-2">
-        <button className="btn btn-circle bg-transparent hover:bg-transparent shadow-none border-none flex-none gap-2 mr-3 relative"
+        <button className="btn btn-circle bg-transparent hover:bg-transparent hover:scale-125 shadow-none border-none flex-none gap-2 mr-3 relative"
           onClick={() => setIsUserSearchModalOpen(true)}>
           <MdOutlineSearch className="text-2xl text-primary scale-150" />
         </button>

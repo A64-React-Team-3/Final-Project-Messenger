@@ -6,6 +6,7 @@ import { FriendModel } from "../models/User/FriendModel";
 import { Status } from "../common/constants";
 import { TeamMemberModel } from "../models/Team/TeamMemberModel";
 import { toast } from "react-toastify";
+import { defaultUserAvatarPath } from "../common/constants";
 
 /**
  * Retrieves a user by their handle.
@@ -56,6 +57,7 @@ export const createUser = async (
     uid,
     status: Status.ONLINE,
     createdOn: Date.now(),
+    avatarUrl: defaultUserAvatarPath,
   };
   await set(ref(db, `users/${handle}`), user);
   const result = await getUserByHandle(handle);

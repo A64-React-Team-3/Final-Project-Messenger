@@ -15,7 +15,7 @@ export enum Themes {
   FOREST = "forest",
 }
 
-export const defaultUserAvatarPath = "/src/assets/defaultUserAvatar.png";
+export const defaultUserAvatarPath = "https://firebasestorage.googleapis.com/v0/b/final-project-messenger-7b4c2.firebasestorage.app/o/avatars%2FdefaultUserAvatar.png?alt=media&token=a8e0c487-596d-49a2-aefd-f6cae2562870";
 
 //default team image
 export const defaultTeamImgUrl =

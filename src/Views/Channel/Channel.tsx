@@ -191,7 +191,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             <div className="w-full flex flex-row items-center">
               <textarea
                 ref={textareaRef}
-                className="textarea p-2 resize-none overflow-hidden w-full shadow-md shadow-primary"
+                className="textarea p-2 resize-none overflow-hidden w-full shadow-md shadow-primary font-semibold"
                 placeholder="Type your message here... and press Enter to send"
                 onInput={handleInput}
                 value={messageToSend}
@@ -204,13 +204,13 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
               <div className="relative flex flex-row items-center">
                 <button
                   onClick={handleShowPicker}
-                  className="btn btn-ghost p-0 m-1"
+                  className="btn btn-ghost p-0 m-1 bg-transparent hover:bg-transparent hover:scale-125"
                 >
                   <MdAddReaction size={30} />
                 </button>
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="btn btn-ghost p-0 m-1"
+                  className="btn btn-ghost p-0 m-1 bg-transparent hover:bg-transparent hover:scale-125"
                 >
                   <input
                     ref={fileInputRef}
