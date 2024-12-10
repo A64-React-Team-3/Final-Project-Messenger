@@ -3,15 +3,18 @@ import { TeamAppContext } from "../../store/team.context";
 import { UserModel } from "../../models/UserModel";
 import { db } from "../../config/firebase-config";
 import { ref, get, onValue } from "firebase/database";
-import { getByUserName, getUserByHandle } from "../../services/user.service";
+import { getByUserName, getUser, getUserByHandle } from "../../services/user.service";
 import { transformUserFromSnapshot } from "../../helper/helper";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import UserMini from "../UserMini/UserMini";
+import { UserAppContext } from "../../store/user.context";
 
 const ChannelSideBar: React.FC = (): JSX.Element => {
   const { team } = useContext(TeamAppContext);
+  const { user } = useContext(UserAppContext);
   const [loadingTeamMember, setLoadingTeamMember] = useState<boolean>(false);
   const [teamMembers, setTeamMembers] = useState<UserModel[]>([]);
+  const [friendList, setFriendList] = useState<UserModel[]>([]);
 
   useEffect(() => {
     if (team) {
@@ -42,9 +45,35 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
   }, [team]);
 
   useEffect(() => {
-    console.log("teamMembers", teamMembers);
+    if (user?.friends) {
+      const friendsRef = ref(db, `users/${user.username}/friends`);
+      get(friendsRef).then(_snapshot => {
+        const unsubscribe = onValue(friendsRef, snapshot => {
+          if (snapshot.exists()) {
+            const friendsData = snapshot.val();
+            const friendList: UserModel[] = [];
+            Object.keys(friendsData).map(friend => {
+              getUserByHandle(friend).then(user => {
+                const transformedUser = transformUserFromSnapshot(user);
+                if (transformedUser) {
+                  friendList.push(transformedUser);
+                }
+              });
+            });
+            setFriendList(friendList);
+            console.log("Friend List", friendList);
+          } else {
+            setFriendList([]);
+          }
+        });
+        return () => unsubscribe();
+      }).catch(error => {
+        console.error("Error getting friends", error);
+      });
 
-  }, [teamMembers]);
+    }
+  }, [user?.friends]);
+
 
   return (
     <div className="bg-base-200 w-60">
@@ -64,9 +93,12 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
         <div className="collapse collapse-arrow">
           <input type="checkbox" />
           <div className="collapse-title text-xl font-medium">
-            Channel Members
+            Friends
           </div>
           <div className="collapse-content">
+            {friendList.map((friend, idx) => (
+              <UserMini key={idx} member={friend} />
+            ))}
           </div>
         </div>
       </div>

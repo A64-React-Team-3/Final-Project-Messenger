@@ -6,6 +6,7 @@ import { sendFriendRequest, sendTeamInvite } from "../../../services/notificatio
 import { UserAppContext } from "../../../store/user.context";
 import { TeamAppContext } from "../../../store/team.context";
 import { toast } from "react-toastify";
+import { Status } from "../../../common/constants";
 
 type UserSearchProps = {
   setIsUserSearchModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -84,7 +85,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
               <tr key={userData.uid}>
                 <td>
                   <div className="flex items-center gap-3">
-                    <div className="avatar">
+                    <div className={`avatar ${userData.status === Status.ONLINE ? 'online' : 'offline'}`}>
                       <div className="mask mask-squircle h-12 w-12">
                         <img
                           src={userData.avatarUrl}

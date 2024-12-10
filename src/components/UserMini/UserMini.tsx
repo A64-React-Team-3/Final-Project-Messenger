@@ -37,7 +37,7 @@ const UserMini: React.FC<UserMiniProps> = ({ member }): JSX.Element => {
       setIsMemberInPersonalChannels(isMemberInChannels);
       console.log("isMemberInPersonalChannels", isMemberInChannels);
     }
-  }, [user, member.username]);
+  }, [user, member]);
 
 
 
