@@ -4,6 +4,7 @@ import { uploadUserAvatar } from "../../../services/storage.service";
 import { getUser, updateUser } from "../../../services/user.service";
 import { useNavigate } from "react-router-dom";
 import { defaultUserAvatarPath } from "../../../common/constants";
+import { toast } from "react-toastify";
 
 /**
  * ProfileSettings Component
@@ -60,7 +61,8 @@ const ProfileSettings: React.FC = (): JSX.Element => {
         const newUser = await getUser(user.uid);
         if (newUser) {
           setUser(newUser);
-          alert("User updated successfully");
+
+          toast.info("User updated successfully!");
         }
       }
     } else {

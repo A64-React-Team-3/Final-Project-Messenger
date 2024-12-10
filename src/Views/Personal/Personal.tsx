@@ -109,7 +109,7 @@ const Personal: React.FC = (): JSX.Element => {
               className=" bg-base-100 border-none hover:bg-base-300 w-full h-[7vh] rounded-none flex flex-row justify-center items-center gap-2 p-4"
             >
               <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 text-primary overflow-hidden">
-                {user?.username}
+                {user?.displayName}
               </h2>
               {user?.avatarUrl && (
                 <img
@@ -172,7 +172,10 @@ const Personal: React.FC = (): JSX.Element => {
         <div className="flex flex-col h-screen">
           <div className="flex-grow bg-base-300 overflow-auto flex w-full">
             <Channel channel={channel} />
-            <ChannelSideBar users={Object.keys(user?.friends ?? {})} usersType="friends" />
+            <ChannelSideBar
+              users={Object.keys(user?.friends ?? {})}
+              usersType="friends"
+            />
           </div>
         </div>
       </div>
