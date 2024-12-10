@@ -1,6 +1,6 @@
 import { transformDate } from "../../helper/helper";
 import { MessageModel } from "../../models/MessageModel";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MdAddReaction, MdDelete } from "react-icons/md";
 import { UserAppContext } from "../../store/user.context";
 import EmojiPicker from "emoji-picker-react";
@@ -47,6 +47,10 @@ const Message: React.FC<MessageProps> = ({
     }
   };
 
+  // useEffect(() => {
+  //   console.log("Message", message);
+  // }, [message]);
+
   return (
     <>
       <div
@@ -59,7 +63,7 @@ const Message: React.FC<MessageProps> = ({
           <div className="w-10 rounded-full">
             <img
               alt={defaultUserAvatarPath}
-              src={user?.avatarUrl} />
+              src={message.senderAvatarUrl} />
           </div>
         </div>
         <div

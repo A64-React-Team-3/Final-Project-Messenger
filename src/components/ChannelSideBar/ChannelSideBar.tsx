@@ -16,63 +16,63 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
   const [teamMembers, setTeamMembers] = useState<UserModel[]>([]);
   const [friendList, setFriendList] = useState<UserModel[]>([]);
 
-  useEffect(() => {
-    if (team) {
-      setLoadingTeamMember(true);
-      setTeamMembers([]);
-      const teamMembersRef = ref(db, `teams/${team?.teamId}/members`);
-      get(teamMembersRef).then(_snapshot => {
-        const result: UserModel[] = [];
-        const unsubscribe = onValue(teamMembersRef, snapshot => {
-          if (snapshot.exists()) {
-            const membersData = Object.keys(snapshot.val());
-            membersData.map(member => {
-              getUserByHandle(member).then(user => {
-                const transformedUser = transformUserFromSnapshot(user);
-                if (transformedUser) {
-                  result.push(transformedUser);
-                }
-              });
-            });
-          }
-        });
-        setTeamMembers(result);
-        return () => unsubscribe();
-      }).catch(error => {
-        console.error("Error getting team members", error);
-      }).finally(() => setLoadingTeamMember(false));
-    }
-  }, [team]);
+  // useEffect(() => {
+  //   if (team) {
+  //     setLoadingTeamMember(true);
+  //     setTeamMembers([]);
+  //     const teamMembersRef = ref(db, `teams/${team?.teamId}/members`);
+  //     get(teamMembersRef).then(_snapshot => {
+  //       const result: UserModel[] = [];
+  //       const unsubscribe = onValue(teamMembersRef, snapshot => {
+  //         if (snapshot.exists()) {
+  //           const membersData = Object.keys(snapshot.val());
+  //           membersData.map(member => {
+  //             getUserByHandle(member).then(user => {
+  //               const transformedUser = transformUserFromSnapshot(user);
+  //               if (transformedUser) {
+  //                 result.push(transformedUser);
+  //               }
+  //             });
+  //           });
+  //         }
+  //       });
+  //       setTeamMembers(result);
+  //       return () => unsubscribe();
+  //     }).catch(error => {
+  //       console.error("Error getting team members", error);
+  //     }).finally(() => setLoadingTeamMember(false));
+  //   }
+  // }, [team]);
 
-  useEffect(() => {
-    if (user?.friends) {
-      const friendsRef = ref(db, `users/${user.username}/friends`);
-      get(friendsRef).then(_snapshot => {
-        const unsubscribe = onValue(friendsRef, snapshot => {
-          if (snapshot.exists()) {
-            const friendsData = snapshot.val();
-            const friendList: UserModel[] = [];
-            Object.keys(friendsData).map(friend => {
-              getUserByHandle(friend).then(user => {
-                const transformedUser = transformUserFromSnapshot(user);
-                if (transformedUser) {
-                  friendList.push(transformedUser);
-                }
-              });
-            });
-            setFriendList(friendList);
-            console.log("Friend List", friendList);
-          } else {
-            setFriendList([]);
-          }
-        });
-        return () => unsubscribe();
-      }).catch(error => {
-        console.error("Error getting friends", error);
-      });
+  // useEffect(() => {
+  //   if (user && user?.friends) {
+  //     const friendsRef = ref(db, `users/${user.username}/friends`);
+  //     get(friendsRef).then(_snapshot => {
+  //       const unsubscribe = onValue(friendsRef, snapshot => {
+  //         if (snapshot.exists()) {
+  //           const friendsData = snapshot.val();
+  //           const friendList: UserModel[] = [];
+  //           Object.keys(friendsData).map(friend => {
+  //             getUserByHandle(friend).then(user => {
+  //               const transformedUser = transformUserFromSnapshot(user);
+  //               if (transformedUser) {
+  //                 friendList.push(transformedUser);
+  //               }
+  //             });
+  //           });
+  //           setFriendList(friendList);
+  //           console.log("Friend List", friendList);
+  //         } else {
+  //           setFriendList([]);
+  //         }
+  //       });
+  //       return () => unsubscribe();
+  //     }).catch(error => {
+  //       console.error("Error getting friends", error);
+  //     });
 
-    }
-  }, [user?.friends]);
+  //   }
+  // }, [user?.friends]);
 
 
   return (
