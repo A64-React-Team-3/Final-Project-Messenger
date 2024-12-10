@@ -32,7 +32,6 @@ const ChannelSideBar: React.FC<ChannelSidBarProps> = ({ users, usersType }): JSX
         const unsubscribe = onValue(friendsRef, async snapshot => {
           if (snapshot.exists()) {
             const friendsData = snapshot.val();
-            console.log("Friends Data", friendsData);
             const friendList: UserModel[] = [];
             const friendPromises = Object.keys(friendsData).map(friend =>
               getUserByHandle(friend).then(user => {
@@ -44,7 +43,6 @@ const ChannelSideBar: React.FC<ChannelSidBarProps> = ({ users, usersType }): JSX
             );
             await Promise.all(friendPromises);
             setListOfUsers(friendList);
-            console.log("Friend List", friendList);
           }
         });
         return () => unsubscribe();
@@ -68,7 +66,6 @@ const ChannelSideBar: React.FC<ChannelSidBarProps> = ({ users, usersType }): JSX
             );
             await Promise.all(memberPromises);
             setListOfUsers(result);
-            console.log("Team Members", result);
           }
         });
         return () => unsubscribe();

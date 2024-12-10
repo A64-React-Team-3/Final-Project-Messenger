@@ -36,7 +36,6 @@ const UserMini: React.FC<UserMiniProps> = ({ member }): JSX.Element => {
         channel.members && channel.members.includes(member.username)
       );
       setIsMemberInPersonalChannels(isMemberInChannels);
-      console.log("isMemberInPersonalChannels", isMemberInChannels);
     }
   }, [user, member]);
 
