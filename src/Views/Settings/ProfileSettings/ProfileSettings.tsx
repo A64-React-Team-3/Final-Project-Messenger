@@ -17,9 +17,15 @@ import { defaultUserAvatarPath } from "../../../common/constants";
  */
 const ProfileSettings: React.FC = (): JSX.Element => {
   const { user, setUser } = React.useContext(UserAppContext);
-  const [displayName, setDisplayName] = useState<string>(user?.displayName ? user.displayName : "");
-  const [phoneNumber, setPhoneNumber] = useState<string>(user?.phoneNumber ? user.phoneNumber : "");
-  const [avatar, setAvatar] = useState<string>(user?.avatarUrl ? user?.avatarUrl : defaultUserAvatarPath);
+  const [displayName, setDisplayName] = useState<string>(
+    user?.displayName ? user.displayName : ""
+  );
+  const [phoneNumber, setPhoneNumber] = useState<string>(
+    user?.phoneNumber ? user.phoneNumber : ""
+  );
+  const [avatar, setAvatar] = useState<string>(
+    user?.avatarUrl ? user?.avatarUrl : defaultUserAvatarPath
+  );
   const [avatarFile, setAvatarFile] = useState<File>({} as File);
   const navigate = useNavigate();
 
@@ -39,7 +45,9 @@ const ProfileSettings: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleUpdateUser = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleUpdateUser = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     if (displayName.length < 3 || displayName.length > 20) {
       alert("Display name must be between 3 and 20 characters");
@@ -66,9 +74,8 @@ const ProfileSettings: React.FC = (): JSX.Element => {
     }
   };
 
-
   return (
-    <div className="w-full max-w-3xl bg-base-100 p-2 rounded-lg space-y-8">
+    <div className="w-full max-w-3xl bg-base-100 p-2 rounded-lg space-y-8 ">
       <h2 className="text-3xl font-bold">Profile Settings</h2>
       <p className="text-xl">Update your personal information here.</p>
 
@@ -84,7 +91,9 @@ const ProfileSettings: React.FC = (): JSX.Element => {
               className="input input-bordered "
             />
             {(displayName.length < 3 || displayName.length > 20) && (
-              <p className="text-red-500">Display name must be between 3 and 20 characters</p>
+              <p className="text-red-500">
+                Display name must be between 3 and 20 characters
+              </p>
             )}
           </div>
           <div className="space-y-2">
@@ -99,10 +108,17 @@ const ProfileSettings: React.FC = (): JSX.Element => {
           </div>
           <div className="space-y-2">
             <label className="block  font-medium">Avatar: </label>
-            <input type="file" className="file-input file-input-bordered " onChange={handleAvatarChange} />
+            <input
+              type="file"
+              className="file-input file-input-bordered "
+              onChange={handleAvatarChange}
+            />
           </div>
 
-          <button className="btn btn-outline btn-primary  mt-6" onClick={(e) => handleUpdateUser(e)}>
+          <button
+            className="btn btn-outline btn-primary  mt-6"
+            onClick={e => handleUpdateUser(e)}
+          >
             Save Changes
           </button>
         </form>
@@ -111,7 +127,7 @@ const ProfileSettings: React.FC = (): JSX.Element => {
           <img className="max-w-48 max-h-48 rounded-md" src={avatar}></img>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

@@ -38,7 +38,7 @@ const Settings: React.FC<SettingsProps> = ({
           onSelect={setActiveKey}
         />
       </div>
-      <div className="flex-1 bg-base-100 w-1/4 p-4 rounded-box shadow">
+      <div className="flex-1 bg-base-100 w-1/4 p-4 rounded-box shadow h-auto overflow-y-auto scrollbar-hide">
         {activeComponent}
       </div>
       <button
