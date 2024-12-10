@@ -8,6 +8,7 @@ import {
 import { getUserByHandle, createUser } from "../../services/user.service";
 import { registerUser } from "../../services/auth.service";
 import { createSelfChannel } from "../../services/channel.service";
+import { toast } from "react-toastify";
 
 /**
  * Register component for user registration.
@@ -47,13 +48,13 @@ export default function Register({
     if (
       !(isEmailValid && isUsernameValid && isPasswordValid && isPasswordMatch)
     ) {
-      alert("Please enter valid information");
+      toast.info("Please enter valid information!");
       return;
     }
     try {
       const dbUser = await getUserByHandle(user.handle);
       if (dbUser.exists()) {
-        alert("User already exists");
+        toast.info("User already exists");
         return;
       }
       const credentials = await registerUser(user.email, user.password);
@@ -69,7 +70,7 @@ export default function Register({
       }
       handleShowLogin();
     } catch (err: any) {
-      alert(err.message);
+      console.log(err.message);
     }
   };
 

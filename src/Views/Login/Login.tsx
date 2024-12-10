@@ -4,6 +4,7 @@ import { UserAppContext } from "../../store/user.context";
 import { useState } from "react";
 import { loginUser, signOutUser } from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Login({
   handleShowRegister,
@@ -31,6 +32,7 @@ export default function Login({
       navigate("/", { replace: true });
     } catch (err: any) {
       console.log(err);
+      toast.error("Invalid login!");
     }
   };
 
