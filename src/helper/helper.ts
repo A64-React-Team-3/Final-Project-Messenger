@@ -152,6 +152,7 @@ export const transformMessages = (
         message: message.message,
         sender: message.sender,
         senderName: message.senderName,
+        senderAvatarUrl: message.senderAvatarUrl,
         timestamp: message.timestamp,
         imageUrl: message.imageUrl ? Object.values(message.imageUrl) : null,
         reactions: Object.values(message.reactions || []),

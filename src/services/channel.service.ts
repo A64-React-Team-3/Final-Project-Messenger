@@ -194,11 +194,13 @@ export const sendMessage = async (
   userId: string | null | undefined,
   userDisplayName: string | null | undefined,
   message: string,
-  imageUrl?: object | null
+  imageUrl?: object | null,
+  senderAvatarUrl?: string | null,
 ): Promise<void> => {
   const messageObj = {
     message,
     sender: userId,
+    senderAvatarUrl: "",
     senderName: userDisplayName,
     channelId: channelId,
     timestamp: Date.now(),

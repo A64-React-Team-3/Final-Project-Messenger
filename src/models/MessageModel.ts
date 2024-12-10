@@ -3,6 +3,7 @@ export type MessageModel = {
   message: string;
   senderName: string;
   sender: string;
+  senderAvatarUrl: string;
   channelId: string;
   timestamp: number;
   imageUrl?: string[];
