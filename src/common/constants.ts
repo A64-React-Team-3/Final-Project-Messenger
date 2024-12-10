@@ -15,11 +15,14 @@ export enum Themes {
   FOREST = "forest",
 }
 
-export const defaultUserAvatarPath = "https://firebasestorage.googleapis.com/v0/b/final-project-messenger-7b4c2.firebasestorage.app/o/avatars%2FdefaultUserAvatar.png?alt=media&token=a8e0c487-596d-49a2-aefd-f6cae2562870";
+export const defaultUserAvatarPath =
+  "https://firebasestorage.googleapis.com/v0/b/final-project-messenger-7b4c2.firebasestorage.app/o/avatars%2FdefaultUserAvatar.png?alt=media&token=a8e0c487-596d-49a2-aefd-f6cae2562870";
 
 //default team image
+// export const defaultTeamImgUrl =
+//   "https://firebasestorage.googleapis.com/v0/b/final-project-messenger-7b4c2.firebasestorage.app/o/avatars%2Fcommunity.png?alt=media&token=b878f52c-d4a3-483d-996a-4196a2fc3bd4";
 export const defaultTeamImgUrl =
-  "https://firebasestorage.googleapis.com/v0/b/final-project-messenger-7b4c2.firebasestorage.app/o/avatars%2Fcommunity.png?alt=media&token=b878f52c-d4a3-483d-996a-4196a2fc3bd4";
+  "https://firebasestorage.googleapis.com/v0/b/final-project-messenger-7b4c2.firebasestorage.app/o/avatars%2Ffinal_logo.png?alt=media&token=2196915b-2bb2-4eac-8dc7-cf83605ed9d8";
 
 export const reactionEmoji = ["👍", "❤️", "😂", "😢", "😲"];
 
