@@ -17,12 +17,15 @@ import { UserAppContext } from "../../store/user.context";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
 import { ChannelType } from "../../common/constants";
 import { MdOutlineSearch } from "react-icons/md";
+import UserSearch from "../ModalViews/UserSearch/UserSearch";
 
 const Personal: React.FC = (): JSX.Element => {
   const [personalChannels, setPersonalChannels] = useState<ChannelModel[]>([]);
   const [channel, setChannel] = useState<ChannelModel | null>(null);
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
   const userNotification = useRef<HTMLDialogElement>(null);
+  const userSearch = useRef<HTMLDialogElement>(null);
+  const [isUserSearchModalOpen, setIsUserSearchModalOpen] = useState<boolean>(false);
   const { user } = useContext(UserAppContext);
   const [isUserNotificationModalOpen, setIsUserNotificationModalOpen] = useState<boolean>(false);
 
@@ -137,9 +140,10 @@ const Personal: React.FC = (): JSX.Element => {
               <IoNotificationsCircleOutline className="text-2xl text-primary scale-150" />
               {notifications.length > 0 && <div className="badge badge-secondary absolute bottom-0 left-0 scale-75">{notifications.length}</div>}
             </button>
-            <div className="mr-4">
+            <button className="btn btn-circle bg-transparent hover:bg-transparent shadow-none border-none flex-none gap-2 mr-3 relative"
+              onClick={() => setIsUserSearchModalOpen(true)}>
               <MdOutlineSearch className="text-2xl text-primary scale-150" />
-            </div>
+            </button>
             <ProfileButton />
           </div>
         </div>
@@ -153,6 +157,13 @@ const Personal: React.FC = (): JSX.Element => {
         setIsModalOpen={setIsUserNotificationModalOpen}
       >
         <UserNotification setIsUserNotificationModalOpen={setIsUserNotificationModalOpen} notifications={notifications} setNotifications={setNotifications} />
+      </Modal>
+      <Modal
+        modalRef={userSearch}
+        isModalOpen={isUserSearchModalOpen}
+        setIsModalOpen={setIsUserSearchModalOpen}
+      >
+        <UserSearch setIsUserSearchModalOpen={setIsUserSearchModalOpen} />
       </Modal>
     </div>
   );
