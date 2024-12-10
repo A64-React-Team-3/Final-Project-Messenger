@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import FriendList from "../../components/FriendList/FriendList";
-import FriendRequests from "../../components/FriendRequests/FriendRequests";
 import HomeSideBar from "../../components/HomeSideBar/HomeSideBar";
 import ProfileButton from "../../components/ProfileButton/ProfileButton";
 import { ChannelModel } from "../../models/ChannelModel";
@@ -17,12 +15,17 @@ import { NotificationModel } from "../../models/NotificationModel";
 import { useContext } from "react";
 import { UserAppContext } from "../../store/user.context";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
+import { ChannelType } from "../../common/constants";
+import { MdOutlineSearch } from "react-icons/md";
+import UserSearch from "../ModalViews/UserSearch/UserSearch";
 
 const Personal: React.FC = (): JSX.Element => {
-  const [channels, setChannels] = useState<ChannelModel[]>([]);
+  const [personalChannels, setPersonalChannels] = useState<ChannelModel[]>([]);
   const [channel, setChannel] = useState<ChannelModel | null>(null);
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
   const userNotification = useRef<HTMLDialogElement>(null);
+  const userSearch = useRef<HTMLDialogElement>(null);
+  const [isUserSearchModalOpen, setIsUserSearchModalOpen] = useState<boolean>(false);
   const { user } = useContext(UserAppContext);
   const [isUserNotificationModalOpen, setIsUserNotificationModalOpen] = useState<boolean>(false);
 
@@ -34,7 +37,15 @@ const Personal: React.FC = (): JSX.Element => {
           const unsubscribe = onValue(channelsRef, snapshot => {
             const transformedData = transformChannelsFromSnapshot(snapshot);
             if (transformedData) {
-              setChannels(transformedData);
+              console.log("Transformed Data", transformedData);
+              const personalChannels = transformedData.filter(channel => {
+                if (user && channel.type === ChannelType.PERSONAL && channel.members.includes(user?.username)) {
+                  console.log("user", user);
+                  return channel;
+                }
+              });
+              setPersonalChannels(personalChannels);
+
             }
           });
 
@@ -45,7 +56,7 @@ const Personal: React.FC = (): JSX.Element => {
         console.error("Error getting channels", error);
         toast.error("Error getting channels");
       });
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const notificationsRef = ref(db, `users/${user?.username}/notifications`);
@@ -72,13 +83,13 @@ const Personal: React.FC = (): JSX.Element => {
   return (
     <div className="flex w-full">
       <HomeSideBar />
-      <div className="border-base-300 flex-col justify-center h-full w-60   ">
+      <div className="border-base-300 flex-col justify-center h-screen w-60 shadow-md shadow-primary z-10">
         <div className="overflow-y-auto min-h-[50vh] max-h-[66vh] scrollbar-hide">
           <div className="dropdown dropdown-end h-full w-60">
             <div
               tabIndex={0}
               role="button"
-              className="btn btn-neutral bg-base-100 border-none hover:bg-base-300 w-full h-full rounded-none flex flex-col justify-center items-center gap-2 p-4"
+              className="btn btn-neutral bg-base-100 border-none hover:bg-base-300 w-full h-[7vh] rounded-none flex flex-row justify-center items-center gap-2 p-4"
             >
               <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 text-primary overflow-hidden">
                 {user?.username}
@@ -99,7 +110,7 @@ const Personal: React.FC = (): JSX.Element => {
             </div>
             <div className="collapse-content ">
               <div className="h-64 overflow-y-auto scrollbar-hide">
-                {channels.map(channel => (
+                {personalChannels.map(channel => (
                   <div className="mb-3" key={channel.id}>
                     <button
                       onClick={() => setChannel(channel)}
@@ -124,11 +135,15 @@ const Personal: React.FC = (): JSX.Element => {
               {channel ? channel.name : "Personal view"}
             </h2>
           </div>
-          <button className="btn btn-circle bg-transparent hover:bg-transparent shadow-none border-none flex-none gap-2 mr-3 relative" onClick={() => setIsUserNotificationModalOpen(true)}>
-            <IoNotificationsCircleOutline className="text-2xl text-primary scale-150" />
-            {notifications.length > 0 && <div className="badge badge-secondary absolute bottom-0 left-0 scale-75">{notifications.length}</div>}
-          </button>
           <div className="p-2">
+            <button className="btn btn-circle bg-transparent hover:bg-transparent shadow-none border-none flex-none gap-2 mr-3 relative" onClick={() => setIsUserNotificationModalOpen(true)}>
+              <IoNotificationsCircleOutline className="text-2xl text-primary scale-150" />
+              {notifications.length > 0 && <div className="badge badge-secondary absolute bottom-0 left-0 scale-75">{notifications.length}</div>}
+            </button>
+            <button className="btn btn-circle bg-transparent hover:bg-transparent shadow-none border-none flex-none gap-2 mr-3 relative"
+              onClick={() => setIsUserSearchModalOpen(true)}>
+              <MdOutlineSearch className="text-2xl text-primary scale-150" />
+            </button>
             <ProfileButton />
           </div>
         </div>
@@ -142,6 +157,13 @@ const Personal: React.FC = (): JSX.Element => {
         setIsModalOpen={setIsUserNotificationModalOpen}
       >
         <UserNotification setIsUserNotificationModalOpen={setIsUserNotificationModalOpen} notifications={notifications} setNotifications={setNotifications} />
+      </Modal>
+      <Modal
+        modalRef={userSearch}
+        isModalOpen={isUserSearchModalOpen}
+        setIsModalOpen={setIsUserSearchModalOpen}
+      >
+        <UserSearch setIsUserSearchModalOpen={setIsUserSearchModalOpen} />
       </Modal>
     </div>
   );

@@ -3,15 +3,18 @@ import { TeamAppContext } from "../../store/team.context";
 import { UserModel } from "../../models/UserModel";
 import { db } from "../../config/firebase-config";
 import { ref, get, onValue } from "firebase/database";
-import { getByUserName, getUserByHandle } from "../../services/user.service";
+import { getByUserName, getUser, getUserByHandle } from "../../services/user.service";
 import { transformUserFromSnapshot } from "../../helper/helper";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import UserMini from "../UserMini/UserMini";
+import { UserAppContext } from "../../store/user.context";
 
 const ChannelSideBar: React.FC = (): JSX.Element => {
   const { team } = useContext(TeamAppContext);
+  const { user } = useContext(UserAppContext);
   const [loadingTeamMember, setLoadingTeamMember] = useState<boolean>(false);
   const [teamMembers, setTeamMembers] = useState<UserModel[]>([]);
+  const [friendList, setFriendList] = useState<UserModel[]>([]);
 
   useEffect(() => {
     if (team) {
@@ -42,12 +45,38 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
   }, [team]);
 
   useEffect(() => {
-    console.log("teamMembers", teamMembers);
+    if (user?.friends) {
+      const friendsRef = ref(db, `users/${user.username}/friends`);
+      get(friendsRef).then(_snapshot => {
+        const unsubscribe = onValue(friendsRef, snapshot => {
+          if (snapshot.exists()) {
+            const friendsData = snapshot.val();
+            const friendList: UserModel[] = [];
+            Object.keys(friendsData).map(friend => {
+              getUserByHandle(friend).then(user => {
+                const transformedUser = transformUserFromSnapshot(user);
+                if (transformedUser) {
+                  friendList.push(transformedUser);
+                }
+              });
+            });
+            setFriendList(friendList);
+            console.log("Friend List", friendList);
+          } else {
+            setFriendList([]);
+          }
+        });
+        return () => unsubscribe();
+      }).catch(error => {
+        console.error("Error getting friends", error);
+      });
 
-  }, [teamMembers]);
+    }
+  }, [user?.friends]);
+
 
   return (
-    <div className="bg-base-200 w-60">
+    <div className="bg-base-200 w-60 shadow-lg shadow-primary">
       <div className="teamMembers">
         <div className="collapse collapse-arrow">
           <input type="checkbox" />
@@ -55,7 +84,7 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
           <div className="collapse-content">
             {loadingTeamMember && <LoadingSpinner />}
             {teamMembers.map((member, idx) => (
-              <UserMini key={idx} user={member} />
+              <UserMini key={idx} member={member} />
             ))}
           </div>
         </div>
@@ -64,28 +93,12 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
         <div className="collapse collapse-arrow">
           <input type="checkbox" />
           <div className="collapse-title text-xl font-medium">
-            Channel Members
+            Friends
           </div>
           <div className="collapse-content">
-            <div className="max-h-36 overflow-y-auto scrollbar-hide">
-              {/* {friendRequests.map(friend => (
-            <div
-              key={friend.id}
-              className="avatar w-full flex justify-evenly align-middle mb-2"
-            >
-              <div className="w-10 rounded-full avatar">
-                <img alt={`${friend.name} avatar`} src={friend.avatarUrl} />
-              </div>
-              <p className="text-center">{friend.name}</p>
-              <button className="btn btn-xs btn-success btn-outline">
-                Accept
-              </button>
-              <button className="btn btn-xs btn-error btn-outline">
-                Decline
-              </button>
-            </div>
-          ))} */}
-            </div>
+            {friendList.map((friend, idx) => (
+              <UserMini key={idx} member={friend} />
+            ))}
           </div>
         </div>
       </div>

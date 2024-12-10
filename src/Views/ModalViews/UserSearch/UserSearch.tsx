@@ -6,6 +6,8 @@ import { sendFriendRequest, sendTeamInvite } from "../../../services/notificatio
 import { UserAppContext } from "../../../store/user.context";
 import { TeamAppContext } from "../../../store/team.context";
 import { toast } from "react-toastify";
+import { Status } from "../../../common/constants";
+import { createPersonalChannel } from "../../../services/channel.service";
 
 type UserSearchProps = {
   setIsUserSearchModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -49,6 +51,21 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
     }
   };
 
+  const handleSendDm = async (userName: string, recipientName: string) => {
+    if (userName === recipientName) {
+      toast.error("You can't send a message to yourself");
+      return;
+    }
+    try {
+      await createPersonalChannel(userName, recipientName);
+      toast.success(`Personal channel created with ${recipientName}`);
+    } catch (error) {
+      console.error("Error creating personal channel", error);
+      toast.error("Error creating personal channel");
+    }
+
+  };
+
   useEffect(() => {
     getAllUsers().then((users) => {
       setAllUsers(users);
@@ -76,7 +93,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
               <th>Name</th>
               <th>Team invite</th>
               <th>Friend invite</th>
-              <th></th>
+              <th>DM</th>
             </tr>
           </thead>
           <tbody>
@@ -84,7 +101,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
               <tr key={userData.uid}>
                 <td>
                   <div className="flex items-center gap-3">
-                    <div className="avatar">
+                    <div className={`avatar ${userData.status === Status.ONLINE ? 'online' : 'offline'}`}>
                       <div className="mask mask-squircle h-12 w-12">
                         <img
                           src={userData.avatarUrl}
@@ -111,6 +128,13 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
                       handleFriendRequest(user.username, user.avatarUrl, userData.username, userData.avatarUrl);
                     }
                   }}>Friend Invite</button>
+                </td>
+                <td>
+                  <button className="btn btn-circle btn-sm btn-info" onClick={() => {
+                    if (user) {
+                      handleSendDm(user.username, userData.username);
+                    }
+                  }}>DM</button>
                 </td>
               </tr>
             ))}

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { validEmailRegex, validUsernameRegex, validPasswordRegex } from '../../common/constants';
 import { getUserByHandle, createUser } from '../../services/user.service';
 import { registerUser } from '../../services/auth.service';
+import { createSelfChannel } from '../../services/channel.service';
 
 /**
  * Register component for user registration.
@@ -47,7 +48,11 @@ export default function Register({ handleShowLogin }: { handleShowLogin: () => v
         return;
       }
       const credentials = await registerUser(user.email, user.password);
-      await createUser(user.handle, user.email, user.username, credentials.user.uid);
+      const result = await createUser(user.handle, user.email, user.username, credentials.user.uid);
+
+      if (result) {
+        await createSelfChannel(user.username);
+      }
       handleShowLogin();
     }
     catch (err: any) {

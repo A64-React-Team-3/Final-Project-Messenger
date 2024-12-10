@@ -6,6 +6,8 @@ import ProfileButton from "../ProfileButton/ProfileButton";
 import { TeamAppContext } from "../../store/team.context";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
 import { NotificationModel } from "../../models/NotificationModel";
+import { MdOutlineSearch } from "react-icons/md";
+
 
 type TeamNavBarProps = {
   channelName: string | undefined;
@@ -72,13 +74,10 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
         {notifications.length > 0 && <div className="badge badge-secondary absolute bottom-0 left-0 scale-75">{notifications.length}</div>}
       </button>
       <div className="flex-none gap-2">
-        <div className="form-control">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input input-sm input-bordered w-24 md:w-auto"
-          />
-        </div>
+        <button className="btn btn-circle bg-transparent hover:bg-transparent shadow-none border-none flex-none gap-2 mr-3 relative"
+          onClick={() => setIsUserSearchModalOpen(true)}>
+          <MdOutlineSearch className="text-2xl text-primary scale-150" />
+        </button>
         <ProfileButton />
       </div>
       <Modal
