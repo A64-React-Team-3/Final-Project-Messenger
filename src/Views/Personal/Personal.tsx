@@ -89,6 +89,12 @@ const Personal: React.FC = (): JSX.Element => {
   //   } else {
   //     setChannel(null);
   //   }
+  // useEffect(() => {
+  //   if (personalChannels.length > 0) {
+  //     setChannel(personalChannels[0]);
+  //   } else {
+  //     setChannel(null);
+  //   }
 
   // }, [user, personalChannels]);
 

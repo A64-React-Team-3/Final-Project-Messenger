@@ -50,7 +50,8 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
                 user?.uid,
                 user?.displayName,
                 messageToSend,
-                imageURLs
+                imageURLs,
+                user?.avatarUrl
               );
               setMessageToSend("");
               setImagePreviewFilesURL([]);
