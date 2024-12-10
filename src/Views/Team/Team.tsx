@@ -28,6 +28,7 @@ import UserSearch from "../ModalViews/UserSearch/UserSearch";
 import UserNotification from "../ModalViews/UserNotification/UserNotifications";
 import { NotificationModel } from "../../models/NotificationModel";
 import { UserAppContext } from "../../store/user.context";
+import ChannelSideBar from "../../components/ChannelSideBar/ChannelSideBar";
 
 type TeamProps = {
   notifications: NotificationModel[];
@@ -146,57 +147,58 @@ const Team: React.FC<TeamProps> = ({ notifications, setNotifications }): JSX.Ele
           ></MeetingRoom>
         </DyteProvider>
       )}
-    <div className="border-base-200 bg-base-300 flex-col justify-center w-full ">
-      <TeamNavBar channelName={currentChannel?.name} setIsUserSearchModalOpen={setIsUserSearchModalOpen} setIsUserNotificationModalOpen={setIsUserNotificationModalOpen} notifications={notifications} />
-      <div className="flex w-full h-[calc(100vh-4rem)]">
-        <TeamSideBar
-          teamName={teamName}
-          setChannel={setCurrentChannel}
-          teamChannels={teamChannels}
-          setIsNamePrivacyModalOpen={setIsNamePrivacyModalOpen}
-          setIsChannelDeleteModalOpen={setIsChannelDeleteModalOpen}
-        />
-        <Channel channel={currentChannel} />
-      </div>
-      <Modal
-        modalRef={channelSettings}
-        isModalOpen={isNamePrivacyModalOpen}
-        setIsModalOpen={setIsNamePrivacyModalOpen}
-      >
-        <ChannelSettings
-          currentChannel={currentChannel}
-          setIsModalOpen={setIsNamePrivacyModalOpen}
+      <div className="border-base-200 bg-base-300 flex-col justify-center w-full ">
+        <TeamNavBar channelName={currentChannel?.name} setIsUserSearchModalOpen={setIsUserSearchModalOpen} setIsUserNotificationModalOpen={setIsUserNotificationModalOpen} notifications={notifications} />
+        <div className="flex w-full h-[calc(100vh-4rem)]">
+          <TeamSideBar
+            teamName={teamName}
+            setChannel={setCurrentChannel}
+            teamChannels={teamChannels}
+            setIsNamePrivacyModalOpen={setIsNamePrivacyModalOpen}
+            setIsChannelDeleteModalOpen={setIsChannelDeleteModalOpen}
+          />
+          <Channel channel={currentChannel} />
+          <ChannelSideBar users={Object.keys(team?.members ?? {})} usersType="teamMembers" />
+        </div>
+        <Modal
+          modalRef={channelSettings}
           isModalOpen={isNamePrivacyModalOpen}
-          setIsChannelEditing={setIsChannelEditing}
-        />
-      </Modal>
-      <Modal
-        modalRef={channelDelete}
-        isModalOpen={isChannelDeleteModalOpen}
-        setIsModalOpen={setIsChannelDeleteModalOpen}
-      >
-        <ChannelDelete
-          currentChannel={currentChannel}
+          setIsModalOpen={setIsNamePrivacyModalOpen}
+        >
+          <ChannelSettings
+            currentChannel={currentChannel}
+            setIsModalOpen={setIsNamePrivacyModalOpen}
+            isModalOpen={isNamePrivacyModalOpen}
+            setIsChannelEditing={setIsChannelEditing}
+          />
+        </Modal>
+        <Modal
+          modalRef={channelDelete}
+          isModalOpen={isChannelDeleteModalOpen}
           setIsModalOpen={setIsChannelDeleteModalOpen}
-          setIsChannelDeleting={setIsChannelDeleting}
-        />
-      </Modal>
-      <Modal
-        modalRef={userSearch}
-        isModalOpen={isUserSearchModalOpen}
-        setIsModalOpen={setIsUserSearchModalOpen}
-      >
-        <UserSearch setIsUserSearchModalOpen={setIsUserSearchModalOpen} />
-      </Modal>
-      <Modal
-        modalRef={userNotification}
-        isModalOpen={isUserNotificationModalOpen}
-        setIsModalOpen={setIsUserNotificationModalOpen}
-      >
-        <UserNotification setIsUserNotificationModalOpen={setIsUserNotificationModalOpen} notifications={notifications} setNotifications={setNotifications} />
-      </Modal>
-    </div>
-        </>
+        >
+          <ChannelDelete
+            currentChannel={currentChannel}
+            setIsModalOpen={setIsChannelDeleteModalOpen}
+            setIsChannelDeleting={setIsChannelDeleting}
+          />
+        </Modal>
+        <Modal
+          modalRef={userSearch}
+          isModalOpen={isUserSearchModalOpen}
+          setIsModalOpen={setIsUserSearchModalOpen}
+        >
+          <UserSearch setIsUserSearchModalOpen={setIsUserSearchModalOpen} />
+        </Modal>
+        <Modal
+          modalRef={userNotification}
+          isModalOpen={isUserNotificationModalOpen}
+          setIsModalOpen={setIsUserNotificationModalOpen}
+        >
+          <UserNotification setIsUserNotificationModalOpen={setIsUserNotificationModalOpen} notifications={notifications} setNotifications={setNotifications} />
+        </Modal>
+      </div>
+    </>
   );
 };
 

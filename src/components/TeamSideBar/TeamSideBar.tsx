@@ -14,6 +14,8 @@ import { PiSpeakerSimpleSlashLight } from "react-icons/pi";
 import { CiVideoOn } from "react-icons/ci";
 import { IoMdExit } from "react-icons/io";
 import { LuScreenShare } from "react-icons/lu";
+import { useSearchParams } from "react-router-dom";
+
 type TeamSideBarProps = {
   teamName: string;
   setChannel: Dispatch<SetStateAction<ChannelModel | null>>;
@@ -30,7 +32,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
   setIsChannelDeleteModalOpen,
 }): JSX.Element => {
   const { team } = useContext(TeamAppContext);
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useContext(UserAppContext);
   const { authToken, setAuthToken } = useContext(DyteAppContext);
   const meetingParticipant = {
@@ -58,13 +60,11 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
       console.error("Cannot create/join meeting!", error);
     }
   };
-  // useEffect(() => {
-  //   console.log("authToken in useEffect", authToken);
-  // }, [authToken]);
+
   return (
-    <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 shadow-lg shadow-primary relative">
-      <div className="collapse !overflow-visible">
-        <input type="checkbox" />
+    <div className="border-base-300 flex-col justify-center px-4 bg-base-100 h-full w-60 relative">
+      <div className="collapse collapse-arrow !overflow-visible">
+        <input type="checkbox" defaultChecked />
         <div className="collapse-title z-0 text-xl font-medium">
           Text Channels
         </div>
@@ -91,7 +91,9 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
                     tabIndex={0}
                     role="button"
                     className="btn btn-sm m-1 bg-transparent border-none hover:bg-transparent hover:border-none shadow-none"
-                    onClick={() => setChannel(channel)}
+                    onClick={() => {
+                      setChannel(channel)
+                    }}
                   >
                     <IoMdSettings />
                   </div>

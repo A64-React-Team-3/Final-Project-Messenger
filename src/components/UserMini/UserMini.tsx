@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { ChannelModel } from '../../models/ChannelModel';
 import { UserChannel } from '../../models/User/UserChannel';
 import { ChannelType } from '../../common/constants';
+import { useSearchParams } from 'react-router-dom';
 
 type UserMiniProps = {
   member: UserModel;
@@ -66,7 +67,7 @@ const UserMini: React.FC<UserMiniProps> = ({ member }): JSX.Element => {
         </div>
       </div>
       <div>
-        <div className="font-bold">{member.username}</div>
+        <div className="font-bold truncate">{member.username}</div>
       </div>
       <div>
         <button className={`btn btn-sm btn-circle btn-primary ${isMemberInPersonalChannels ? `btn-disabled` : ""}`} onClick={() => {
