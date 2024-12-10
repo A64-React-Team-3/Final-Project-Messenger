@@ -3,7 +3,7 @@ import TeamAvatarButton from "../TeamAvatarButton/TeamAvatarButton";
 import CreateTeamButton from "../CreateTeamButton/CreateTeamButton";
 import { useContext, useEffect, useState } from "react";
 import CreateTeam from "../../Views/ModalViews/CreateTeam/CreateTeam";
-import { onValue, ref } from "firebase/database";
+import { onValue, ref, set } from "firebase/database";
 import { db } from "../../config/firebase-config";
 import { TeamAppContext } from "../../store/team.context";
 import { getTeams } from "../../services/team.service";
@@ -43,34 +43,57 @@ const HomeSideBar: React.FC = (): JSX.Element => {
     setOpenModal(prevValue => !prevValue);
   };
   useEffect(() => {
+    // const teamsRef = ref(db, "teams/");
+    // setLoadingTeamsData(true);
+    // getTeams()
+    //   .then(snapshot => {
+    //     if (snapshot) {
+    //       const unsubscribe = onValue(teamsRef, snapshot => {
+    //         const teamsData = transformTeams(snapshot);
+    //         if (teamsData) {
+    //           const filteredTeams = teamsData.filter(
+    //             team => {
+    //               if (user?.username) {
+    //                 return team.members?.includes(user.username);
+    //               }
+    //             }
+    //           )
+    //           console.log("filteredTeams", filteredTeams);
+    //           setTeams(filteredTeams);
+    //         }
+    //       });
+    //       return () => unsubscribe();
+    //     } else {
+    //       setTeams([]);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.error("Error getting channels", error);
+    //     toast.error("Error getting channels");
+    //   })
+    //   .finally(() => setLoadingTeamsData(false));
+    const userTeams = user?.teams?.map(team => team.teamId);
+
     const teamsRef = ref(db, "teams/");
     setLoadingTeamsData(true);
-    getTeams()
-      .then(snapshot => {
-        if (snapshot) {
-          const unsubscribe = onValue(teamsRef, snapshot => {
-            const teamsData = transformTeams(snapshot);
-            if (teamsData) {
-              const filteredTeams = teamsData.filter(
-                team => {
-                  if (user?.username) {
-                    return team.members?.includes(user.username);
-                  }
-                }
-              )
-              setTeams(filteredTeams);
-            }
-          });
-          return () => unsubscribe();
-        } else {
-          setTeams([]);
-        }
-      })
-      .catch(error => {
-        console.error("Error getting channels", error);
-        toast.error("Error getting channels");
-      })
-      .finally(() => setLoadingTeamsData(false));
+    const unsubscribe = onValue(teamsRef, snapshot => {
+      const teamsData = transformTeams(snapshot);
+      if (teamsData) {
+        const filteredTeams = teamsData.filter(
+          team => userTeams?.includes(team.teamId)
+        );
+        setTeams(filteredTeams);
+        setLoadingTeamsData(false);
+        console.log("user", userTeams);
+        console.log("filteredTeams", filteredTeams);
+      } else {
+        setTeams([]);
+        setLoadingTeamsData(false);
+      }
+    });
+    return () => unsubscribe();
+
+
   }, [user]);
 
 
