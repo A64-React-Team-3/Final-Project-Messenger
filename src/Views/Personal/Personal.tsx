@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import FriendList from "../../components/FriendList/FriendList";
-import FriendRequests from "../../components/FriendRequests/FriendRequests";
 import HomeSideBar from "../../components/HomeSideBar/HomeSideBar";
 import ProfileButton from "../../components/ProfileButton/ProfileButton";
 import { ChannelModel } from "../../models/ChannelModel";
@@ -18,6 +16,7 @@ import { useContext } from "react";
 import { UserAppContext } from "../../store/user.context";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
 import { ChannelType } from "../../common/constants";
+import { MdOutlineSearch } from "react-icons/md";
 
 const Personal: React.FC = (): JSX.Element => {
   const [personalChannels, setPersonalChannels] = useState<ChannelModel[]>([]);
@@ -27,26 +26,6 @@ const Personal: React.FC = (): JSX.Element => {
   const { user } = useContext(UserAppContext);
   const [isUserNotificationModalOpen, setIsUserNotificationModalOpen] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   const channelsRef = ref(db, "channels/");
-  //   get(channelsRef)
-  //     .then(channelsSnapshot => {
-  //       if (channelsSnapshot.exists()) {
-  //         const unsubscribe = onValue(channelsRef, snapshot => {
-  //           const transformedData = transformChannelsFromSnapshot(snapshot);
-  //           if (transformedData) {
-  //             setChannels(transformedData);
-  //           }
-  //         });
-
-  //         return () => unsubscribe();
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error("Error getting channels", error);
-  //       toast.error("Error getting channels");
-  //     });
-  // }, []);
   useEffect(() => {
     const channelsRef = ref(db, "channels/");
     get(channelsRef)
@@ -101,13 +80,13 @@ const Personal: React.FC = (): JSX.Element => {
   return (
     <div className="flex w-full">
       <HomeSideBar />
-      <div className="border-base-300 flex-col justify-center h-full w-60   ">
+      <div className="border-base-300 flex-col justify-center h-screen w-60 shadow-md shadow-primary z-10">
         <div className="overflow-y-auto min-h-[50vh] max-h-[66vh] scrollbar-hide">
           <div className="dropdown dropdown-end h-full w-60">
             <div
               tabIndex={0}
               role="button"
-              className="btn btn-neutral bg-base-100 border-none hover:bg-base-300 w-full h-full rounded-none flex flex-col justify-center items-center gap-2 p-4"
+              className="btn btn-neutral bg-base-100 border-none hover:bg-base-300 w-full h-[7vh] rounded-none flex flex-row justify-center items-center gap-2 p-4"
             >
               <h2 className="text-lg font-semibold text-center break-words truncate max-w-40 text-primary overflow-hidden">
                 {user?.username}
@@ -153,11 +132,14 @@ const Personal: React.FC = (): JSX.Element => {
               {channel ? channel.name : "Personal view"}
             </h2>
           </div>
-          <button className="btn btn-circle bg-transparent hover:bg-transparent shadow-none border-none flex-none gap-2 mr-3 relative" onClick={() => setIsUserNotificationModalOpen(true)}>
-            <IoNotificationsCircleOutline className="text-2xl text-primary scale-150" />
-            {notifications.length > 0 && <div className="badge badge-secondary absolute bottom-0 left-0 scale-75">{notifications.length}</div>}
-          </button>
           <div className="p-2">
+            <button className="btn btn-circle bg-transparent hover:bg-transparent shadow-none border-none flex-none gap-2 mr-3 relative" onClick={() => setIsUserNotificationModalOpen(true)}>
+              <IoNotificationsCircleOutline className="text-2xl text-primary scale-150" />
+              {notifications.length > 0 && <div className="badge badge-secondary absolute bottom-0 left-0 scale-75">{notifications.length}</div>}
+            </button>
+            <div className="mr-4">
+              <MdOutlineSearch className="text-2xl text-primary scale-150" />
+            </div>
             <ProfileButton />
           </div>
         </div>

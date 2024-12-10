@@ -76,7 +76,7 @@ const ChannelSideBar: React.FC = (): JSX.Element => {
 
 
   return (
-    <div className="bg-base-200 w-60">
+    <div className="bg-base-200 w-60 shadow-lg shadow-primary">
       <div className="teamMembers">
         <div className="collapse collapse-arrow">
           <input type="checkbox" />

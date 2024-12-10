@@ -93,6 +93,35 @@ export const createPersonalChannel = async (
   }
 };
 
+export const createSelfChannel = async (userName: string): Promise<void> => {
+  const channel: ChannelModel = {
+    id: "",
+    name: userName,
+    members: [userName],
+    creator: userName,
+    createdOn: Date.now(),
+    type: ChannelType.PERSONAL,
+    private: true,
+  }
+
+  try {
+    const result = await push(ref(db, `channels/`), channel);
+    const id = result.key;
+
+    const userChannel: UserChannel = {
+      channelId: id,
+      type: ChannelType.PERSONAL,
+    };
+
+    await update(ref(db), { [`channels/${id}/id`]: id });
+    await update(ref(db), { [`users/${userName}/channels/${id}`]: userChannel });
+
+  } catch (error) {
+    console.error("Error creating channel", error);
+    toast.error("Error creating channel");
+  }
+};
+
 export const getChannels = async (): Promise<any> => {
   const channelsRef = ref(db, "channels/");
   try {

@@ -47,7 +47,7 @@ export const createUser = async (
   email: string,
   username: string,
   uid: string
-): Promise<void> => {
+): Promise<UserModel | null> => {
   console.log("createUser", handle, email, username);
   const user: UserModel = {
     email,
@@ -58,6 +58,14 @@ export const createUser = async (
     createdOn: Date.now(),
   };
   await set(ref(db, `users/${handle}`), user);
+  const result = await getUserByHandle(handle);
+
+  if (result.exists()) {
+    return transformUserFromSnapshot(result);
+  } else {
+    return null;
+  }
+
 };
 
 /**
