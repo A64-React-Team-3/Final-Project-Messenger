@@ -56,7 +56,6 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
               <a
                 onClick={() => {
                   setIsModalOpen(prevValue => !prevValue);
-                  console.log("Hi");
                 }}
               >
                 Create Channel

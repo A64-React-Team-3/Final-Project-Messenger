@@ -74,10 +74,10 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
               key={channel?.id}
               className="flex flex-row rounded-md my-2 p-0 w-full"
             >
-              <div className="flex justify-between w-full items-center">
+              <div className="flex justify-between w-full items-center ">
                 <button
                   onClick={() => setChannel(channel)}
-                  className="btn btn-sm btn-outline btn-primary text-sm hover:bg-gray-700 mb-3"
+                  className="btn btn-sm btn-primary text-sm mb-3"
                 >
                   <span className="icon text-secondary">
                     <FaRocketchat />
@@ -153,7 +153,7 @@ const TeamSideBar: React.FC<TeamSideBarProps> = ({
           </div>
         </div>
       )}
-    
+
     </div>
   );
 };
