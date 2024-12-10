@@ -36,9 +36,7 @@ export const createTeamChannel = async (
     createdOn: Date.now(),
     type: ChannelType.TEAM,
     private: isPrivate,
-  }
-
-
+  };
 
   try {
     const result = await push(ref(db, `channels/`), channel);
@@ -51,7 +49,6 @@ export const createTeamChannel = async (
 
     await update(ref(db), { [`channels/${id}/id`]: id });
     await update(ref(db), { [`teams/${teamId}/channels/${id}`]: userChannel });
-
   } catch (error) {
     console.error("Error creating channel", error);
     toast.error("Error creating channel");
@@ -62,7 +59,6 @@ export const createPersonalChannel = async (
   userName: string,
   recipientName: string
 ): Promise<void> => {
-
   const channel: ChannelModel = {
     id: "",
     name: `${userName}-${recipientName}`,
@@ -71,7 +67,7 @@ export const createPersonalChannel = async (
     createdOn: Date.now(),
     type: ChannelType.PERSONAL,
     private: true,
-  }
+  };
 
   try {
     const result = await push(ref(db, `channels/`), channel);
@@ -84,9 +80,12 @@ export const createPersonalChannel = async (
     };
 
     await update(ref(db), { [`channels/${id}/id`]: id });
-    await update(ref(db), { [`users/${userName}/channels/${id}`]: userChannel });
-    await update(ref(db), { [`users/${recipientName}/channels/${id}`]: userChannel });
-
+    await update(ref(db), {
+      [`users/${userName}/channels/${id}`]: userChannel,
+    });
+    await update(ref(db), {
+      [`users/${recipientName}/channels/${id}`]: userChannel,
+    });
   } catch (error) {
     console.error("Error creating channel", error);
     toast.error("Error creating channel");
@@ -102,7 +101,7 @@ export const createSelfChannel = async (userName: string): Promise<void> => {
     createdOn: Date.now(),
     type: ChannelType.PERSONAL,
     private: true,
-  }
+  };
 
   try {
     const result = await push(ref(db, `channels/`), channel);
@@ -114,8 +113,9 @@ export const createSelfChannel = async (userName: string): Promise<void> => {
     };
 
     await update(ref(db), { [`channels/${id}/id`]: id });
-    await update(ref(db), { [`users/${userName}/channels/${id}`]: userChannel });
-
+    await update(ref(db), {
+      [`users/${userName}/channels/${id}`]: userChannel,
+    });
   } catch (error) {
     console.error("Error creating channel", error);
     toast.error("Error creating channel");
@@ -195,12 +195,12 @@ export const sendMessage = async (
   userDisplayName: string | null | undefined,
   message: string,
   imageUrl?: object | null,
-  senderAvatarUrl?: string | null,
+  senderAvatarUrl?: string | null
 ): Promise<void> => {
   const messageObj = {
     message,
     sender: userId,
-    senderAvatarUrl: "",
+    senderAvatarUrl: senderAvatarUrl || null,
     senderName: userDisplayName,
     channelId: channelId,
     timestamp: Date.now(),
