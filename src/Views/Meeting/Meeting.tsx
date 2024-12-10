@@ -45,7 +45,7 @@ const Meeting: React.FC<MeetingProps> = ({
           width: "480px",
           position: "absolute",
           bottom: "-4rem",
-          right: "-3rem",
+          right: "-5.5rem",
           transform: "scale(60%)",
           zIndex: "999",
         }}
