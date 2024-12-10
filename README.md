@@ -1,50 +1,98 @@
-# React + TypeScript + Vite
+# Final Project Messenger
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Final Project Messenger is a web-based messaging application built with React, TypeScript,Firebase and Dyte. It allows users to create teams, send messages, and manage their profiles. Additionally, users can create meetings in teams with voice/video functionality.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- User authentication with Firebase
+- Real-time messaging
+- Team creation and management
+- Profile settings
+- Image uploads to Firebase Storage
+- Create meetings video & voice calls
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+src/
+App.tsx
+assets/
+common/
 
-- Configure the top-level `parserOptions` property like this:
+    components/
+        ChannelSideBar/
+        CreateTeamButton/
+        FriendInviteTable/
+        ...
+    config/
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+    helper/
+    hoc/
+
+    index.css
+    main.tsx
+    models/
+    routes/
+    services/
+
+    store/
+    Views/
+        Settings/
+            ProfileSettings/
+
+    vite-env.d.ts
+
+tailwind.config.js
+tsconfig.app.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm or yarn
+- Firebase account
+
+## Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/final-project-messenger.git
+cd final-project-messenger
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2. Set up Firebase:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Create a Firebase project and enable Authentication, Realtime Database, and Storage.
+Copy your Firebase configuration and add it to a .env file in the root directory:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+   VITE_FIREBASE_API_KEY=your-api-key
+   VITE_FIREBASE_AUTH_DOMAIN=your-auth-domain
+   VITE_FIREBASE_DATABASE_URL=your-database-url
+   VITE_FIREBASE_PROJECT_ID=your-project-id
+   VITE_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+   VITE_FIREBASE_APP_ID=your-app-id
 ```
+
+### Usage
+
+## Profile Settings
+
+Users can update their profile information, including display name, phone number, and avatar. The avatar image is uploaded to Firebase Storage.
+
+## Team Management
+
+Users can create teams and invite friends to join. Team avatars can also be uploaded to Firebase Storage.
+
+## Messaging
+
+Users can send messages in real-time within their teams.
+
+## Team Meetings
+
+Users can join meetings in teams and talk over video/audio in real-time with other team members.
