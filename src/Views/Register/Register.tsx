@@ -139,7 +139,7 @@ export default function Register({
 
   return (
     <div className="card backdrop-opacity   w-96">
-      <div className="card-body">
+      <div className="card-body ">
         <h2 className="card-title">Register</h2>
         <label className="input input-bordered flex items-center gap-2">
           <svg
@@ -229,25 +229,27 @@ export default function Register({
             type="password"
             className="grow"
             value={confirmPassword}
-            placeholder="confirm password"
+            placeholder="Confirm password"
             onChange={updateConfirmPassword}
           />
         </label>
         {!isPasswordMatch && hasStartedTyping && (
           <p className="text-red-500 text-xs">Passwords do not match</p>
         )}
-        <div className="card-actions justify-end">
+        <div className="flex flex-col justify-center align-middle">
           <button
-            className="btn btn-outline btn-primary"
+            className="btn btn-outline btn-primary w-2/4 ml-20 mb-1"
             onClick={handleRegister}
           >
             Register
           </button>
           <button
-            className="btn btn-outline btn-secondary"
+            className="btn opacity-70 btn-ghost text-secondary"
             onClick={handleShowLogin}
           >
-            Back to Login
+            Already Have An Account?
+            <br />
+            Go to Login!
           </button>
         </div>
       </div>

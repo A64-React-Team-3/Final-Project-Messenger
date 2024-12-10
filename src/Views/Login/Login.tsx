@@ -75,22 +75,24 @@ export default function Login({
             type="password"
             className="grow"
             value={form.password}
-            placeholder="password"
+            placeholder="Password"
             onChange={updateForm("password")}
           />
         </label>
-        <div className="card-actions justify-end">
+        <div className="flex flex-col justify-center align-middle">
           <button
-            className="btn btn-outline btn-secondary"
+            className="btn btn-outline btn-primary w-2/4 ml-20 mb-1"
             onClick={handleLogin}
           >
             Login
           </button>
           <button
-            className="btn btn-outline btn-primary"
+            className="btn opacity-70 btn-ghost text-secondary"
             onClick={handleShowRegister}
           >
-            To Register
+            Don't Have An Account yet?
+            <br />
+            Register instead!
           </button>
         </div>
       </div>
