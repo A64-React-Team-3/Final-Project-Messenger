@@ -17,6 +17,7 @@ import { uploadMessageImage } from "../../services/storage.service";
 import { TeamAppContext } from "../../store/team.context";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import { useSearchParams } from "react-router-dom";
 
 type ChannelProps = {
   channel: ChannelModel | null;
@@ -35,6 +36,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
   const [imagePreviewFilesURL, setImagePreviewFilesURL] = useState<string[]>(
     []
   );
+  const [searchParams, setSearchParams] = useSearchParams();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const { team } = useContext(TeamAppContext);
 
@@ -154,8 +156,8 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
 
   return (
     <>
-      <div className="channel-view flex h-full w-[calc(100vw-20rem)]">
-        <div className="flex flex-col w-[calc(100vw-35rem)] h-full">
+      <div className="channel-view flex h-full">
+        <div className="flex flex-col w-[calc(100vw-35rem)] max-h-[calc(90vh)] overflow-auto">
           <div
             ref={chatRef}
             className="display-chat w-[calc(100vw-35rem)] flex-grow overflow-auto p-3 scrollbar-hide"
@@ -242,7 +244,7 @@ const Channel: React.FC<ChannelProps> = ({ channel }): JSX.Element => {
             </div>
           </div>
         </div>
-        <ChannelSideBar />
+
       </div>
     </>
   );

@@ -26,7 +26,7 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { team } = useContext(TeamAppContext);
   return (
-    <div className="navbar py-0 px-0 bg-base-100 h-14 shadow-md z-10 shadow-primary">
+    <div className="navbar py-0 px-0 bg-base-100 h-14 z-10 ">
       <div className=" h-full">
         <div className="dropdown dropdown-end h-full w-60">
           <div
@@ -56,7 +56,6 @@ const TeamNavBar: React.FC<TeamNavBarProps> = ({
               <a
                 onClick={() => {
                   setIsModalOpen(prevValue => !prevValue);
-                  console.log("Hi");
                 }}
               >
                 Create Channel

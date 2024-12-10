@@ -18,6 +18,7 @@ import { IoNotificationsCircleOutline } from "react-icons/io5";
 import { ChannelType } from "../../common/constants";
 import { MdOutlineSearch } from "react-icons/md";
 import UserSearch from "../ModalViews/UserSearch/UserSearch";
+import ChannelSideBar from "../../components/ChannelSideBar/ChannelSideBar";
 
 const Personal: React.FC = (): JSX.Element => {
   const [personalChannels, setPersonalChannels] = useState<ChannelModel[]>([]);
@@ -100,7 +101,7 @@ const Personal: React.FC = (): JSX.Element => {
   return (
     <div className="flex w-full">
       <HomeSideBar />
-      <div className="border-base-300 flex-col justify-center h-screen w-60 shadow-lg shadow-primary z-10">
+      <div className="border-base-300 flex-col justify-center h-screen w-60 z-10">
         <div className="overflow-y-auto min-h-[50vh] max-h-[66vh] scrollbar-hide">
           <div className="dropdown dropdown-end h-full w-60">
             <div
@@ -120,7 +121,7 @@ const Personal: React.FC = (): JSX.Element => {
             </div>
           </div>
           <div className="collapse collapse-arrow ">
-            <input type="checkbox" />
+            <input type="checkbox" defaultChecked />
             <div className="collapse-title z-0 text-xl font-medium">Chats</div>
             <div className="collapse-content ">
               <div className="h-64 overflow-y-auto scrollbar-hide">
@@ -142,8 +143,8 @@ const Personal: React.FC = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full h-[calc(100vh)]">
-        <div className="navbar py-0 px-0 bh-14 w-full flex items-center justify-between">
+      <div className="flex flex-col w-full max-h-screen">
+        <div className="navbar py-0 px-0 bh-14 w-full flex items-center justify-between z-50">
           <div className="left-content">
             <h2 className="p-2">{channel ? channel.name : "Personal view"}</h2>
           </div>
@@ -171,6 +172,7 @@ const Personal: React.FC = (): JSX.Element => {
         <div className="flex flex-col h-screen">
           <div className="flex-grow bg-base-300 overflow-auto flex w-full">
             <Channel channel={channel} />
+            <ChannelSideBar users={Object.keys(user?.friends ?? {})} usersType="friends" />
           </div>
         </div>
       </div>

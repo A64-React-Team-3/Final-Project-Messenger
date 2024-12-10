@@ -9,99 +9,85 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import UserMini from "../UserMini/UserMini";
 import { UserAppContext } from "../../store/user.context";
 
-const ChannelSideBar: React.FC = (): JSX.Element => {
-  const { team } = useContext(TeamAppContext);
+type ChannelSidBarProps = {
+  users: string[];
+  usersType: "teamMembers" | "friends";
+};
+
+const ChannelSideBar: React.FC<ChannelSidBarProps> = ({ users, usersType }): JSX.Element => {
   const { user } = useContext(UserAppContext);
   const [loadingTeamMember, setLoadingTeamMember] = useState<boolean>(false);
-  const [teamMembers, setTeamMembers] = useState<UserModel[]>([]);
-  const [friendList, setFriendList] = useState<UserModel[]>([]);
+  const [listOfUsers, setListOfUsers] = useState<UserModel[]>([]);
 
   // useEffect(() => {
-  //   if (team) {
   //     setLoadingTeamMember(true);
-  //     setTeamMembers([]);
-  //     const teamMembersRef = ref(db, `teams/${team?.teamId}/members`);
-  //     get(teamMembersRef).then(_snapshot => {
-  //       const result: UserModel[] = [];
-  //       const unsubscribe = onValue(teamMembersRef, snapshot => {
-  //         if (snapshot.exists()) {
-  //           const membersData = Object.keys(snapshot.val());
-  //           membersData.map(member => {
-  //             getUserByHandle(member).then(user => {
-  //               const transformedUser = transformUserFromSnapshot(user);
-  //               if (transformedUser) {
-  //                 result.push(transformedUser);
-  //               }
-  //             });
-  //           });
-  //         }
-  //       });
-  //       setTeamMembers(result);
-  //       return () => unsubscribe();
-  //     }).catch(error => {
-  //       console.error("Error getting team members", error);
-  //     }).finally(() => setLoadingTeamMember(false));
-  //   }
-  // }, [team]);
+  //     setListOfUsers([]);
 
-  // useEffect(() => {
-  //   if (user && user?.friends) {
-  //     const friendsRef = ref(db, `users/${user.username}/friends`);
-  //     get(friendsRef).then(_snapshot => {
-  //       const unsubscribe = onValue(friendsRef, snapshot => {
-  //         if (snapshot.exists()) {
-  //           const friendsData = snapshot.val();
-  //           const friendList: UserModel[] = [];
-  //           Object.keys(friendsData).map(friend => {
-  //             getUserByHandle(friend).then(user => {
-  //               const transformedUser = transformUserFromSnapshot(user);
-  //               if (transformedUser) {
-  //                 friendList.push(transformedUser);
-  //               }
-  //             });
-  //           });
-  //           setFriendList(friendList);
-  //           console.log("Friend List", friendList);
-  //         } else {
-  //           setFriendList([]);
-  //         }
-  //       });
-  //       return () => unsubscribe();
-  //     }).catch(error => {
-  //       console.error("Error getting friends", error);
-  //     });
+  // }, [users]);
 
-  //   }
-  // }, [user?.friends]);
+  useEffect(() => {
+    if (usersType === "friends") {
+      const friendsRef = ref(db, `users/${user?.username}/friends`);
+      get(friendsRef).then(_snapshot => {
+        const unsubscribe = onValue(friendsRef, async snapshot => {
+          if (snapshot.exists()) {
+            const friendsData = snapshot.val();
+            console.log("Friends Data", friendsData);
+            const friendList: UserModel[] = [];
+            const friendPromises = Object.keys(friendsData).map(friend =>
+              getUserByHandle(friend).then(user => {
+                const transformedUser = transformUserFromSnapshot(user);
+                if (transformedUser) {
+                  friendList.push(transformedUser);
+                }
+              })
+            );
+            await Promise.all(friendPromises);
+            setListOfUsers(friendList);
+            console.log("Friend List", friendList);
+          }
+        });
+        return () => unsubscribe();
+      }).catch(error => {
+        console.error("Error getting friends", error);
+      });
+    } else if (usersType === "teamMembers") {
+      const teamMembersRef = ref(db, `users/`);
+      get(teamMembersRef).then(_snapshot => {
+        const unsubscribe = onValue(teamMembersRef, async snapshot => {
+          if (snapshot.exists()) {
+            const membersData = Object.keys(snapshot.val());
+            const result: UserModel[] = [];
+            const memberPromises = membersData.map(member =>
+              getUserByHandle(member).then(user => {
+                const transformedUser = transformUserFromSnapshot(user);
+                if (transformedUser) {
+                  result.push(transformedUser);
+                }
+              })
+            );
+            await Promise.all(memberPromises);
+            setListOfUsers(result);
+            console.log("Team Members", result);
+          }
+        });
+        return () => unsubscribe();
+      }).catch(error => {
+        console.error("Error getting team members", error);
+      });
+    }
+  }, [user, usersType]);
 
 
   return (
-    <div className="bg-base-200 w-60 shadow-lg shadow-primary">
-      <div className="teamMembers">
-        <div className="collapse collapse-arrow">
-          <input type="checkbox" />
-          <div className="collapse-title text-xl font-medium">Team Members</div>
-          <div className="collapse-content">
-            {loadingTeamMember && <LoadingSpinner />}
-            {teamMembers.map((member, idx) => (
-              <UserMini key={idx} member={member} />
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="channelMembers">
-        <div className="collapse collapse-arrow">
-          <input type="checkbox" />
-          <div className="collapse-title text-xl font-medium">
-            Friends
-          </div>
-          <div className="collapse-content">
-            {friendList.map((friend, idx) => (
-              <UserMini key={idx} member={friend} />
-            ))}
-          </div>
-        </div>
-      </div>
+    <div className="bg-base-100 w-60 flex flex-col items-center py-4">
+      {listOfUsers.length > 0 && (
+        <>
+          {loadingTeamMember && <LoadingSpinner />}
+          {listOfUsers.map((member, idx) => (
+            <UserMini key={idx} member={member} />
+          ))}
+        </>)}
     </div>
   );
 };

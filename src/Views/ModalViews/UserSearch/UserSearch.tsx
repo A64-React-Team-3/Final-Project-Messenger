@@ -8,6 +8,7 @@ import { TeamAppContext } from "../../../store/team.context";
 import { toast } from "react-toastify";
 import { Status } from "../../../common/constants";
 import { createPersonalChannel } from "../../../services/channel.service";
+import { ChannelType } from "../../../common/constants";
 
 type UserSearchProps = {
   setIsUserSearchModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,6 +21,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
   const [searchedUsers, setSearchedUsers] = useState<UserModel[]>([]);
   const { user } = useContext(UserAppContext);
   const { team } = useContext(TeamAppContext);
+  const [isMemberInPersonalChannels, setIsMemberInPersonalChannels] = useState<boolean>(false);
 
   const handleFriendRequest = async (senderUserName: string, senderAvatarUrl: string, recipientUserName: string, recipientAvatarUrl: string) => {
     if (senderUserName && recipientUserName && senderAvatarUrl && recipientAvatarUrl) {
@@ -65,6 +67,35 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
     }
 
   };
+
+  useEffect(() => {
+    if (user && user.channels) {
+      searchedUsers.forEach((searchedUser) => {
+        const personalChannels = user.channels?.filter(channel => channel.type === ChannelType.PERSONAL);
+        const userPersonalChannels = personalChannels?.filter(channel => {
+          if (channel.members) {
+            return channel.members.includes(searchedUser.username);
+          }
+          return false;
+        });
+        setIsMemberInPersonalChannels((userPersonalChannels?.length ?? 0) > 0);
+      });
+      // const personalChannels = user.channels.filter(channel => channel.type === ChannelType.PERSONAL);
+      // const userPersonalChannels = personalChannels.filter(channel => {
+      //   if (channel.members) {
+      //     return channel.members.includes(member.username);
+      //   }
+      //   return false;
+      // });
+      // setUserPersonalChannels(userPersonalChannels);
+
+      // const isMemberInChannels = userPersonalChannels.some(channel =>
+      //   channel.members && channel.members.includes(member.username)
+      // );
+      // setIsMemberInPersonalChannels(isMemberInChannels);
+      // console.log("isMemberInPersonalChannels", isMemberInChannels);
+    }
+  }, [user, searchedUsers]);
 
   useEffect(() => {
     getAllUsers().then((users) => {
@@ -130,7 +161,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ setIsUserSearchModalOpen }): JS
                   }}>Friend Invite</button>
                 </td>
                 <td>
-                  <button className="btn btn-circle btn-sm btn-info" onClick={() => {
+                  <button className={`btn btn-circle btn-sm btn-info ${isMemberInPersonalChannels ? 'btn-disabled' : ""}`} onClick={() => {
                     if (user) {
                       handleSendDm(user.username, userData.username);
                     }
