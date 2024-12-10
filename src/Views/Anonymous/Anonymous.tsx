@@ -34,13 +34,12 @@ export default function Anonymous() {
     return <LoadingSpinner />;
   } else {
     return (
-      <div className="main-anonymous-view">
-        {user ? (
-          <div className="app-info">Logged in as {user?.displayName}</div>
-        ) : (
-          <div className="app-info">Some info</div>
-        )}
-        <div className="login-register-form">
+      <div className="flex flex-col items-center justify-center bg-base-200 h-screen">
+        <div className="app-info text-center text-lg text-secondary">
+          Some info
+        </div>
+
+        <div className="login-register-form mt-6 w-full max-w-md bg-base-100 p-4 shadow-lg rounded-lg flex justify-center">
           {showLogin && <Login handleShowRegister={handleShowRegister} />}
           {showRegister && <Register handleShowLogin={handleShowLogin} />}
         </div>

@@ -11,7 +11,7 @@ export default function Login({
   handleShowRegister: () => void;
 }) {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserAppContext);
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -34,17 +34,8 @@ export default function Login({
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await signOutUser();
-      setUser(null);
-    } catch (err: any) {
-      console.log(err);
-    }
-  };
-
   return (
-    <div className="card backdrop-opacity backdrop-invert bg-primary/40 shadow-2xl shadow-primary-100/50 w-96">
+    <div className="card backdrop-opacity  w-96">
       <div className="card-body">
         <h2 className="card-title">Login</h2>
         <label className="input input-bordered flex items-center gap-2">
@@ -87,23 +78,18 @@ export default function Login({
           />
         </label>
         <div className="card-actions justify-end">
-          <button className="btn btn-accent" onClick={handleLogin}>
+          <button
+            className="btn btn-outline btn-secondary"
+            onClick={handleLogin}
+          >
             Login
           </button>
           <button
-            className="btn btn-info"
+            className="btn btn-outline btn-primary"
             onClick={handleShowRegister}
           >
             To Register
           </button>
-          {user && (
-            <button
-              className="btn btn-success"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          )}
         </div>
       </div>
     </div>
