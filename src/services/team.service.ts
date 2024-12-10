@@ -15,7 +15,7 @@ export const createTeam = async (
 ): Promise<void> => {
   if (!user) {
     console.error("User is not authenticated");
-    toast.error("User is not authenticated");
+    // toast.error("User is not authenticated");
     return;
   }
 
@@ -33,7 +33,6 @@ export const createTeam = async (
     createdOn: Date.now(),
   };
 
-
   try {
     const result = await push(ref(db, `teams/`), team);
     const id = result.key;
@@ -42,7 +41,7 @@ export const createTeam = async (
       teamId: id,
       teamName: teamName,
       teamAvatarUrl: avatarUrl || null,
-    }
+    };
 
     await update(ref(db), { [`teams/${id}/id`]: id });
     await update(ref(db), { [`users/${user.username}/teams/${id}`]: userTeam });
@@ -51,7 +50,7 @@ export const createTeam = async (
     }
   } catch (error) {
     console.error("Error creating team (service fn): ", error);
-    toast.error("Error creating team");
+    // toast.error("Error creating team");
   }
 };
 
@@ -67,7 +66,6 @@ export const getTeams = async (): Promise<TeamModel[] | null> => {
     }
   } catch (error) {
     console.error("Error getting teams: ", error);
-    toast.error("Error getting teams ");
     return null;
   }
 };
@@ -85,7 +83,7 @@ export const getTeamById = async (
     }
   } catch (error) {
     console.error("Error getting team: ", error);
-    toast.error("Error getting team");
+    // toast.error("Error getting team");
     return null;
   }
 };
@@ -108,6 +106,6 @@ export const inviteToTeam = async (
     });
   } catch (error) {
     console.error("Error inviting the user to team", error);
-    toast.error("Error inviting the user to team");
+    // toast.error("Error inviting the user to team");
   }
 };

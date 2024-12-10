@@ -51,13 +51,11 @@ const HomeSideBar: React.FC = (): JSX.Element => {
           const unsubscribe = onValue(teamsRef, snapshot => {
             const teamsData = transformTeams(snapshot);
             if (teamsData) {
-              const filteredTeams = teamsData.filter(
-                team => {
-                  if (user?.username) {
-                    return team.members?.includes(user.username);
-                  }
+              const filteredTeams = teamsData.filter(team => {
+                if (user?.username) {
+                  return team.members?.includes(user.username);
                 }
-              )
+              });
               console.log("filteredTeams", filteredTeams);
               setTeams(filteredTeams);
             }
@@ -69,14 +67,9 @@ const HomeSideBar: React.FC = (): JSX.Element => {
       })
       .catch(error => {
         console.error("Error getting channels", error);
-        toast.error("Error getting channels");
       })
       .finally(() => setLoadingTeamsData(false));
-
   }, [user]);
-
-
-
 
   return (
     <>
@@ -102,9 +95,10 @@ const HomeSideBar: React.FC = (): JSX.Element => {
                 <span
                   key={index}
                   onClick={() => handleToTeam(teamData)}
-                  className={`transition-transform duration-200 mb-2 ${team?.teamId === teamData.teamId &&
+                  className={`transition-transform duration-200 mb-2 ${
+                    team?.teamId === teamData.teamId &&
                     `bg-gradient-to-r from-primary to-secondary rounded-full transition animate-[spin_1s]`
-                    }`}
+                  }`}
                 >
                   <TeamAvatarButton teamData={teamData} />
                 </span>
