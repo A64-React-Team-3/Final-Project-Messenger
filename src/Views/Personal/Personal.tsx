@@ -78,6 +78,15 @@ const Personal: React.FC = (): JSX.Element => {
       });
   }, [user]);
 
+  useEffect(() => {
+    if (personalChannels.length > 0) {
+      setChannel(personalChannels[0]);
+    } else {
+      setChannel(null);
+    }
+
+  }, [user, personalChannels]);
+
 
   return (
     <div className="flex w-full">
