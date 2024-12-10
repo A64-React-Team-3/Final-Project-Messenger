@@ -43,26 +43,55 @@ const HomeSideBar: React.FC = (): JSX.Element => {
     setOpenModal(prevValue => !prevValue);
   };
   useEffect(() => {
-    const userTeams = user?.teams?.map(team => team.teamId);
-
     const teamsRef = ref(db, "teams/");
     setLoadingTeamsData(true);
-    const unsubscribe = onValue(teamsRef, snapshot => {
-      const teamsData = transformTeams(snapshot);
-      if (teamsData) {
-        const filteredTeams = teamsData.filter(
-          team => userTeams?.includes(team.teamId)
-        );
-        setTeams(filteredTeams);
-        setLoadingTeamsData(false);
-        console.log("user", userTeams);
-        console.log("filteredTeams", filteredTeams);
-      } else {
-        setTeams([]);
-        setLoadingTeamsData(false);
-      }
-    });
-    return () => unsubscribe();
+    getTeams()
+      .then(snapshot => {
+        if (snapshot) {
+          const unsubscribe = onValue(teamsRef, snapshot => {
+            const teamsData = transformTeams(snapshot);
+            if (teamsData) {
+              const filteredTeams = teamsData.filter(
+                team => {
+                  if (user?.username) {
+                    return team.members?.includes(user.username);
+                  }
+                }
+              )
+              console.log("filteredTeams", filteredTeams);
+              setTeams(filteredTeams);
+            }
+          });
+          return () => unsubscribe();
+        } else {
+          setTeams([]);
+        }
+      })
+      .catch(error => {
+        console.error("Error getting channels", error);
+        toast.error("Error getting channels");
+      })
+      .finally(() => setLoadingTeamsData(false));
+    // const userTeams = user?.teams?.map(team => team.teamId);
+
+    // const teamsRef = ref(db, "teams/");
+    // setLoadingTeamsData(true);
+    // const unsubscribe = onValue(teamsRef, snapshot => {
+    //   const teamsData = transformTeams(snapshot);
+    //   if (teamsData) {
+    //     const filteredTeams = teamsData.filter(
+    //       team => userTeams?.includes(team.teamId)
+    //     );
+    //     setTeams(filteredTeams);
+    //     setLoadingTeamsData(false);
+    //     console.log("user", userTeams);
+
+    //   } else {
+    //     setTeams([]);
+    //     setLoadingTeamsData(false);
+    //   }
+    // });
+    // return () => unsubscribe();
 
 
   }, [user]);
