@@ -1,9 +1,10 @@
 import "./Login.css";
 import { useContext, useEffect } from "react";
-import { UserAppContext } from "../../store/app-context";
+import { UserAppContext } from "../../store/user.context";
 import { useState } from "react";
 import { loginUser, signOutUser } from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Login({
   handleShowRegister,
@@ -11,7 +12,7 @@ export default function Login({
   handleShowRegister: () => void;
 }) {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserAppContext);
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -28,23 +29,15 @@ export default function Login({
   const handleLogin = async () => {
     try {
       await loginUser(form.email, form.password);
-      navigate("/home", { replace: true });
+      navigate("/", { replace: true });
     } catch (err: any) {
       console.log(err);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await signOutUser();
-      setUser(null);
-    } catch (err: any) {
-      console.log(err);
+      toast.error("Invalid login!");
     }
   };
 
   return (
-    <div className="card backdrop-opacity backdrop-invert bg-white/40 shadow-2xl shadow-blue-100/50 w-96">
+    <div className="card backdrop-opacity  w-96">
       <div className="card-body">
         <h2 className="card-title">Login</h2>
         <label className="input input-bordered flex items-center gap-2">
@@ -82,28 +75,25 @@ export default function Login({
             type="password"
             className="grow"
             value={form.password}
-            placeholder="password"
+            placeholder="Password"
             onChange={updateForm("password")}
           />
         </label>
-        <div className="card-actions justify-end">
-          <button className="btn btn-accent opacity-50" onClick={handleLogin}>
+        <div className="flex flex-col justify-center align-middle">
+          <button
+            className="btn btn-outline btn-primary w-2/4 ml-20 mb-1"
+            onClick={handleLogin}
+          >
             Login
           </button>
           <button
-            className="btn btn-info opacity-50"
+            className="btn opacity-70 btn-ghost text-secondary"
             onClick={handleShowRegister}
           >
-            To Register
+            Don't Have An Account yet?
+            <br />
+            Register instead!
           </button>
-          {user && (
-            <button
-              className="btn btn-success opacity-50"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          )}
         </div>
       </div>
     </div>
