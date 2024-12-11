@@ -57,7 +57,7 @@ const ProfileSettings: React.FC = (): JSX.Element => {
     if (avatarFile.name) {
       const avatarUrl = await uploadUserAvatar(avatarFile, avatarFile.name);
       if (user) {
-        await updateUser(user.uid, displayName, phoneNumber, avatarUrl);
+        await updateUser(user.username, displayName, phoneNumber, avatarUrl);
         const newUser = await getUser(user.uid);
         if (newUser) {
           setUser(newUser);

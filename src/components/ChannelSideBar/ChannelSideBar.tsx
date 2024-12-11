@@ -74,7 +74,7 @@ const ChannelSideBar: React.FC<ChannelSidBarProps> = ({ users, usersType }): JSX
         console.error("Error getting team members", error);
       });
     }
-  }, [user, usersType, team]);
+  }, [user, usersType, team, users]);
 
 
   return (

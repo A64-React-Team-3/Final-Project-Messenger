@@ -120,17 +120,13 @@ export const getAllFriends = async (
   return friends;
 };
 
-export const updateUser = async (userId: string, displayName: string, phoneNumber: string, avatarUrl?: string): Promise<void> => {
+export const updateUser = async (userName: string, displayName: string, phoneNumber: string, avatarUrl?: string): Promise<void> => {
   try {
-    const userRef = query(ref(db, "users"), orderByChild("uid"), equalTo(userId));
-    const userSnapshot = await get(userRef);
-    const user = transformUser(userSnapshot);
-    user.displayName = displayName;
-    user.phoneNumber = phoneNumber;
-    if (avatarUrl) {
-      user.avatarUrl = avatarUrl;
-    }
-    await set(ref(db, `users/${user.username}`), user);
+    await update(ref(db, `users/${userName}`), {
+      displayName,
+      phoneNumber,
+      avatarUrl,
+    });
   } catch (error) {
     console.error("Error updating user:", error);
     throw new Error("Failed to update user");
