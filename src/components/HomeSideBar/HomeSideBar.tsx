@@ -49,8 +49,8 @@ const HomeSideBar: React.FC = (): JSX.Element => {
       .then(snapshot => {
         if (snapshot) {
           const unsubscribe = onValue(teamsRef, snapshot => {
-            const teamsData = transformTeams(snapshot);
-            if (teamsData) {
+            if (snapshot.exists()) {
+              const teamsData = transformTeams(snapshot);
               const filteredTeams = teamsData.filter(team => {
                 if (user?.username) {
                   return team.members?.includes(user.username);
@@ -95,10 +95,9 @@ const HomeSideBar: React.FC = (): JSX.Element => {
                 <span
                   key={index}
                   onClick={() => handleToTeam(teamData)}
-                  className={`transition-transform duration-200 mb-2 ${
-                    team?.teamId === teamData.teamId &&
+                  className={`transition-transform duration-200 mb-2 ${team?.teamId === teamData.teamId &&
                     `bg-gradient-to-r from-primary to-secondary rounded-full transition animate-[spin_1s]`
-                  }`}
+                    }`}
                 >
                   <TeamAvatarButton teamData={teamData} />
                 </span>
