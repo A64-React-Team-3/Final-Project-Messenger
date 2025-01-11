@@ -1,6 +1,7 @@
-# Final Project Messenger
+# Definitely Not Discord!
 
-Final Project Messenger is a web-based messaging application built with React, TypeScript,Firebase and Dyte. It allows users to create teams, send messages, and manage their profiles. Additionally, users can create meetings in teams with voice/video functionality.
+Definitely Not Discord is a web-based messaging application built with React, TypeScript, Firebase and Dyte. It allows users to create teams, send messages, and manage their profiles. Additionally, users can create meetings in teams with voice/video functionality.
+![alt text](6.PNG)
 
 ## Features
 
@@ -84,15 +85,34 @@ Copy your Firebase configuration and add it to a .env file in the root directory
 ## Profile Settings
 
 Users can update their profile information, including display name, phone number, and avatar. The avatar image is uploaded to Firebase Storage.
+![alt text](src/assets/readmeScreenshots/8.PNG)
 
 ## Team Management
 
 Users can create teams and invite friends to join. Team avatars can also be uploaded to Firebase Storage.
+![alt text](src/assets/readmeScreenshots/2.PNG)
 
 ## Messaging
 
 Users can send messages in real-time within their teams.
+![alt text](src/assets/readmeScreenshots/1.PNG)
 
 ## Team Meetings
 
 Users can join meetings in teams and talk over video/audio in real-time with other team members.
+![alt text](src/assets/readmeScreenshots/4.PNG)
+
+## Search Users
+
+Users can search for others by their username and send them friend and team invites or direct messages.
+![alt text](src/assets/readmeScreenshots/5.PNG)
+
+## Notifications
+
+Users will get notifications for friend and team invitations and can also manage the requests they send.
+![alt text](src/assets/readmeScreenshots/7.PNG)
+
+## Theme Picker
+
+Users can personalize their experience on the app by selecting their favorite theme from the settings menu.
+![alt text](src/assets/readmeScreenshots/3.PNG)
