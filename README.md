@@ -1,7 +1,7 @@
 # Definitely Not Discord!
 
 Definitely Not Discord is a web-based messaging application built with React, TypeScript, Firebase and Dyte. It allows users to create teams, send messages, and manage their profiles. Additionally, users can create meetings in teams with voice/video functionality.
-![alt text](6.PNG)
+![alt text](src/assets/readmeScreenshots/6.PNG)
 
 ## Features
 
